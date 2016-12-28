@@ -1,21 +1,21 @@
-#pragma once
+ï»¿#pragma once
 #include <iostream>
 #include <string>
 using namespace std;
-//È¯°æ ¼³Á¤ ³»¿ëÀ» °ü¸®ÇÒ Å¬·¡½º.
+//í™˜ê²½ ì„¤ì • ë‚´ìš©ì„ ê´€ë¦¬í•  í´ë˜ìŠ¤.
 class Config
 {
 public:
-	//ÇÊ¿äÇÑ È¯°æ ¼³Á¤ Á¤º¸¸¦ Ãß°¡ ÇÑ´Ù.
-	//DB ¿¬°á Á¤º¸.
+	//í•„ìš”í•œ í™˜ê²½ ì„¤ì • ì •ë³´ë¥¼ ì¶”ê°€ í•œë‹¤.
+	//DB ì—°ê²° ì •ë³´.
 	string m_strConnsetStr;
 private:
 	string m_strConfigFileName;
 	static Config* m_pConfig;
 	Config(void);
 public:
-	//½Ã°£»ó Get Set Àº »ı·« ÇÑ´Ù. Àı´ë ÀÌ·¸°Ô ÄÚµù ÇÏ¸é ¾ÊµÊ.
-	//DB Á¢¼Ó ³»¿ë Ãß°¡
+	//ì‹œê°„ìƒ Get Set ì€ ìƒëµ í•œë‹¤. ì ˆëŒ€ ì´ë ‡ê²Œ ì½”ë”© í•˜ë©´ ì•Šë¨.
+	//DB ì ‘ì† ë‚´ìš© ì¶”ê°€
 public:
 	~Config(void);
 	static Config* Instance()
@@ -29,6 +29,6 @@ public:
 
 	bool SaveConfig();
 	bool LoadConfig();
-	//ÇÔ¼ö¸¦ Ãß°¡ÇÏ¿´½À´Ï´Ù.
+	//í•¨ìˆ˜ë¥¼ ì¶”ê°€í•˜ì˜€ìŠµë‹ˆë‹¤.
 };
 
