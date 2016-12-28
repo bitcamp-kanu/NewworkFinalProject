@@ -29,5 +29,6 @@ public:
 
 	bool SaveConfig();
 	bool LoadConfig();
+	//함수를 추가하였습니다.
 };
 
