@@ -337,3 +337,6 @@ __pycache__/
 build/
 
 # End of https://www.gitignore.io/api/windows,visualstudio,c++
+NewworkFinalProject/StudentMgr/StudentMgr.vcxproj
+NewworkFinalProject/WorkSevr/WorkSevr.vcxproj
+*.vcxproj
