@@ -4,6 +4,7 @@
 #include <time.h>
 #include <iostream>
 #include <string>
+#include <stdarg.h>
 
 using namespace std;
 WIUtility::WIUtility(void)
@@ -214,13 +215,18 @@ int GetSocketPORT(const SOCKADDR_IN  SockAddress)
 	return ntohs(SockAddress.sin_port);
 }
 
-//string GetFormatString(char* format,...)
-//{
-//	char* buff[255] = 0;	
-//	sprintf(buff,format,...);
-//	string str(buff);
-//	return str;
-//}
+string GetFormatString(char* format,...)
+
+{
+	char buff [255] = {0};
+	va_list Marker;
+	va_start(Marker, format);
+	vsprintf(buff,format,Marker);
+	va_end(Marker);
+	string str(buff);
+	return str;
+}
+
 
 //string WIUtility::FormatString(char* format,...)
 //{
