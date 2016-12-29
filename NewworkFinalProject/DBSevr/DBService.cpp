@@ -1,4 +1,4 @@
-#include "DBService.h"
+Ôªø#include "DBService.h"
 
 #include "..\Public\WIUtility.h"
 #include "..\Public\PublicDefine.h"
@@ -19,11 +19,11 @@ DBService::~DBService(void)
 
 int DBService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 {
-	if(WIUtility::IsCommand(pData,"AL")) //≈◊Ω∫∆Æ LO ¿Ã∏È
+	if(WIUtility::IsCommand(pData,"AL")) //ÌÖåÏä§Ìä∏ LO Ïù¥Î©¥
 	{
 		_Login logData;
 		memcpy(&logData,pData,sizeof(_Login));
-		cout << "DB Server ºˆΩ≈ " << logData.ToString() << endl;
+		cout << "DB Server ÏàòÏã† " << logData.ToString() << endl;
 
 		if(m_pDbManager->IsUserPassword(logData.id,logData.pass))
 		{
@@ -39,11 +39,11 @@ int DBService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 
 		printf(" %d ",error);
 	}
-	else if(WIUtility::IsCommand(pData,"AA")) //≈◊Ω∫∆Æ CMD ¿Ã∏È
+	else if(WIUtility::IsCommand(pData,"AA")) //ÌÖåÏä§Ìä∏ CMD Ïù¥Î©¥
 	{
 		_Login logData;
 		memcpy(&logData,pData,sizeof(_Login));
-		cout << "Work Server ºˆΩ≈ " << logData.ToString() << endl;
+		cout << "Work Server ÏàòÏã† " << logData.ToString() << endl;
 		logData.cont++;
 		pSockBase->Send((char*)&logData,sizeof(_Login));
 	}
