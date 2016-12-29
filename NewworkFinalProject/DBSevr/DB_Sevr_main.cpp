@@ -301,26 +301,30 @@ void main(int argc, char* argv[])
 
 	InitializeCriticalSection(&criticalSection); //동기화 객체를 초기화 한다.
 	DBService oDbServcie;
+
+
+	ServerSocket svrSocket;
+	
 	vector<ReceiveSocket*> rgpRevcSocket; 
 
 	char buffer[_BUFF_SIZE_];
 
-	ServerSocket svrSocket;
-	svrSocket.InitWinsock();
-
+	
+	
 	svrSocket.SetPort(Config::Instance()->m_nServerPort);
-
+	svrSocket.InitWinsock();
 	svrSocket.InitSock();
 	svrSocket.Bind();
 	svrSocket.Listen(Config::Instance()->m_nListenCnt);
 
-	cout << "TellInfo Server 입니다." << endl;
+	cout << "DB Server 입니다." << endl;
 	
 	ReceiveSocket* pRecvSocket = NULL;
 	while(true)
 	{
 		pRecvSocket = new ReceiveSocket();		
 		pRecvSocket= svrSocket.Accept(); //접속이 들어 오면 Reveive 소켓이 생성 된다. 
+		cout <<"DB Server client 가 접속 되었습니다." << endl;
 		pRecvSocket->SetIReceiveEvent(&oDbServcie);
 		pRecvSocket ->CreateThread();
 		rgpRevcSocket.push_back(pRecvSocket);

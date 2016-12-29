@@ -27,6 +27,7 @@ struct _Login
 	char pass[_PASS_SIZE_];
 	_Login(){};
 	char SecretKey; //인증키.
+	int cont;
 	_Login(char cmd1,char cmd2,int  pakID,char* id,char* pass)
 	{
 		header.cmd1		= cmd1;
@@ -35,11 +36,12 @@ struct _Login
 		strcpy(header.id,id);
 		strcpy(this->id,id);
 		strcpy(this->pass,pass);
+		cont = 0;
 	}
 	string ToString()
 	{
 		char buff[1024];
-		sprintf(buff,"%c%c key[%c] , id [%d]",header.cmd1,header.cmd2,header.pakID,id);
+		sprintf(buff,"%c%c key[%c] , id [%d] 순서[%d]",header.cmd1,header.cmd2,header.pakID,id,cont);
 		return string(buff);
 	}
 };

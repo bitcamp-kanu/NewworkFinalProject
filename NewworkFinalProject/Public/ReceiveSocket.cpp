@@ -31,7 +31,7 @@ void ReceiveSocket::Release()
 
 int ReceiveSocket::Send(char* buffer,int len)
 {
-	return 0;
+	return send(m_oSockInfo.m_socket,buffer,len,0);	
 }
 bool ReceiveSocket::SetIReceiveEvent(IReceiveEvent* pRecviveEvent)
 {
@@ -59,12 +59,15 @@ int ReceiveSocket::ReceivtThreadRun()
 }
 bool ReceiveSocket::CreateThread()
 {
-	m_hThread =(HANDLE) _beginthreadex(0,0,ReceiveSocket::ThreadRun,0,0,0);
+	m_hThread =(HANDLE) _beginthreadex(0,0,ReceiveSocket::ThreadRun,this,0,0);
 	return true;
 }
 unsigned int ReceiveSocket::ThreadRun(void* pData)
 {
 	ReceiveSocket* pSock = (ReceiveSocket*)pData;
-	pSock->ReceivtThreadRun();
+	if(pSock != NULL)
+	{
+		pSock->ReceivtThreadRun();
+	}
 	return 0;
 }

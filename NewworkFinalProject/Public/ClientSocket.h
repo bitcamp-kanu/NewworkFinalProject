@@ -25,6 +25,8 @@ public:
 	virtual ~ClientSocket(void);
 	virtual int Send(char* buffer,int len);
 	virtual int ReceivtThreadRun();
+
+	bool Init(string ip = "127.0.0.1",int port = 9000 ,ClientSocket::eMode mode = eTCP);
 	
 	void SetPort(int port);
 	bool InitWinsock();

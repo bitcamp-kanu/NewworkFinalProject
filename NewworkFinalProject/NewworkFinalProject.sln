@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tellinfo_Server", "Tellinfo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "참고프로젝트", "참고프로젝트", "{DBA590BA-6135-44C9-83E1-FED516B87237}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClientTest", "ClientTest\ClientTest.vcxproj", "{FD6BBF79-550A-4190-9495-09B7BCC49FAD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -51,6 +53,10 @@ Global
 		{A62F2107-34DC-42EA-BB5A-1D4869D8264B}.Debug|Win32.Build.0 = Debug|Win32
 		{A62F2107-34DC-42EA-BB5A-1D4869D8264B}.Release|Win32.ActiveCfg = Release|Win32
 		{A62F2107-34DC-42EA-BB5A-1D4869D8264B}.Release|Win32.Build.0 = Release|Win32
+		{FD6BBF79-550A-4190-9495-09B7BCC49FAD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FD6BBF79-550A-4190-9495-09B7BCC49FAD}.Debug|Win32.Build.0 = Debug|Win32
+		{FD6BBF79-550A-4190-9495-09B7BCC49FAD}.Release|Win32.ActiveCfg = Release|Win32
+		{FD6BBF79-550A-4190-9495-09B7BCC49FAD}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

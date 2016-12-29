@@ -25,7 +25,7 @@ bool Config::LoadConfig()
 {
 	m_strConnsetStr = "DSN=BITCAMP_DB_Study;Uid=<username>;Pwd=<password>";
 	m_nServerPort = 9003;
-	m_nListenCnt = 0;
+	m_nListenCnt = 5;
 	m_strLogFileName = "DbServer.log";
 	WIFile file;
 	//file.Open(m_strConfigFileName);	

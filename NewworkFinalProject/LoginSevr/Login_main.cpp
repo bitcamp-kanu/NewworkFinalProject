@@ -10,23 +10,62 @@
 #include <iostream>
 #include "..\Public\ClientSocket.h"
 #include "..\Public\PublicDefine.h"
+#include "..\public\ServerSocket.h"
+#include "..\public\Log.h"
+
+#include "LoginService.h"
+
 void main()
 {
-	
+	Config::Instance()->LoadConfig();
+	//로그파일 파일명을 설정한다.
+	//CLog::Instance()->SetFilePath(Config::Instance()->m_strLogFileName);
+
+	//Recvive 를 저장할 소켓.
+	vector<ReceiveSocket*> rgpRevcSocket; 
+
+	LoginService oLoginSvc;
+	ServerSocket oServerSock;
 	ClientSocket oSock(Config::Instance()->m_dbServerIP
 					,Config::Instance()->m_nDbServerPort,ClientSocket::eTCP);
+
+
+	oServerSock.SetPort(Config::Instance()->m_nServerPort);
+	oServerSock.InitWinsock();
+	oServerSock.InitSock();
+	oServerSock.Bind();
+	oServerSock.Listen(Config::Instance()->m_nListenCnt);
+
+	oSock.InitWinsock();
 	oSock.InitSock();
-	oSock.Connect();
-	_Login pkLogin('A','B','A',"도봉산아이디","비밀번호입니다");
+	oSock.Connect();//DB 서버에 연결 한다.	
+
+	oLoginSvc.SetDBSvrConcSocket(&oSock); // 서버 연결 소켓을 설정 한다.
+	_Login pkLogin('T','E','A',"도봉산아이디","비밀번호입니다");
 	
 
-	
+	cout << "Login Server 입니다." << endl;
 
+	ReceiveSocket* pRecvSocket = NULL;
 	while(true)
 	{
-		oSock.Send((char*)&pkLogin,sizeof(_Login));
-		oSock.Receive((char*)&pkLogin,sizeof(_Login));
-		cout << pkLogin.ToString() << " 수신되었습니다."; //
+		pRecvSocket = new ReceiveSocket();		
+		pRecvSocket= oServerSock.Accept(); //접속이 들어 오면 Reveive 소켓이 생성 된다. 
+		cout <<"Login Server client 가 접속 되었습니다." << endl;
+		pRecvSocket->SetIReceiveEvent(&oLoginSvc);
+		pRecvSocket ->CreateThread();
+		rgpRevcSocket.push_back(pRecvSocket);
+	}	
+
+	for(int i = 0 ; i < rgpRevcSocket.size(); i++)
+	{
+		WaitForSingleObject(pRecvSocket ->m_hThread,INFINITE);
+	}
+
+	for(int i = 0 ; i < rgpRevcSocket.size(); i++)
+	{
+		delete rgpRevcSocket[i];
+		rgpRevcSocket[i] = NULL;
 	}
 
 

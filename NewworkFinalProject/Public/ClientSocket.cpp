@@ -9,7 +9,7 @@
 ClientSocket::ClientSocket(string ip/* = "127.0.0.1"*/,int port/* = 9000 */ ,ClientSocket::eMode mode/* = eTCP*/)
 {
 	memset(&m_owsadata,0x00,sizeof(m_owsadata));
-	m_nPort		= m_nPort;
+	m_nPort		= port;
 	m_strIP		= ip;
 	m_hThread	= 0x00;
 }
@@ -18,7 +18,14 @@ ClientSocket::~ClientSocket(void)
 {
 
 }
-
+bool ClientSocket::Init(string ip/* = "127.0.0.1"*/,int port/* = 9000*/ ,ClientSocket::eMode mode/* = eTCP*/)
+{
+	memset(&m_owsadata,0x00,sizeof(m_owsadata));
+	m_nPort		= port;
+	m_strIP		= ip;
+	m_hThread	= 0x00;
+	return true;
+}
 void ClientSocket::SetPort(int port)
 {
 	m_nPort = port;
@@ -38,6 +45,8 @@ bool ClientSocket::InitSock()
 	ZeroMemory(&m_oSockInfo.m_sockAddrIn,sizeof(m_oSockInfo.m_sockAddrIn));
 	m_oSockInfo.m_sockAddrIn.sin_port = htons(m_nPort);	
 	m_oSockInfo.m_sockAddrIn.sin_addr.s_addr = inet_addr(m_strIP.c_str());
+	//m_oSockInfo.m_sockAddrIn.sin_port = htons(9003);	
+	//m_oSockInfo.m_sockAddrIn.sin_addr.s_addr = inet_addr("127.0.0.1");
 	m_oSockInfo.m_sockAddrIn.sin_family = AF_INET;
 	return true;
 }
