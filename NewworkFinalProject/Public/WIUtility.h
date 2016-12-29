@@ -122,7 +122,8 @@ public:
 	//SOCKADDR_IN 값을 Port 값 으로 변환 하낟.
 	static int GetSocketPORT(const SOCKADDR_IN&  SockAddress);
 
-	string GetFormatString(char* format,...);
+	//2016.12.29 SJM GetFormatString 비정적을 정적(static) 으로 수정 
+	static string GetFormatString(char* format,...);
 
 
 
