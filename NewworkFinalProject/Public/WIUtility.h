@@ -125,8 +125,7 @@ public:
 	//2016.12.29 SJM GetFormatString 비정적을 정적(static) 으로 수정 
 	static string GetFormatString(char* format,...);
 
-
-
+	static bool IsCommand(char* buffer , char* cmd);
 
 	//ErrorCode 를 받아서  string 로 출력 하는 함수. 
 	//교체 void ViewError(char* format,...) 코드 참조. 

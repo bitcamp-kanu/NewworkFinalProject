@@ -15,25 +15,23 @@ class ClientSocket : public SockBase
 public:
 	enum eMode{eTCP,eUDP};
 private:
-
 	SockInfo m_oSockInfo;
+	WSADATA	 m_owsadata;
 	HANDLE m_hThread;
 	int		m_nPort;
+	string  m_strIP;
 public:
-	ClientSocket(int port = 9000 ,string ip = "127.0.0.1" ,ClientSocket::eMode mode = eTCP);
+	ClientSocket(string ip = "127.0.0.1",int port = 9000 ,ClientSocket::eMode mode = eTCP);
 	virtual ~ClientSocket(void);
 	virtual int Send(char* buffer,int len);
-	//Why virtual ???
 	virtual int ReceivtThreadRun();
 	
-
-
 	void SetPort(int port);
 	bool InitWinsock();
 	bool InitSock();
 	bool Connect();
 	int  Receive(char* pBuffer,int lel);
-	
+
 	bool CreateThread();
 	void Release();
 private:

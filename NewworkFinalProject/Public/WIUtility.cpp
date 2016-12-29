@@ -203,20 +203,19 @@ void WIUtility::TextColor(int color_number)
 {	
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),color_number);
 }
-string GetSocketIP(const SOCKADDR_IN  SockAddress)
+string WIUtility::GetSocketIP(const SOCKADDR_IN&  SockAddress)
 {
 	char SocketIP[255]={0};
 	strcpy(SocketIP, inet_ntoa(SockAddress.sin_addr));
 	return string(SocketIP);
 }
 
-int GetSocketPORT(const SOCKADDR_IN  SockAddress)
+int WIUtility::GetSocketPORT(const SOCKADDR_IN&  SockAddress)
 {
 	return ntohs(SockAddress.sin_port);
 }
 
-string GetFormatString(char* format,...)
-
+string WIUtility::GetFormatString(char* format,...)
 {
 	char buff [255] = {0};
 	va_list Marker;
@@ -226,7 +225,10 @@ string GetFormatString(char* format,...)
 	string str(buff);
 	return str;
 }
-
+bool WIUtility::IsCommand(char* buffer , char* cmd)
+{
+	return ((buffer[0] == cmd[0])&&(buffer[1] == cmd[1]));
+}
 
 //string WIUtility::FormatString(char* format,...)
 //{

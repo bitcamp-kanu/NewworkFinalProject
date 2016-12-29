@@ -1,6 +1,6 @@
 #include "Config.h"
 
-
+Config* Config::m_pConfig = NULL;
 Config::Config(void)
 {
 	m_strConfigFileName = "DBSevr.cfg";

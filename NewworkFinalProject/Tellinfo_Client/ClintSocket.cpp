@@ -20,11 +20,17 @@ void ClintSocket::SetPort(int port)
 {
 	this->m_nPort = port;
 }
-bool ClintSocket::InitWinsock()
+bool ClintSocket::InitWinsock() //윈속 정보를 초기화 한다.
 {
+	if(WSAStartup(MAKEWORD(2,2),&m_wsadata) != 0)
+	{
+		printf("WSAStartUp Error\n");
+		return;
+	}
 	return true;
 }
 bool ClintSocket::InitSock()
 {
+	
 	return true;
 }
