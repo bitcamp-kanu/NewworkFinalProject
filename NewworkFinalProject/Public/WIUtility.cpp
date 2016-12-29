@@ -35,6 +35,8 @@ void WIUtility::Gotoxy(int x, int y)
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),Cur);
 }
 
+
+
 void WIUtility::Tokenize(const string& str,vector<string>& tokens,const string& delimiters)
 {
 	// 맨 첫 글자가 구분자인 경우 무시
