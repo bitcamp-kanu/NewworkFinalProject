@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "..\Public\baseSocket.h"
 class DBManager;

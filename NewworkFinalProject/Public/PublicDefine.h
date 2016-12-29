@@ -1,35 +1,35 @@
-#pragma once
+ï»¿#pragma once
 #include <iostream>
 #include <string>
 using namespace std;
-//°øÅëÀ¸·Î»ç¿ëÇÒ define 
+//ê³µí†µìœ¼ë¡œì‚¬ìš©í•  define 
 
-//¼ö½Å buffer »çÀÌÁî 
+//ìˆ˜ì‹  buffer ì‚¬ì´ì¦ˆ 
 #define _RECV_BUFFER_SIZE 2048
 #define _ID_SIZE_ 20
 #define _PASS_SIZE_ 20
-//»ç¿ëÇÒ ÆĞÅ¶À» Á¤ÀÇ ÇÑ´Ù.
+//ì‚¬ìš©í•  íŒ¨í‚·ì„ ì •ì˜ í•œë‹¤.
 
 struct _Header
 {	
 	char cmd1;
 	char cmd2;
-	int  pakID; //Ack/Nak È®ÀÎ ¿ëÀ¸·Î »ç¿ë
-		//--- ÀÎÁõ °ü·Ã À¸·Î ¹«Á¶°Ç ÇÊ¿ä.
-	char id[_ID_SIZE_];	    //ÀÚ¸´ ¼ö´Â ÃßÈÄ Á¤ÇØ¾ß ÇÔ.
-	char SecretKey; //ÀÎÁõÅ°.
+	int  pakID; //Ack/Nak í™•ì¸ ìš©ìœ¼ë¡œ ì‚¬ìš©
+		//--- ì¸ì¦ ê´€ë ¨ ìœ¼ë¡œ ë¬´ì¡°ê±´ í•„ìš”.
+	char id[_ID_SIZE_];	    //ìë¦¿ ìˆ˜ëŠ” ì¶”í›„ ì •í•´ì•¼ í•¨.
+	char SecretKey; //ì¸ì¦í‚¤.
 };
 
-//A ÀüÃ¼, S ÇĞ»ı G ¼ºÀû
+//A ì „ì²´, S í•™ìƒ G ì„±ì 
 
-//Login AL ¼­Á¤¹Î
+//Login AL ì„œì •ë¯¼
 struct _Login
 {
 	_Header header;
 	char id[_ID_SIZE_];
 	char pass[_PASS_SIZE_];
 	_Login(){};
-	char SecretKey; //ÀÎÁõÅ°.
+	char SecretKey; //ì¸ì¦í‚¤.
 	int cont;
 	_Login(char cmd1,char cmd2,int  pakID,char* id,char* pass)
 	{
@@ -42,12 +42,12 @@ struct _Login
 		cont = 0;
 	}
 
-	//³»ÀÚ½ÅÀ» ÃÊ±âÈ­ ÇÑ´Ù.
+	//ë‚´ìì‹ ì„ ì´ˆê¸°í™” í•œë‹¤.
 	void InitData()
 	{
 		memset(this,0x00,sizeof(this));
 	}
-	//buff ÀÇ ³»¿ëÀ» ±¸Á¶Ã¼¿¡ Ã¤¿î´Ù.
+	//buff ì˜ ë‚´ìš©ì„ êµ¬ì¡°ì²´ì— ì±„ìš´ë‹¤.
 	void SetCopyBuff(char* data)
 	{
 		memcpy(this,data,sizeof(this));
@@ -55,49 +55,49 @@ struct _Login
 	string ToString()
 	{
 		char buff[1024];
-		sprintf(buff,"%c%c key[%c] , id [%d] ¼ø¼­[%d]",header.cmd1,header.cmd2,header.pakID,id,cont);
+		sprintf(buff,"%c%c key[%c] , id [%d] ìˆœì„œ[%d]",header.cmd1,header.cmd2,header.pakID,id,cont);
 		return string(buff);
 	}
 };
 
-//ÇĞ»ı°Ë»ö SR -- ¼­Á¤¹Î
+//í•™ìƒê²€ìƒ‰ SR -- ì„œì •ë¯¼
 struct _SearchStudent 
 {
 
 };
 
-//ÇĞ»ı µî·Ï. SC ÃÊ·Õ¾¾.
+//í•™ìƒ ë“±ë¡. SC ì´ˆë¡±ì”¨.
 struct _CreateStudent
 {
 
 };
 
-//ÇĞ»ı »èÁ¦. SD  - ¿µÁØ
+//í•™ìƒ ì‚­ì œ. SD  - ì˜ì¤€
 struct _DeleteStudent
 {
 
 };
 
-//ÇĞ»ı ¼öÁ¤. SU   - ¿µÁØ
+//í•™ìƒ ìˆ˜ì •. SU   - ì˜ì¤€
 struct _UpdateStudent
 {
 
 };
 
-//¼ºÀû ¼öÁ¤. GU  - ¿µÁØ
+//ì„±ì  ìˆ˜ì •. GU  - ì˜ì¤€
 struct _UpdateGrade
 {
 
 };
 
-//°ú¸ñº° Æò±Õ. AA -- ½Â¿í Çü´Ô.
+//ê³¼ëª©ë³„ í‰ê· . AA -- ìŠ¹ìš± í˜•ë‹˜.
 struct _AverageAll
 {
 	_Header header;
 	char id[_ID_SIZE_];
 	char pass[_PASS_SIZE_];
 	_AverageAll(){};
-	char SecretKey; //ÀÎÁõÅ°.
+	char SecretKey; //ì¸ì¦í‚¤.
 	int cont;
 	_AverageAll(char cmd1,char cmd2,int  pakID,char* id,char* pass)
 	{
@@ -110,12 +110,12 @@ struct _AverageAll
 		cont = 0;
 	}
 
-	//³»ÀÚ½ÅÀ» ÃÊ±âÈ­ ÇÑ´Ù.
+	//ë‚´ìì‹ ì„ ì´ˆê¸°í™” í•œë‹¤.
 	void InitData()
 	{
 		memset(this,0x00,sizeof(this));
 	}
-	//buff ÀÇ ³»¿ëÀ» ±¸Á¶Ã¼¿¡ Ã¤¿î´Ù.
+	//buff ì˜ ë‚´ìš©ì„ êµ¬ì¡°ì²´ì— ì±„ìš´ë‹¤.
 	void SetCopyBuff(char* data)
 	{
 		memcpy(this,data,sizeof(this));
@@ -123,7 +123,7 @@ struct _AverageAll
 	string ToString()
 	{
 		char buff[1024];
-		sprintf(buff,"%c%c key[%c] , id [%d] ¼ø¼­[%d]",header.cmd1,header.cmd2,header.pakID,id,cont);
+		sprintf(buff,"%c%c key[%c] , id [%d] ìˆœì„œ[%d]",header.cmd1,header.cmd2,header.pakID,id,cont);
 		return string(buff);
 	}
 };
