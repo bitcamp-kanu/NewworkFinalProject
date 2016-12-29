@@ -6,12 +6,10 @@
 #define _WIN32_WINNT 0x0501
 
 #include <WinSock2.h> //Winsock 2 ¹öÀü Header
-#include <windows.h>
 #include <stdio.h>
 #include <string>
 #include <vector>
 #include <iostream>
-#include <Windows.h>
 #include <process.h>
 
 #include "..\Public\ServerSocket.h"
