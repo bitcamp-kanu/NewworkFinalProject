@@ -5,6 +5,7 @@
 #define WINVER 0x0501
 #define _WIN32_WINNT 0x0501
 #include <WinSock2.h>
+//#include "baseSocket.h"
 
 ClientSocket::ClientSocket(string ip/* = "127.0.0.1"*/,int port/* = 9000 */ ,ClientSocket::eMode mode/* = eTCP*/)
 {
@@ -34,7 +35,7 @@ bool ClientSocket::InitWinsock()
 {
 	if(WSAStartup(MAKEWORD(2,2),&m_owsadata) != 0)
 	{
-		printf("WSAStartUp Error\n");
+		throw exceptionCS(WIUtility::GetLastErrorMessage().c_str());
 		return false;
 	}
 	return true;
@@ -45,8 +46,6 @@ bool ClientSocket::InitSock()
 	ZeroMemory(&m_oSockInfo.m_sockAddrIn,sizeof(m_oSockInfo.m_sockAddrIn));
 	m_oSockInfo.m_sockAddrIn.sin_port = htons(m_nPort);	
 	m_oSockInfo.m_sockAddrIn.sin_addr.s_addr = inet_addr(m_strIP.c_str());
-	//m_oSockInfo.m_sockAddrIn.sin_port = htons(9003);	
-	//m_oSockInfo.m_sockAddrIn.sin_addr.s_addr = inet_addr("127.0.0.1");
 	m_oSockInfo.m_sockAddrIn.sin_family = AF_INET;
 	return true;
 }
@@ -58,8 +57,7 @@ bool ClientSocket::Connect()
 					,(SOCKADDR*)(&m_oSockInfo.m_sockAddrIn)
 					,sizeof(m_oSockInfo.m_sockAddrIn)))
 	{
-		string str = WIUtility::GetFormatString("ErrorCode (%d)", WSAGetLastError());
-		//CLog::Instance()->WriteLog(str,__FILE__,__LINE__);
+		throw exceptionCS(WIUtility::GetLastErrorMessage().c_str());
 		return false;
 	}
 	return true;
@@ -67,15 +65,26 @@ bool ClientSocket::Connect()
 
 int ClientSocket::Send(char* buffer,int len)
 {
-	return send(m_oSockInfo.m_socket,buffer,len,0);
+	int nlen = send(m_oSockInfo.m_socket,buffer,len,0);
+	if(nlen <= 0)
+	{
+		throw exceptionCS(WIUtility::GetLastErrorMessage().c_str());
+	}
+	return nlen;
 }
 
 int  ClientSocket::Receive(char* pBuffer,int len)
 {
-	return recv(m_oSockInfo.m_socket,pBuffer,len,0);
+	int nlen = recv(m_oSockInfo.m_socket,pBuffer,len,0);
+	if(nlen <= 0)
+	{
+		throw exceptionCS(WIUtility::GetLastErrorMessage().c_str());
+	}
+	return nlen;
 }
 //Why virtual ???
 int ClientSocket::ReceivtThreadRun()
 {
+	cout << "ClientSocket::ReceivtThreadRun() 사용않함" << endl;	
 	return true;
 }

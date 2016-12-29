@@ -1,6 +1,7 @@
-#include "ServerSocket.h"
+ï»¿#include "ServerSocket.h"
 #include "ReceiveSocket.h"
 #include <exception>
+#include "../Public/WIUtility.h"
 #define _BUFF_SIZE_ 4096
 
 ServerSocket::ServerSocket(int port /*= 9000*/, ServerSocket::eMode mode /* = eTCP*/) 
@@ -18,8 +19,8 @@ ServerSocket::ServerSocket(int port /*= 9000*/, ServerSocket::eMode mode /* = eT
 ServerSocket::~ServerSocket(void)
 {
 	ReleaseSocket();
-	WSACleanup(); //¼ÒÄÏ ÃÊ±âÈ­¸¦ ÇØÁ¦ÇÑ´Ù.
-	//ÇöÀç Ã¤ÆÃÀ» Á¾·á ÇÏ°í »õ·Î¿î Ã¤ÆÃÀ» ±â´Ù¸®´Ù.	
+	WSACleanup(); //ì†Œì¼“ ì´ˆê¸°í™”ë¥¼ í•´ì œí•œë‹¤.
+	//í˜„ì¬ ì±„íŒ…ì„ ì¢…ë£Œ í•˜ê³  ìƒˆë¡œìš´ ì±„íŒ…ì„ ê¸°ë‹¤ë¦¬ë‹¤.	
 }
 
 void ServerSocket::SetPort(int port)
@@ -30,7 +31,7 @@ bool ServerSocket::InitWinsock()
 {
 	if(WSAStartup(MAKEWORD(2,2),&m_wsadata) != 0) 
 	{
-		printf("WSAStartUp Error\n");
+		throw exceptionSS(WIUtility::GetLastErrorMessage().c_str());
 		return false;
 	}
 	return true;
@@ -48,57 +49,57 @@ bool ServerSocket::InitSock()
 	}
 	if(m_oSockInfo.m_socket == INVALID_SOCKET)
 	{
-		printf("Socket Error\n");		
+		throw exceptionSS(WIUtility::GetLastErrorMessage().c_str());
 		return false;
 	}
 }
 
 bool ServerSocket::Bind()
 {	
-	//ÁÖ¼Ò¼³Á¤. Network ´Â bigendan ¿¡ ¸ÂÃá´Ù.
+	//ì£¼ì†Œì„¤ì •. Network ëŠ” bigendan ì— ë§ì¶˜ë‹¤.
 	ZeroMemory(&m_oSockInfo.m_sockAddrIn,sizeof(m_oSockInfo.m_sockAddrIn));	
-	m_oSockInfo.m_sockAddrIn.sin_addr.s_addr	= htonl(INADDR_ANY);//ÀÚ±â ÀÚ½ÅÀÇ ¾ÆÀÌÇÇ¸¦ ÇÒ´çÇÑ´Ù.
-	m_oSockInfo.m_sockAddrIn.sin_family		= AF_INET;			//(internetwork: UDP, TCP, etc.) ¿µ¿ª¿¡¼­ »ç¿ëÇÒ ¼ÒÄÏÀ» »ı¼ºÇÑ´Ù.
-	m_oSockInfo.m_sockAddrIn.sin_port			= htons(m_iPort);		//htons ÇÔ¼ö´Â u_short¸¦ È£½ºÆ®¿¡¼­ 
+	m_oSockInfo.m_sockAddrIn.sin_addr.s_addr	= htonl(INADDR_ANY);//ìê¸° ìì‹ ì˜ ì•„ì´í”¼ë¥¼ í• ë‹¹í•œë‹¤.
+	m_oSockInfo.m_sockAddrIn.sin_family		= AF_INET;			//(internetwork: UDP, TCP, etc.) ì˜ì—­ì—ì„œ ì‚¬ìš©í•  ì†Œì¼“ì„ ìƒì„±í•œë‹¤.
+	m_oSockInfo.m_sockAddrIn.sin_port			= htons(m_iPort);		//htons í•¨ìˆ˜ëŠ” u_shortë¥¼ í˜¸ìŠ¤íŠ¸ì—ì„œ 
 	
-	//¼ÒÄÏ°ú ÁÖ¼Ò Á¤º¸¸¦ bind ÇÑ´Ù. 
+	//ì†Œì¼“ê³¼ ì£¼ì†Œ ì •ë³´ë¥¼ bind í•œë‹¤. 
 	if(bind(m_oSockInfo.m_socket
 			,(SOCKADDR*)&m_oSockInfo.m_sockAddrIn
 			,sizeof(m_oSockInfo.m_sockAddrIn)) 
 			== SOCKET_ERROR) 
 	{
-		//throw exception("Accept Error\n");
-		//printf("%d Bind error\n",WSAGetLastError());
+		throw exceptionSS(WIUtility::GetLastErrorMessage().c_str());
 		return false;
 	}
 	return true;
 }
-//UPD ¿¡¼­´Â »ç¿ëÇÏÁö ¾Ê´Â´Ù.
+//UPD ì—ì„œëŠ” ì‚¬ìš©í•˜ì§€ ì•ŠëŠ”ë‹¤.
 int ServerSocket::Listen(int cnt /*= 5*/)
 {
-	return listen(m_oSockInfo.m_socket,cnt);  //serverSocket À» ´ë±â ¼ÒÄÏÀ¸·Î ¼³Á¤ ÇÑ´Ù.
+	if(listen(m_oSockInfo.m_socket,cnt) != 0)
+	{
+		throw exceptionSS(WIUtility::GetLastErrorMessage().c_str());
+	}
+	return 0;
 }
-//UPD ¿¡¼­´Â »ç¿ëÇÏÁö ¾Ê´Â´Ù.
+//UPD ì—ì„œëŠ” ì‚¬ìš©í•˜ì§€ ì•ŠëŠ”ë‹¤.
 ReceiveSocket* ServerSocket::Accept()
 {
 	ReceiveSocket* pRrecvSocket = NULL;
-	//SOCKET sock;
-	//SockInfo accpetSock;
-	// 
 	pRrecvSocket = new ReceiveSocket();
 	int addrLen = sizeof(m_oSockInfo.m_sockAddr);
 	pRrecvSocket -> m_oSockInfo.m_socket = accept(m_oSockInfo.m_socket
 												,&m_oSockInfo.m_sockAddr
 												,&addrLen);
 
-	if(pRrecvSocket->m_oSockInfo.m_socket == INVALID_SOCKET) //Å¬¶óÀÌ¾ğÆ® Á¢¼ÓÀ» ´ë±âÇÑ´Ù.
+	if(pRrecvSocket->m_oSockInfo.m_socket == INVALID_SOCKET) //í´ë¼ì´ì–¸íŠ¸ ì ‘ì†ì„ ëŒ€ê¸°í•œë‹¤.
 	{
-		delete pRrecvSocket; //¹®Á¦°¡ ¹ß»ı ÇÏ¸é ÇÔ¼ö ¾È¿¡¼­ ¸Ş¸ğ¸®¸¦ ÇØÁ¦ ÇÑ´Ù.
+		delete pRrecvSocket; //ë¬¸ì œê°€ ë°œìƒ í•˜ë©´ í•¨ìˆ˜ ì•ˆì—ì„œ ë©”ëª¨ë¦¬ë¥¼ í•´ì œ í•œë‹¤.
 		pRrecvSocket = NULL;
-		throw exception("Accept Error\n");
+		throw exceptionSS(WIUtility::GetLastErrorMessage().c_str());
 		return NULL;
 	}	
-	//Á¤»ó ¹İÈ¯ÇÑ Æ÷ÀÎÅÍ´Â »ç¿ëÀÚ Ãø¿¡¼­ ÇØÁ¦ ÇÑ´Ù.
+	//ì •ìƒ ë°˜í™˜í•œ í¬ì¸í„°ëŠ” ì‚¬ìš©ì ì¸¡ì—ì„œ í•´ì œ í•œë‹¤.
 	return pRrecvSocket;
 }
 
