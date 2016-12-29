@@ -8,7 +8,10 @@ class Config
 public:
 	//필요한 환경 설정 정보를 추가 한다.
 	//DB 연결 정보.
-	string m_strConnsetStr;
+	string	m_strConnsetStr;
+	string	m_strLogFileName;
+	int		m_nServerPort;
+	int		m_nListenCnt;
 private:
 	string m_strConfigFileName;
 	static Config* m_pConfig;

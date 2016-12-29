@@ -12,16 +12,20 @@ class ReceiveSocket : public SockBase
 public:
 	IReceiveEvent* m_pRecviveEvent; 
 	SockInfo m_oSockInfo;
+	HANDLE m_hThread;
+public: 
+	//프로퍼티 Get,Set 함수.
+	bool SetIReceiveEvent(IReceiveEvent* pRecviveEvent);
 public:
 	ReceiveSocket();
-	ReceiveSocket(const ReceiveSocket& item);	
+	ReceiveSocket(const ReceiveSocket& item , IReceiveEvent* pIRecviveEvent = NULL);	
 	virtual ~ReceiveSocket();	
-	// 데이터를 전송 한다.
-	virtual int Send();
-	virtual int ReceivtThreadRun();
 
-	unsigned int  static CALLBACK ThreadRun(void* pData);
+	virtual int Send(char* buffer,int len);
+	virtual int ReceivtThreadRun();
 	bool CreateThread();
 	void Release();
+private:
+	unsigned int  static CALLBACK ThreadRun(void* pData);
 };
 

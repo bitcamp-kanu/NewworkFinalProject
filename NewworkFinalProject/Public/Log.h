@@ -3,6 +3,8 @@
 #include <string>
 using namespace std;
 
+#define _FILE_WRITE_
+#define _DEBUF_OUT_
 class CLog
 {
 private:
@@ -19,6 +21,7 @@ public:
 		}
 		return CLog::m_plog;
 	}
+	void SetFilePath(string filePath);
 	void WriteLog(string& str,char* _fileName_, int lile);
 
 };

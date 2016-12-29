@@ -5,15 +5,36 @@
 #include <WinSock2.h> //Winsock 2 버전 Header
 #include <string.h>
 
+class SockBase
+{
+public:
+	SockBase()
+	{
+	}
+
+	SockBase(const SockBase& item)
+	{		
+	};
+	~SockBase()
+	{
+
+	}
+	// 데이터를 전송 한다.
+	virtual int Send(char* buffer,int len) = 0;
+	//Why virtual ???
+	virtual int ReceivtThreadRun() = 0;
+};
+
 class IReceiveEvent
 {
-	virtual int ReceiveEvent(void* pObj,char* pData, int len) = 0;	
+public:
+	virtual int ReceiveEvent(SockBase* pSockBase,char* pData, int len) = 0;	
 };
 
 class SockInfo
 {
 public:
-	SOCKET m_socket;
+	SOCKET		m_socket;
 	SOCKADDR_IN m_sockAddrIn;
 	SOCKADDR	m_sockAddr;
 public:
@@ -44,21 +65,3 @@ public:
 };
 
 
-class SockBase
-{
-public:
-	SockBase()
-	{
-	}
-
-	SockBase(const SockBase& item)
-	{		
-	};
-	 ~SockBase()
-	{
-
-	}
-	 // 데이터를 전송 한다.
-	 virtual int Send() = 0;
-	 virtual int ReceivtThreadRun() = 0;
-};

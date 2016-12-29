@@ -19,7 +19,11 @@
 #include "..\Public\baseSocket.h"
 #include "..\Public\WIUtility.h"
 #include "..\Public\WIFile.h"
+#include "..\Public\Log.h"
 #include <time.h>
+#include "DBService.h"
+#include "Config.h"
+
 
 
 
@@ -53,13 +57,10 @@ void InitHelp()
 };
 
 CRITICAL_SECTION criticalSection;
-
-
 bool IsCommand(char* buffer , char* cmd)
 {
 	return ((buffer[0] == cmd[0])&&(buffer[1] == cmd[1]));
 }
-
 char CreateKey()
 {
 	srand( (unsigned)time( NULL ) );
@@ -78,7 +79,6 @@ void SendUnKnownCmdMessage(SOCKET& sock , char key)
 	Encode((char*)&pack,sizeof(Packet),key);
 	send(sock,(char*)&pack,sizeof(pack),0);
 }
-
 void SendNotFormatCmdMessage(SOCKET& sock, char key)
 {
 	EnterCriticalSection(&criticalSection);
@@ -91,7 +91,6 @@ void SendNotFormatCmdMessage(SOCKET& sock, char key)
 	Encode((char*)&pack,sizeof(Packet),key);
 	send(sock,(char*)&pack,sizeof(pack),0);
 }
-
 void SendSucessMessage(SOCKET& sock, char key)
 {
 	EnterCriticalSection(&criticalSection);
@@ -103,7 +102,6 @@ void SendSucessMessage(SOCKET& sock, char key)
 	Encode((char*)&pack,sizeof(Packet),key);
 	send(sock,(char*)&pack,sizeof(pack),0);
 }
-
 void SendMessage(SOCKET& sock , char* msg, char key)
 {
 	Packet pack;			
@@ -112,9 +110,6 @@ void SendMessage(SOCKET& sock , char* msg, char key)
 	Encode((char*)&pack,sizeof(Packet),key);
 	send(sock,(char*)&pack,sizeof(pack),0);
 }
-
-
-
 unsigned __stdcall RecvThreadFun( void* pArguments )
 {
 	//_ClientData* pData = (_ClientData*)pArguments ;
@@ -298,22 +293,26 @@ unsigned __stdcall RecvThreadFun( void* pArguments )
 
 void main(int argc, char* argv[])
 {
-	InitializeCriticalSection(&criticalSection); //동기화 객체를 초기화 한다.
+	//환경 설정 파일을 불러온다.
+	Config::Instance()->LoadConfig();
+	//로그파일 파일명을 설정한다.
+	CLog::Instance()->SetFilePath(Config::Instance()->m_strLogFileName);
 
+
+	InitializeCriticalSection(&criticalSection); //동기화 객체를 초기화 한다.
+	DBService oDbServcie;
 	vector<ReceiveSocket*> rgpRevcSocket; 
+
 	char buffer[_BUFF_SIZE_];
 
 	ServerSocket svrSocket;
 	svrSocket.InitWinsock();
 
-	if(argc == 2)
-	{
-		svrSocket.SetPort(atoi(argv[1]));
-	}
+	svrSocket.SetPort(Config::Instance()->m_nServerPort);
 
 	svrSocket.InitSock();
 	svrSocket.Bind();
-	svrSocket.Listen(5);
+	svrSocket.Listen(Config::Instance()->m_nListenCnt);
 
 	cout << "TellInfo Server 입니다." << endl;
 	
@@ -322,37 +321,20 @@ void main(int argc, char* argv[])
 	{
 		pRecvSocket = new ReceiveSocket();		
 		pRecvSocket= svrSocket.Accept(); //접속이 들어 오면 Reveive 소켓이 생성 된다. 
-		pRecvSocket -> ReceivtThreadRun();
+		pRecvSocket->SetIReceiveEvent(&oDbServcie);
+		pRecvSocket ->CreateThread();
+		rgpRevcSocket.push_back(pRecvSocket);
+	}	
 
-		
-		
-		/*
-		Packet pack;
-		pack.SetCmd("KK"); //키값.
-		pack.key = ~(pClientData->key); 
-		cout << "암호화 키가 생성되었습니다. [" << pClientData->key << "]" << endl;
-		send(pClientData->sockInfo.m_socket,(char*)&pack,sizeof(pack),0);
-		
-		if(pClientData->sockInfo.m_socket == INVALID_SOCKET)
-		{
-			printf("Accept Error\n");
-			return;
-		}
-		cout << "새로운 Client 가 접속 되었습니다." << endl;
-		pClientData->hThread = (HANDLE)_beginthreadex(NULL, 0, &RecvThreadFun, pClientData, 0, &(pClientData->threadID) );
-		//rgpClients.push_back(pClientData); //접속된 클라이언트를추가 한다/
-		//
-		
-
-	}
-
-	for(int i = 0 ; i < rgpClients.size(); i++)
+	for(int i = 0 ; i < rgpRevcSocket.size(); i++)
 	{
-		rgpClients[i]->sockInfo.Release();
-		delete rgpClients[i];
-		rgpClients[i] = NULL;
+		WaitForSingleObject(pRecvSocket ->m_hThread,INFINITE);
 	}
-	DeleteCriticalSection(&criticalSection);
-	*/
+
+	for(int i = 0 ; i < rgpRevcSocket.size(); i++)
+	{
+		delete rgpRevcSocket[i];
+		rgpRevcSocket[i] = NULL;
+	}
 	return;
 }
