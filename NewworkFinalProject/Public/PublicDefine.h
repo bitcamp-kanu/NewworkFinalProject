@@ -93,5 +93,37 @@ struct _UpdateGrade
 //과목별 평균. AA -- 승욱 형님.
 struct _AverageAll
 {
+	_Header header;
+	char id[_ID_SIZE_];
+	char pass[_PASS_SIZE_];
+	_AverageAll(){};
+	char SecretKey; //인증키.
+	int cont;
+	_AverageAll(char cmd1,char cmd2,int  pakID,char* id,char* pass)
+	{
+		header.cmd1		= cmd1;
+		header.cmd2		= cmd2;
+		header.pakID	= pakID;
+		strcpy(header.id,id);
+		strcpy(this->id,id);
+		strcpy(this->pass,pass);
+		cont = 0;
+	}
 
+	//내자신을 초기화 한다.
+	void InitData()
+	{
+		memset(this,0x00,sizeof(this));
+	}
+	//buff 의 내용을 구조체에 채운다.
+	void SetCopyBuff(char* data)
+	{
+		memcpy(this,data,sizeof(this));
+	}
+	string ToString()
+	{
+		char buff[1024];
+		sprintf(buff,"%c%c key[%c] , id [%d] 순서[%d]",header.cmd1,header.cmd2,header.pakID,id,cont);
+		return string(buff);
+	}
 };

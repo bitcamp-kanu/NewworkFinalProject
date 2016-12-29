@@ -3,7 +3,7 @@
 #define WINVER 0x0501
 #define _WIN32_WINNT 0x0501
 
-#include <WinSock2.h> //Winsock 2 버전 Header
+//#include <WinSock2.h> //Winsock 2 버전 Header
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -77,6 +77,7 @@ public:
 	Curser 위치를 이동 시킨다.
 	*/
 	static void Gotoxy(int x, int y);
+
 	
 	/*
 	작성자:turboc
@@ -126,6 +127,7 @@ public:
 	static string GetFormatString(char* format,...);
 
 	static bool IsCommand(char* buffer , char* cmd);
+
 
 	//ErrorCode 를 받아서  string 로 출력 하는 함수. 
 	//교체 void ViewError(char* format,...) 코드 참조. 

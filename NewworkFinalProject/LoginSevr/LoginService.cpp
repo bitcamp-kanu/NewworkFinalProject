@@ -31,5 +31,19 @@ int LoginService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 		logData.cont++;
 		pSockBase->Send((char*)&logData,sizeof(_Login));
 	}
+	else if(WIUtility::IsCommand(pData,"AL")) //Admin Login CMD 이면
+	{
+		_Login logData;
+		int key=rand()%127 + 1;
+
+		memcpy(&logData,pData,sizeof(_Login));
+		cout << "DB Server 수신 " << logData.ToString() << endl;
+		logData.cont ++;
+		m_pClinetSock->Send((char*)&logData,sizeof(_Login));
+		logData.cont++;
+		m_pClinetSock->Receive((char*)&logData,sizeof(_Login));
+		logData.cont++;
+		pSockBase->Send((char*)&logData,sizeof(_Login));
+	}
 	return true;
 }
