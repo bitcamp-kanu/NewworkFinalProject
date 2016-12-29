@@ -1,25 +1,24 @@
-#pragma once
-#pragma comment(lib,"Ws2_32.lib") //winsock 2.2 ¶óÀÌºê·¯¸®
+ï»¿#pragma once
+#pragma comment(lib,"Ws2_32.lib") //winsock 2.2 ë¼ì´ë¸ŒëŸ¬ë¦¬
 #define WINVER 0x0501
 #define _WIN32_WINNT 0x0501
 
-//#include <WinSock2.h> //Winsock 2 ¹öÀü Header
+#include <WinSock2.h> //Winsock 2 ë²„ì „ Header
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
 #include <time.h>
-//#include <windows.h>
 #include <string>
 #include <vector>
 using namespace std;
 /*
 	class WIUtility
-	1. ÀÚÁÖ »ç¿ë ÇÏ´Â ÇÔ¼ö ¸ğÀ½
-	2. ¸ğµç ÇÔ¼ö´Â static ·Î »ı¼º
-	   ÇÔ¼ö Á¢±Ù½Ã WIUtility::ÇÔ¼ö¸í ÇüÅÂ·Î È£Ãâ ÇÏ¸é µÊ.
+	1. ìì£¼ ì‚¬ìš© í•˜ëŠ” í•¨ìˆ˜ ëª¨ìŒ
+	2. ëª¨ë“  í•¨ìˆ˜ëŠ” static ë¡œ ìƒì„±
+	   í•¨ìˆ˜ ì ‘ê·¼ì‹œ WIUtility::í•¨ìˆ˜ëª… í˜•íƒœë¡œ í˜¸ì¶œ í•˜ë©´ ë¨.
 	   <ex>WIUtility::Gotoxy(10,10);
-	   class ¸¦ »ı¼ºÇÒ ÇÊ¿ä ¾øÀ½.
+	   class ë¥¼ ìƒì„±í•  í•„ìš” ì—†ìŒ.
 */
 
 typedef enum { NOCURSOR, SOLIDCURSOR, NORMALCURSOR } CURSOR_TYPE;
@@ -31,8 +30,8 @@ public:
 	~WIUtility(void);	
 	
 	/*
-	ÀÛ¼ºÀÚ:DSurfer
-	ÇöÀç ½Ã°£À» ¹®ÀÚ¿­ ÇüÅÂ·Î ¹İÈ¯ ÇÑ´Ù.
+	ì‘ì„±ì:DSurfer
+	í˜„ì¬ ì‹œê°„ì„ ë¬¸ìì—´ í˜•íƒœë¡œ ë°˜í™˜ í•œë‹¤.
 	YYYYMMDDHHMM -> 2016-12-23 12:01:23
 	YYYYMMDDHHMM -> 2016-12-23 12:01
 	YYYYMMDD -> 2016-12-23
@@ -40,26 +39,26 @@ public:
 	static string GetCurTime(const string& str = "YYYYMMDDHHMMSS");
 	
 	/*
-	ÀÛ¼ºÀÚ:DSurfer
-	ÇöÀç½Ã°£À» ¹İÈ¯ ÇÑ´Ù. (20161223121212  Çü½Ä)
+	ì‘ì„±ì:DSurfer
+	í˜„ì¬ì‹œê°„ì„ ë°˜í™˜ í•œë‹¤. (20161223121212  í˜•ì‹)
 	*/
 	static string GetCurTime();
 	
 	/*
-	ÀÛ¼ºÀÚ:DSurfer
-	ÇöÀç½Ã°£À» ¹İÈ¯ ÇÑ´Ù. 
+	ì‘ì„±ì:DSurfer
+	í˜„ì¬ì‹œê°„ì„ ë°˜í™˜ í•œë‹¤. 
 	*/
 	static void  GetCurTime(int& y,int& m,int& d);
 
 	/*
-	ÀÛ¼ºÀÚ:DSurfer
-	ÇöÀç½Ã°£À» ¿äÀÏÀ» ¹İÈ¯ ÇÑ´Ù. (ÀÏ,¿ù,È­,¼ö,¸ñ,±İ)
+	ì‘ì„±ì:DSurfer
+	í˜„ì¬ì‹œê°„ì„ ìš”ì¼ì„ ë°˜í™˜ í•œë‹¤. (ì¼,ì›”,í™”,ìˆ˜,ëª©,ê¸ˆ)
 	*/
 	static string GetWeek();
 	
 	/*
-	ÀÛ¼ºÀÚ:DSurfer
-	³â¿ùÀÏ ¹®ÀÚ¿­ Çü½ÄÀ» Æ÷¸ä ¹®ÀÚ¿­ Çü½ÄÀ¸·Î º¯È¯ ÇÑ´Ù.
+	ì‘ì„±ì:DSurfer
+	ë…„ì›”ì¼ ë¬¸ìì—´ í˜•ì‹ì„ í¬ë©§ ë¬¸ìì—´ í˜•ì‹ìœ¼ë¡œ ë³€í™˜ í•œë‹¤.
 	20161224 -> 2016-12-24
 	20161224121212 -> 2016-12-24 12:12:12
 	*/
@@ -67,80 +66,73 @@ public:
 
 
 	/*
-	ÀÛ¼ºÀÚ:turboc
-	È­¸éÀÇ ¸ğµç ³»¿ëÀ» Áö¿î´Ù.
+	ì‘ì„±ì:turboc
+	í™”ë©´ì˜ ëª¨ë“  ë‚´ìš©ì„ ì§€ìš´ë‹¤.
 	*/
 	static void Clrscr();
 	
 	/*
-	ÀÛ¼ºÀÚ:turboc
-	Curser À§Ä¡¸¦ ÀÌµ¿ ½ÃÅ²´Ù.
+	ì‘ì„±ì:turboc
+	Curser ìœ„ì¹˜ë¥¼ ì´ë™ ì‹œí‚¨ë‹¤.
 	*/
 	static void Gotoxy(int x, int y);
 
 	
 	/*
-	ÀÛ¼ºÀÚ:turboc
-	ÇöÀç Ä¿¼­ À§Ä¡¸¦ °¡Á®¿Â´Ù.
+	ì‘ì„±ì:turboc
+	í˜„ì¬ ì»¤ì„œ ìœ„ì¹˜ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 	*/
 	static int WhereX();
 	
 	/*
-	ÀÛ¼ºÀÚ:turboc
-	ÇöÀç Ä¿¼­ À§Ä¡¸¦ °¡Á®¿Â´Ù.
+	ì‘ì„±ì:turboc
+	í˜„ì¬ ì»¤ì„œ ìœ„ì¹˜ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 	*/
 	static int WhereY();
 
 	/*
-	ÀÛ¼ºÀÚ:turboc
-	ÇöÀç Ä¿¼­¸¦ ¼³Á¤ÇÑ´Ù.
+	ì‘ì„±ì:turboc
+	í˜„ì¬ ì»¤ì„œë¥¼ ì„¤ì •í•œë‹¤.
 	*/
 	static void SetCursorType(CURSOR_TYPE c);
 
 	/*
-	ÀÛ¼ºÀÚ:turboc
-	Sleep ¸¦ ÁØ´Ù.
+	ì‘ì„±ì:turboc
+	Sleep ë¥¼ ì¤€ë‹¤.
 	*/
 	static void Delay(int n);
 
 
 	/*
-	ÀÛ¼ºÀÚ:turboc
-	¹®ÀÚ¿­À» ±¸ºĞÀÚ·Î ºĞ¸® ÇÑ´Ù.
+	ì‘ì„±ì:turboc
+	ë¬¸ìì—´ì„ êµ¬ë¶„ìë¡œ ë¶„ë¦¬ í•œë‹¤.
 	*/
 	static void Tokenize(const string& str,vector<string>& tokens,const string& delimiters = " ");
 	static vector<string> Tokenize(const string& str,const string& delimiters = " ");
 	
 
 	/*
-	ÀÛ¼ºÀÚ:DSurfer
-	Text Color À» ¼³Á¤ÇÑ´Ù.
+	ì‘ì„±ì:DSurfer
+	Text Color ì„ ì„¤ì •í•œë‹¤.
 	*/
 	static void TextColor(int color_number = 7);
 
-	//SOCKADDR_IN °ªÀ» 127.0.0.1 Çü½ÄÀÇ IP ¹®ÀÚ¿­ ÇüÅÂ·Î º¯È¯ ÇÑ´Ù.
+	//SOCKADDR_IN ê°’ì„ 127.0.0.1 í˜•ì‹ì˜ IP ë¬¸ìì—´ í˜•íƒœë¡œ ë³€í™˜ í•œë‹¤.
 	static string GetSocketIP(const SOCKADDR_IN&  SockAddress);
-	//SOCKADDR_IN °ªÀ» Port °ª À¸·Î º¯È¯ ÇÏ³®.
+	//SOCKADDR_IN ê°’ì„ Port ê°’ ìœ¼ë¡œ ë³€í™˜ í•˜ë‚Ÿ.
 	static int GetSocketPORT(const SOCKADDR_IN&  SockAddress);
 
-	//2016.12.29 SJM GetFormatString ºñÁ¤ÀûÀ» Á¤Àû(static) À¸·Î ¼öÁ¤ 
+	//2016.12.29 SJM GetFormatString ë¹„ì •ì ì„ ì •ì (static) ìœ¼ë¡œ ìˆ˜ì • 
 	static string GetFormatString(char* format,...);
 
 	static bool IsCommand(char* buffer , char* cmd);
 
+	//ì—ëŸ¬ ë©”ì„¸ì§€ë¥¼ ë°˜í™˜ í•œë‹¤.
+	static string GetErrorMessage(int errorCode);
 
-	//ErrorCode ¸¦ ¹Ş¾Æ¼­  string ·Î Ãâ·Â ÇÏ´Â ÇÔ¼ö. 
-	//±³Ã¼ void ViewError(char* format,...) ÄÚµå ÂüÁ¶. 
-	//Ãâ·Â ¸»°í ¿¡·¯ ÄÚµå¸¸ ¹İÈ¯ ÇÏ¸éµÊ. 
-	
+	//ë§ˆì§€ë§‰ ë°œìƒí•œ ErrorCode  ë¥¼ ë°˜í™˜ í•œë‹¤.
+	static string GetLastErrorMessage();
 
-	//printf °°Àº ±â´ÉÀ» ÇÏ´Â ÇÔ¼ö. format("%s %d À§", "´ëÇÑ¹Î±¹",1 ); 
-	//´ëÇÑ¹Î±¹ 1À§ ¹®ÀÚ¿­À» È­¸é¿¡ Ãâ·Â ÇÏ´Â°ÍÀÌ ¾Æ´Ï¶ó string or char * ÇüÅÂÀÇ °ªÀ¸·Î ¹İÈ¯ ÇØÁØ´Ù.
-
-	//ÇÔ¼ö¸¦ Ãß°¡Çß½À´Ï´Ù. 
-
-
-	//ÇÔ¼ö¸¦ Ãß°¡ÇßÀ½
 
 };
 
