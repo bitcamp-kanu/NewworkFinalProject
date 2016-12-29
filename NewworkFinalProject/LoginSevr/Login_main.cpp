@@ -39,14 +39,24 @@ void main()
 	oServerSock.Bind();
 	oServerSock.Listen(Config::Instance()->m_nListenCnt);
 
-	oSock.InitWinsock();
-	oSock.InitSock();
-	oSock.Connect();//DB 서버에 연결 한다.	
-
+	try
+	{
+		oSock.InitWinsock();
+		oSock.InitSock();
+		oSock.Connect();//DB 서버에 연결 한다.	
+	}
+	catch (exception e)
+	{
+		cout << "DB 서버 접속중 오류가 발생 하여 실행을 중지 합니다. " << endl;
+		cout << "msg: " << e.what() << endl;
+		system("pause");
+		return;
+	}
+	
+	
 	oLoginSvc.SetDBSvrConcSocket(&oSock); // DB 서버 연결 소켓을 설정 한다.
 	//_Login pkLogin('T','E','A',"도봉산아이디","비밀번호입니다");
 	
-
 	cout << "Login Server 입니다." << endl;
 
 	ReceiveSocket* pRecvSocket = NULL;
