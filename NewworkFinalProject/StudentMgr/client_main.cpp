@@ -1,8 +1,10 @@
-#pragma comment(lib,"Ws2_32.lib")
+ï»¿#pragma comment(lib,"Ws2_32.lib")
 #define WINVER 0x0501
 #define _WIN32_WINNT 0x0501
+#include <afxwin.h>
 #include <WinSock2.h>
-#include <windows.h>
+//#include <windows.h>
+
 #include <stdio.h>
 #include <iostream>
 #include <process.h>
@@ -22,16 +24,17 @@ void main()
 	char buff[1024];
 	char str[20];
 
-	//¼ÒÄÏ
-	ClientSocket oSock("192.168.0.59", 9000);
+	//ì†Œì¼“
+	//ClientSocket oSock("192.168.0.59", 9000);
+	ClientSocket oSock("127.0.0.1", 9000);
 	oSock.InitWinsock();
 	oSock.InitSock();
 	oSock.Connect();
 	WIUtility::Gotoxy(2, 2);
-	cout << "¿¬°á¿Ï·á";
+	cout << "ì—°ê²°ì™„ë£Œ";
 
-	//·Î±×ÀÎ
-	//1. ·Î±×ÀÎ·¹ÀÌ¾Æ¿ô
+	//ë¡œê·¸ì¸
+	//1. ë¡œê·¸ì¸ë ˆì´ì•„ì›ƒ
 	Display::DrawRect(Point(1, 1), Point(140, 35));
 	Display::DrawRect(Point(40, 12), Point(70, 18));
 	Display::DrawRect(Point(47, 15), Point(55, 5));
@@ -41,7 +44,7 @@ void main()
 	WIUtility::Gotoxy(48, 21);
 	cout << "PASSWORD" << endl;
 
-	//2.·Î±×ÀÎ
+	//2.ë¡œê·¸ì¸
 	while (1)
 	{
 		//ID
@@ -49,7 +52,7 @@ void main()
 		cin >> buff;
 		sprintf(str, "%s", buff);
 
-		//PWµµIDÃ³·³ ¹Þ³ª¿ë...
+		//PWë„IDì²˜ëŸ¼ ë°›ë‚˜ìš©...
 		WIUtility::Gotoxy(50, 24);
 		memset(buff, 0, sizeof(buff));
 		cin >> buff;
@@ -57,41 +60,60 @@ void main()
 		sprintf(str2, "%s", buff);
 
 		_Login pkLogin('A', 'L', '.', str, str2);
-		if (0 < oSock.Send((char*)&pkLogin, sizeof(pkLogin)))
+		try
 		{
+			if (0 < oSock.Send((char*)&pkLogin, sizeof(pkLogin)))
+			{
+				oSock.Receive((char*)&pkLogin, sizeof(pkLogin));
 
-			oSock.Receive((char*)&pkLogin, sizeof(pkLogin));
-			cout << pkLogin.ToString() << endl;
+				if(pkLogin.header.pakID == 'T')
+				{
+					AfxMessageBox("ë¡œê·¸ì¸ì— ì„±ê³µí•˜ì˜€ìŠµë‹ˆë‹¤.");
+				}
+				else
+				{
+					AfxMessageBox("ë¡œê·¸ì¸ì— ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤.");
+				}
+				cout << pkLogin.ToString() << endl;
 
-			if (pkLogin.header.SecretKey = 'T')
-				break;
-			else
-				WIUtility::Gotoxy(48, 10);
-			cout << "´Ù½ÃÀÔ·Â";
+				if (pkLogin.header.SecretKey = 'T')
+					break;
+				else
+					WIUtility::Gotoxy(48, 10);
+				cout << "ë‹¤ì‹œìž…ë ¥";
+			}
+		}
+		catch (exceptionCS e)
+		{
+			cout << "Client Socket ì—ì„œ ë¬¸ì œê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤. " << e.what() << endl;
+		}
+		catch (exception e)
+		{
+			cout << "ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤. " << e.what() << endl;
 		}
 	}
 
-	if (1)//·Î±×ÀÎ¼º°ø
+	if (1)//ë¡œê·¸ì¸ì„±ê³µ
 	{
-		////¸ÞÀÎ ·¹ÀÌ¾Æ¿ô
+		////ë©”ì¸ ë ˆì´ì•„ì›ƒ
 		system("cls");
 		Display::DrawRect(Point(1, 1), Point(140, 35));
 		Display::DrawXLine(Point(1, 7), 140);
 		Display::DrawXLine(Point(1, 30), 140);
 		WIUtility::Gotoxy(4, 4);
-		cout << "ÇÐ±Þ ¹× ¸Å´ÏÀú Á¤º¸" << endl;
+		cout << "í•™ê¸‰ ë° ë§¤ë‹ˆì € ì •ë³´" << endl;
 
 		WIUtility::Gotoxy(4, 9);
-		cout << "ÇÐ»ý ¸ñ·Ï" << endl;
+		cout << "í•™ìƒ ëª©ë¡" << endl;
 		WIUtility::Gotoxy(4, 11);
-		//cout << "Ãâ¼®¹øÈ£\tÀÌ¸§\t\tC\t\tC++\t\tC#\t\tNetwork\t\tUnity\t\tTotal\t\tAvg" << endl;
+		//cout << "ì¶œì„ë²ˆí˜¸\tì´ë¦„\t\tC\t\tC++\t\tC#\t\tNetwork\t\tUnity\t\tTotal\t\tAvg" << endl;
 		WIUtility::Gotoxy(4, 31);
-		cout << "¸Þ´º Á¤º¸" << endl;
+		cout << "ë©”ë‰´ ì •ë³´" << endl;
 		WIUtility::Gotoxy(4, 33);
-		cout << "1.ÇÐ»ýµî·Ï\t\t2.ÇÐ»ý»èÁ¦\t\t3.ÇÐ»ý¼öÁ¤\t\t4.Á¡¼ö¼öÁ¤\t\t5.ÇÐ»ý°Ë»ö\t\t6.°ú¸ñº°Æò±Õ" << endl;
+		cout << "1.í•™ìƒë“±ë¡\t\t2.í•™ìƒì‚­ì œ\t\t3.í•™ìƒìˆ˜ì •\t\t4.ì ìˆ˜ìˆ˜ì •\t\t5.í•™ìƒê²€ìƒ‰\t\t6.ê³¼ëª©ë³„í‰ê· " << endl;
 
 
-		//¸Þ´º¼±ÅÃ
+		//ë©”ë‰´ì„ íƒ
 		while (1)
 		{
 			int key;
@@ -105,13 +127,13 @@ void main()
 				Display::DrawXLine(Point(1, 7), 140);
 				Display::DrawXLine(Point(1, 30), 140);
 				WIUtility::Gotoxy(4, 4);
-				cout << "ÇÐ»ý µî·Ï" << endl;
+				cout << "í•™ìƒ ë“±ë¡" << endl;
 				WIUtility::Gotoxy(4, 9);
-				cout << "ÇÐ»ý ÀÌ¸§: " << endl;
+				cout << "í•™ìƒ ì´ë¦„: " << endl;
 				WIUtility::Gotoxy(4, 33);
-				cout << "1.ÇÐ»ýµî·Ï\t\t2.ÇÐ»ý»èÁ¦\t\t3.ÇÐ»ý¼öÁ¤\t\t4.Á¡¼ö¼öÁ¤\t\t5.ÇÐ»ý°Ë»ö\t\t6.°ú¸ñº°Æò±Õ" << endl;
-				WIUtility::Gotoxy(15, 9);// Ä¿¼­ÀÌµ¿
-				memset(buff, 0, sizeof(buff));// ÀÔ·Â¹Þ±â
+				cout << "1.í•™ìƒë“±ë¡\t\t2.í•™ìƒì‚­ì œ\t\t3.í•™ìƒìˆ˜ì •\t\t4.ì ìˆ˜ìˆ˜ì •\t\t5.í•™ìƒê²€ìƒ‰\t\t6.ê³¼ëª©ë³„í‰ê· " << endl;
+				WIUtility::Gotoxy(15, 9);// ì»¤ì„œì´ë™
+				memset(buff, 0, sizeof(buff));// ìž…ë ¥ë°›ê¸°
 				memset(str, 0, sizeof(str));
 				cin >> buff;
 				sprintf(str, "%s", buff);
@@ -122,9 +144,9 @@ void main()
 				Display::DrawXLine(Point(1, 7), 140);
 				Display::DrawXLine(Point(1, 30), 140);
 				WIUtility::Gotoxy(4, 4);
-				cout << "ÇÐ»ý »èÁ¦" << endl;
+				cout << "í•™ìƒ ì‚­ì œ" << endl;
 				WIUtility::Gotoxy(4, 33);
-				cout << "1.ÇÐ»ýµî·Ï\t\t2.ÇÐ»ý»èÁ¦\t\t3.ÇÐ»ý¼öÁ¤\t\t4.Á¡¼ö¼öÁ¤\t\t5.ÇÐ»ý°Ë»ö\t\t6.°ú¸ñº°Æò±Õ" << endl;
+				cout << "1.í•™ìƒë“±ë¡\t\t2.í•™ìƒì‚­ì œ\t\t3.í•™ìƒìˆ˜ì •\t\t4.ì ìˆ˜ìˆ˜ì •\t\t5.í•™ìƒê²€ìƒ‰\t\t6.ê³¼ëª©ë³„í‰ê· " << endl;
 				break;
 			case 51:
 				system("cls");
@@ -132,9 +154,9 @@ void main()
 				Display::DrawXLine(Point(1, 7), 140);
 				Display::DrawXLine(Point(1, 30), 140);
 				WIUtility::Gotoxy(4, 4);
-				cout << "ÇÐ»ý ¼öÁ¤" << endl;
+				cout << "í•™ìƒ ìˆ˜ì •" << endl;
 				WIUtility::Gotoxy(4, 33);
-				cout << "1.ÇÐ»ýµî·Ï\t\t2.ÇÐ»ý»èÁ¦\t\t3.ÇÐ»ý¼öÁ¤\t\t4.Á¡¼ö¼öÁ¤\t\t5.ÇÐ»ý°Ë»ö\t\t6.°ú¸ñº°Æò±Õ" << endl;
+				cout << "1.í•™ìƒë“±ë¡\t\t2.í•™ìƒì‚­ì œ\t\t3.í•™ìƒìˆ˜ì •\t\t4.ì ìˆ˜ìˆ˜ì •\t\t5.í•™ìƒê²€ìƒ‰\t\t6.ê³¼ëª©ë³„í‰ê· " << endl;
 				break;
 			case 52:
 				system("cls");
@@ -142,9 +164,9 @@ void main()
 				Display::DrawXLine(Point(1, 7), 140);
 				Display::DrawXLine(Point(1, 30), 140);
 				WIUtility::Gotoxy(4, 4);
-				cout << "Á¡¼ö ¼öÁ¤" << endl;
+				cout << "ì ìˆ˜ ìˆ˜ì •" << endl;
 				WIUtility::Gotoxy(4, 33);
-				cout << "1.ÇÐ»ýµî·Ï\t\t2.ÇÐ»ý»èÁ¦\t\t3.ÇÐ»ý¼öÁ¤\t\t4.Á¡¼ö¼öÁ¤\t\t5.ÇÐ»ý°Ë»ö\t\t6.°ú¸ñº°Æò±Õ" << endl;
+				cout << "1.í•™ìƒë“±ë¡\t\t2.í•™ìƒì‚­ì œ\t\t3.í•™ìƒìˆ˜ì •\t\t4.ì ìˆ˜ìˆ˜ì •\t\t5.í•™ìƒê²€ìƒ‰\t\t6.ê³¼ëª©ë³„í‰ê· " << endl;
 				break;
 			case 53:
 				system("cls");
@@ -152,11 +174,11 @@ void main()
 				Display::DrawXLine(Point(1, 7), 140);
 				Display::DrawXLine(Point(1, 30), 140);
 				WIUtility::Gotoxy(4, 4);
-				cout << "ÇÐ»ý °Ë»ö" << endl;
+				cout << "í•™ìƒ ê²€ìƒ‰" << endl;
 				WIUtility::Gotoxy(4, 10);
-				cout << "Ãâ¼®¹øÈ£\tÀÌ¸§\t\tC\t\tC++\t\tC#\t\tNetwork\t\tUnity\t\tTotal\t\tAvg" << endl;
+				cout << "ì¶œì„ë²ˆí˜¸\tì´ë¦„\t\tC\t\tC++\t\tC#\t\tNetwork\t\tUnity\t\tTotal\t\tAvg" << endl;
 				WIUtility::Gotoxy(4, 33);
-				cout << "1.ÇÐ»ýµî·Ï\t\t2.ÇÐ»ý»èÁ¦\t\t3.ÇÐ»ý¼öÁ¤\t\t4.Á¡¼ö¼öÁ¤\t\t5.ÇÐ»ý°Ë»ö\t\t6.°ú¸ñº°Æò±Õ" << endl;
+				cout << "1.í•™ìƒë“±ë¡\t\t2.í•™ìƒì‚­ì œ\t\t3.í•™ìƒìˆ˜ì •\t\t4.ì ìˆ˜ìˆ˜ì •\t\t5.í•™ìƒê²€ìƒ‰\t\t6.ê³¼ëª©ë³„í‰ê· " << endl;
 				break;
 
 			case 54:
@@ -165,9 +187,9 @@ void main()
 				Display::DrawXLine(Point(1, 7), 140);
 				Display::DrawXLine(Point(1, 30), 140);
 				WIUtility::Gotoxy(4, 4);
-				cout << "°ú¸ñº° Æò±Õ" << endl;
+				cout << "ê³¼ëª©ë³„ í‰ê· " << endl;
 				WIUtility::Gotoxy(4, 33);
-				cout << "1.ÇÐ»ýµî·Ï\t\t2.ÇÐ»ý»èÁ¦\t\t3.ÇÐ»ý¼öÁ¤\t\t4.Á¡¼ö¼öÁ¤\t\t5.ÇÐ»ý°Ë»ö\t\t6.°ú¸ñº°Æò±Õ" << endl;
+				cout << "1.í•™ìƒë“±ë¡\t\t2.í•™ìƒì‚­ì œ\t\t3.í•™ìƒìˆ˜ì •\t\t4.ì ìˆ˜ìˆ˜ì •\t\t5.í•™ìƒê²€ìƒ‰\t\t6.ê³¼ëª©ë³„í‰ê· " << endl;
 				break;
 			}
 		}
@@ -175,8 +197,8 @@ void main()
 	}
 
 
-	////·Î±×ÀÎ½ÇÆÐ
+	////ë¡œê·¸ì¸ì‹¤íŒ¨
 	//else
 	//Display::DrawRect(Point(1, 1), Point(140, 35));
-//	AfxMessageBox("Á¤º¸°¡ ¾øÀ½");
+//	AfxMessageBox("ì •ë³´ê°€ ì—†ìŒ");
 }
