@@ -45,7 +45,7 @@ int ReceiveSocket::ReceivtThreadRun()
 	while(true)
 	{
 		recvLen = 0;
-		recvLen = recv(this->m_oSockInfo.m_socket,buffer,sizeof(buffer),0);
+		recvLen = recv(m_oSockInfo.m_socket,buffer,sizeof(buffer),0);
 		if(recvLen == 0 || recvLen == -1)
 		{
 

@@ -22,5 +22,13 @@ int DBService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 		logData.cont++;
 		pSockBase->Send((char*)&logData,sizeof(_Login));
 	}
+	else if(WIUtility::IsCommand(pData,"AA")) //테스트 CMD 이면
+	{
+		_Login logData;
+		memcpy(&logData,pData,sizeof(_Login));
+		cout << "Work Server 수신 " << logData.ToString() << endl;
+		logData.cont++;
+		pSockBase->Send((char*)&logData,sizeof(_Login));
+	}
 	return true;
 }

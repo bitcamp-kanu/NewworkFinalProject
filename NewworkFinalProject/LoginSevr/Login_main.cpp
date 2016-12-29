@@ -8,6 +8,7 @@
 #include <iostream>
 #include <process.h>
 #include <iostream>
+#include <time.h>
 #include "..\Public\ClientSocket.h"
 #include "..\Public\PublicDefine.h"
 #include "..\public\ServerSocket.h"
@@ -17,6 +18,8 @@
 
 void main()
 {
+	srand(unsigned int(time(NULL)));
+
 	Config::Instance()->LoadConfig();
 	//로그파일 파일명을 설정한다.
 	//CLog::Instance()->SetFilePath(Config::Instance()->m_strLogFileName);
@@ -40,8 +43,8 @@ void main()
 	oSock.InitSock();
 	oSock.Connect();//DB 서버에 연결 한다.	
 
-	oLoginSvc.SetDBSvrConcSocket(&oSock); // 서버 연결 소켓을 설정 한다.
-	_Login pkLogin('T','E','A',"도봉산아이디","비밀번호입니다");
+	oLoginSvc.SetDBSvrConcSocket(&oSock); // DB 서버 연결 소켓을 설정 한다.
+	//_Login pkLogin('T','E','A',"도봉산아이디","비밀번호입니다");
 	
 
 	cout << "Login Server 입니다." << endl;
