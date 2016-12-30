@@ -97,40 +97,42 @@ bool DBManager::IsUserPassword(string id, string pass)
 		rowCnt++;
 		rs.MoveNext();
 	}
+	rs.Close();
 	return (rowCnt == 1) ? true : false;
 	return true;
 
 }
 
 
-//
-//bool DBManager::IsUserSecretKey(string id, char key)
-//{
-//
-//	/*Id	Seq	Pass	UName	Tell	UDate	Flag
-//	tempabc	3	test1234	거북이	010-1113-1312	20161216091919	1
-//	tempid	2	test1234	기라성	010-2222-1111	20161215101010	1
-//	testid	1	test1234	홍길동	010-2222-3333	20161213101010	1
-//	*/
-//	CString strQuery = "";
-//	CString UDate = "";
-//	
-//	strQuery.Format("insert into TB_KEY(Id, SKey, UDate, Flag) values('%s', '%s', '%s', '1') ", id.c_str(), key, UDate);
-//	CRecordset rs(m_podb);
-//
-//	//stmt.executeUpdate(sql);
-//	if (!rs.Open(CRecordset::dynaset, strQuery, 0))
-//	{
-//		AfxMessageBox("오픈실패");
-//		return false;
-//	}
-//	int rowCnt = 0;
-//	while (!rs.IsEOF()) //데이터의 끝까지 읽어라.
-//	{
-//		rowCnt++;
-//		rs.MoveNext();
-//	}
-//	return (rowCnt == 1) ? true : false;
-//	return true;
-//
-//}
+
+bool DBManager::InsertSecretKey(string id, char key)
+{
+	CString strQuery = "";
+	string UDate = WIUtility::GetCurTime("YYYYMMDDHHMMSS");
+
+	strQuery.Format("SELECT Id FROM TB_KEY WHERE Id = '%s' ", id.c_str());
+	CRecordset rs(m_podb);
+
+	if (!rs.Open(CRecordset::dynaset, strQuery, 0))
+	{
+		AfxMessageBox("TB_USER 고유아이디 확인 실패");
+		return false;
+	}
+	int rowCnt = 0;
+	while (!rs.IsEOF()) //데이터의 끝까지 읽어라.
+	{
+		rowCnt++;
+		rs.MoveNext();
+	}
+
+	if (rowCnt == 0)
+		strQuery.Format("insert into TB_KEY (Id, SKey, UDate) values ('%s', '%c', '%s') ", id.c_str(), key, UDate);
+	else
+		strQuery.Format("update TB_KEY set SKey = '%c', UDate = '%s' where Id = '%s' ", key, UDate, id.c_str());
+
+	m_podb->ExecuteSQL(strQuery);
+
+	AfxMessageBox("DB조회성공");
+	rs.Close();
+	return true;
+}
