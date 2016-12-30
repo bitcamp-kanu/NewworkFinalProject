@@ -1,10 +1,48 @@
-#pragma once
-#pragma comment(lib,"Ws2_32.lib") //winsock 2.2 ∂Û¿Ã∫Í∑Ø∏Æ
+Ôªø#pragma once
+#pragma comment(lib,"Ws2_32.lib") //winsock 2.2 ÎùºÏù¥Î∏åÎü¨Î¶¨
 #define WINVER 0x0501
 #define _WIN32_WINNT 0x0501
-#include <WinSock2.h> //Winsock 2 πˆ¿¸ Header
-#include <string.h>
+#include <WinSock2.h> //Winsock 2 Î≤ÑÏ†Ñ Header
+#include <string>
+#include <exception>
+using namespace std;
 
+class exceptionCS : public std::exception
+{
+public:
+	exceptionCS(const char* message):exception(message)
+	{
+
+	}
+	exceptionCS(const string message):exception(message.c_str())
+	{
+
+	}
+};
+class exceptionRS : public std::exception
+{
+public:
+	exceptionRS(const char* message):exception(message)
+	{
+
+	}
+	exceptionRS(const string message):exception(message.c_str())
+	{
+
+	}
+};
+class exceptionSS : public std::exception
+{
+public:
+	exceptionSS(const char* message):exception(message)
+	{
+
+	}
+	exceptionSS(const string message):exception(message.c_str())
+	{
+
+	}
+};
 class SockBase
 {
 public:
@@ -19,7 +57,7 @@ public:
 	{
 
 	}
-	// µ•¿Ã≈Õ∏¶ ¿¸º€ «—¥Ÿ.
+	// Îç∞Ïù¥ÌÑ∞Î•º Ï†ÑÏÜ° ÌïúÎã§.
 	virtual int Send(char* buffer,int len) = 0;
 	//Why virtual ???
 	virtual int ReceivtThreadRun() = 0;

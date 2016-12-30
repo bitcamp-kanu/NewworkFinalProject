@@ -1,4 +1,4 @@
-#include "WIUtility.h"
+ï»¿#include "WIUtility.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -19,7 +19,7 @@ WIUtility::~WIUtility(void)
 
 //#include "turboc.h"
 
-// È­¸éÀ» ¸ğµÎ Áö¿î´Ù.
+// í™”ë©´ì„ ëª¨ë‘ ì§€ìš´ë‹¤.
 void WIUtility::Clrscr()
 {
 	system("cls");
@@ -35,17 +35,19 @@ void WIUtility::Gotoxy(int x, int y)
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),Cur);
 }
 
+
+
 void WIUtility::Tokenize(const string& str,vector<string>& tokens,const string& delimiters)
 {
-	// ¸Ç Ã¹ ±ÛÀÚ°¡ ±¸ºĞÀÚÀÎ °æ¿ì ¹«½Ã
+	// ë§¨ ì²« ê¸€ìê°€ êµ¬ë¶„ìì¸ ê²½ìš° ë¬´ì‹œ
 	string::size_type lastPos = str.find_first_not_of(delimiters, 0);
-	// ±¸ºĞÀÚ°¡ ¾Æ´Ñ Ã¹ ±ÛÀÚ¸¦ Ã£´Â´Ù
+	// êµ¬ë¶„ìê°€ ì•„ë‹Œ ì²« ê¸€ìë¥¼ ì°¾ëŠ”ë‹¤
 	string::size_type pos     = str.find_first_of(delimiters, lastPos);
 	while (string::npos != pos || string::npos != lastPos)
 	{		
-		tokens.push_back(str.substr(lastPos, pos - lastPos)); // tokenÀ» Ã£¾ÒÀ¸´Ï vector¿¡ Ãß°¡ÇÑ´Ù
-		lastPos = str.find_first_not_of(delimiters, pos); // ±¸ºĞÀÚ¸¦ ¶Ù¾î³Ñ´Â´Ù.  "not_of"¿¡ ÁÖÀÇÇÏ¶ó
-		pos = str.find_first_of(delimiters, lastPos); // ´ÙÀ½ ±¸ºĞÀÚ°¡ ¾Æ´Ñ ±ÛÀÚ¸¦ Ã£´Â´Ù
+		tokens.push_back(str.substr(lastPos, pos - lastPos)); // tokenì„ ì°¾ì•˜ìœ¼ë‹ˆ vectorì— ì¶”ê°€í•œë‹¤
+		lastPos = str.find_first_not_of(delimiters, pos); // êµ¬ë¶„ìë¥¼ ë›°ì–´ë„˜ëŠ”ë‹¤.  "not_of"ì— ì£¼ì˜í•˜ë¼
+		pos = str.find_first_of(delimiters, lastPos); // ë‹¤ìŒ êµ¬ë¶„ìê°€ ì•„ë‹Œ ê¸€ìë¥¼ ì°¾ëŠ”ë‹¤
 	}
 }
 
@@ -53,21 +55,21 @@ void WIUtility::Tokenize(const string& str,vector<string>& tokens,const string& 
 vector<string>  WIUtility::Tokenize(const string& str,const string& delimiters/* = " "*/)
 {
 	vector<string> tokens;
-	// ¸Ç Ã¹ ±ÛÀÚ°¡ ±¸ºĞÀÚÀÎ °æ¿ì ¹«½Ã
+	// ë§¨ ì²« ê¸€ìê°€ êµ¬ë¶„ìì¸ ê²½ìš° ë¬´ì‹œ
 	string::size_type lastPos = str.find_first_not_of(delimiters, 0);
-	// ±¸ºĞÀÚ°¡ ¾Æ´Ñ Ã¹ ±ÛÀÚ¸¦ Ã£´Â´Ù
+	// êµ¬ë¶„ìê°€ ì•„ë‹Œ ì²« ê¸€ìë¥¼ ì°¾ëŠ”ë‹¤
 	string::size_type pos     = str.find_first_of(delimiters, lastPos);
 	while (string::npos != pos || string::npos != lastPos)
 	{		
-		tokens.push_back(str.substr(lastPos, pos - lastPos)); // tokenÀ» Ã£¾ÒÀ¸´Ï vector¿¡ Ãß°¡ÇÑ´Ù
-		lastPos = str.find_first_not_of(delimiters, pos); // ±¸ºĞÀÚ¸¦ ¶Ù¾î³Ñ´Â´Ù.  "not_of"¿¡ ÁÖÀÇÇÏ¶ó
-		pos = str.find_first_of(delimiters, lastPos); // ´ÙÀ½ ±¸ºĞÀÚ°¡ ¾Æ´Ñ ±ÛÀÚ¸¦ Ã£´Â´Ù
+		tokens.push_back(str.substr(lastPos, pos - lastPos)); // tokenì„ ì°¾ì•˜ìœ¼ë‹ˆ vectorì— ì¶”ê°€í•œë‹¤
+		lastPos = str.find_first_not_of(delimiters, pos); // êµ¬ë¶„ìë¥¼ ë›°ì–´ë„˜ëŠ”ë‹¤.  "not_of"ì— ì£¼ì˜í•˜ë¼
+		pos = str.find_first_of(delimiters, lastPos); // ë‹¤ìŒ êµ¬ë¶„ìê°€ ì•„ë‹Œ ê¸€ìë¥¼ ì°¾ëŠ”ë‹¤
 	}
 	return tokens;
 }
 
 
-// Ä¿¼­ÀÇ x ÁÂÇ¥¸¦ Á¶»çÇÑ´Ù.
+// ì»¤ì„œì˜ x ì¢Œí‘œë¥¼ ì¡°ì‚¬í•œë‹¤.
 int WIUtility::WhereX()
 {
 	CONSOLE_SCREEN_BUFFER_INFO BufInfo;
@@ -75,7 +77,7 @@ int WIUtility::WhereX()
 	return BufInfo.dwCursorPosition.X;
 }
 
-// Ä¿¼­ÀÇ yÁÂÇ¥¸¦ Á¶»çÇÑ´Ù.
+// ì»¤ì„œì˜ yì¢Œí‘œë¥¼ ì¡°ì‚¬í•œë‹¤.
 int WIUtility::WhereY()
 {
 	CONSOLE_SCREEN_BUFFER_INFO BufInfo;
@@ -84,7 +86,7 @@ int WIUtility::WhereY()
 	return BufInfo.dwCursorPosition.Y;
 }
 
-// Ä¿¼­¸¦ ¼û±â°Å³ª ´Ù½Ã Ç¥½ÃÇÑ´Ù.
+// ì»¤ì„œë¥¼ ìˆ¨ê¸°ê±°ë‚˜ ë‹¤ì‹œ í‘œì‹œí•œë‹¤.
 void WIUtility::SetCursorType(CURSOR_TYPE c)
 {
 	CONSOLE_CURSOR_INFO CurInfo;
@@ -110,8 +112,8 @@ string WIUtility::GetCurTime(const string& str)
 	char s[255] = {0};
 	struct tm *t;
 	time_t timer;
-	timer = time(NULL);    // ÇöÀç ½Ã°¢À» ÃÊ ´ÜÀ§·Î ¾ò±â
-	t = localtime(&timer); // ÃÊ ´ÜÀ§ÀÇ ½Ã°£À» ºĞ¸®ÇÏ¿© ±¸Á¶Ã¼¿¡ ³Ö±â
+	timer = time(NULL);    // í˜„ì¬ ì‹œê°ì„ ì´ˆ ë‹¨ìœ„ë¡œ ì–»ê¸°
+	t = localtime(&timer); // ì´ˆ ë‹¨ìœ„ì˜ ì‹œê°„ì„ ë¶„ë¦¬í•˜ì—¬ êµ¬ì¡°ì²´ì— ë„£ê¸°
 	
 	string test;
 	if(str == string("YYYYMMDD"))
@@ -137,8 +139,8 @@ string WIUtility::GetCurTime()
 	char s[255] = {0};
 	struct tm *t;
 	time_t timer;
-	timer = time(NULL);    // ÇöÀç ½Ã°¢À» ÃÊ ´ÜÀ§·Î ¾ò±â
-	t = localtime(&timer); // ÃÊ ´ÜÀ§ÀÇ ½Ã°£À» ºĞ¸®ÇÏ¿© ±¸Á¶Ã¼¿¡ ³Ö±â
+	timer = time(NULL);    // í˜„ì¬ ì‹œê°ì„ ì´ˆ ë‹¨ìœ„ë¡œ ì–»ê¸°
+	t = localtime(&timer); // ì´ˆ ë‹¨ìœ„ì˜ ì‹œê°„ì„ ë¶„ë¦¬í•˜ì—¬ êµ¬ì¡°ì²´ì— ë„£ê¸°
 
 	string test;
 	sprintf(s, "%04d%02d%02d%02d%02d%02d",
@@ -152,8 +154,8 @@ void WIUtility::GetCurTime(int& y,int& m,int& d)
 	char s[255] = {0};
 	struct tm *t;
 	time_t timer;
-	timer = time(NULL);    // ÇöÀç ½Ã°¢À» ÃÊ ´ÜÀ§·Î ¾ò±â
-	t = localtime(&timer); // ÃÊ ´ÜÀ§ÀÇ ½Ã°£À» ºĞ¸®ÇÏ¿© ±¸Á¶Ã¼¿¡ ³Ö±â
+	timer = time(NULL);    // í˜„ì¬ ì‹œê°ì„ ì´ˆ ë‹¨ìœ„ë¡œ ì–»ê¸°
+	t = localtime(&timer); // ì´ˆ ë‹¨ìœ„ì˜ ì‹œê°„ì„ ë¶„ë¦¬í•˜ì—¬ êµ¬ì¡°ì²´ì— ë„£ê¸°
 	y = t->tm_year;
 	m = t->tm_mon;
 	d = t->tm_mday;
@@ -190,11 +192,11 @@ string WIUtility::ToDateFormat(string day)
 
 string WIUtility::GetWeek()
 {
-	string week[] = { "ÀÏ", "¿ù", "È­", "¼ö", "¸ñ", "±İ", "Åä" };
+	string week[] = { "ì¼", "ì›”", "í™”", "ìˆ˜", "ëª©", "ê¸ˆ", "í† " };
 	struct tm *t;
 	time_t timer;
-	timer = time(NULL);    // ÇöÀç ½Ã°¢À» ÃÊ ´ÜÀ§·Î ¾ò±â
-	t = localtime(&timer); // ÃÊ ´ÜÀ§ÀÇ ½Ã°£À» ºĞ¸®ÇÏ¿© ±¸Á¶Ã¼¿¡ ³Ö±â
+	timer = time(NULL);    // í˜„ì¬ ì‹œê°ì„ ì´ˆ ë‹¨ìœ„ë¡œ ì–»ê¸°
+	t = localtime(&timer); // ì´ˆ ë‹¨ìœ„ì˜ ì‹œê°„ì„ ë¶„ë¦¬í•˜ì—¬ êµ¬ì¡°ì²´ì— ë„£ê¸°
 	return week[t->tm_wday];
 }
 
@@ -228,6 +230,34 @@ string WIUtility::GetFormatString(char* format,...)
 bool WIUtility::IsCommand(char* buffer , char* cmd)
 {
 	return ((buffer[0] == cmd[0])&&(buffer[1] == cmd[1]));
+}
+string WIUtility::GetErrorMessage(int errorCode)
+{
+	LPVOID lpMsgBuf = NULL;
+	FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|
+		FORMAT_MESSAGE_FROM_SYSTEM,
+		NULL,errorCode,
+		MAKELANGID(LANG_NEUTRAL,SUBLANG_DEFAULT),
+		(LPSTR)&lpMsgBuf,0,NULL);
+	
+	string strMsg((LPSTR)lpMsgBuf);
+	LocalFree(lpMsgBuf);
+	return strMsg;
+}
+
+
+string WIUtility::GetLastErrorMessage()
+{
+	LPVOID lpMsgBuf = NULL;
+	FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|
+		FORMAT_MESSAGE_FROM_SYSTEM,
+		NULL,WSAGetLastError(),
+		MAKELANGID(LANG_NEUTRAL,SUBLANG_DEFAULT),
+		(LPSTR)&lpMsgBuf,0,NULL);
+
+	string strMsg((LPSTR)lpMsgBuf);
+	LocalFree(lpMsgBuf);
+	return strMsg;
 }
 
 //string WIUtility::FormatString(char* format,...)

@@ -1,11 +1,13 @@
-#include "ReceiveSocket.h"
+﻿#include "ReceiveSocket.h"
 #include "baseSocket.h"
 #include <iostream>
 #include <process.h>
-#include <Windows.h>
+//#include <windows.h>
 #include "..\Public\PublicDefine.h"
 #include <exception>
 #include "Log.h"
+#include "..\Public\WIUtility.h"
+#include <exception>
 
 ReceiveSocket::ReceiveSocket(void)
 {
@@ -31,7 +33,13 @@ void ReceiveSocket::Release()
 
 int ReceiveSocket::Send(char* buffer,int len)
 {
-	return send(m_oSockInfo.m_socket,buffer,len,0);	
+	int ret  = send(m_oSockInfo.m_socket,buffer,len,0);
+	if(ret <= 0)
+	{
+		throw exceptionRS(WIUtility::GetLastErrorMessage().c_str());
+	}
+	
+	return ret;
 }
 bool ReceiveSocket::SetIReceiveEvent(IReceiveEvent* pRecviveEvent)
 {
@@ -45,10 +53,10 @@ int ReceiveSocket::ReceivtThreadRun()
 	while(true)
 	{
 		recvLen = 0;
-		recvLen = recv(this->m_oSockInfo.m_socket,buffer,sizeof(buffer),0);
+		recvLen = recv(m_oSockInfo.m_socket,buffer,sizeof(buffer),0);
 		if(recvLen == 0 || recvLen == -1)
 		{
-
+			throw exceptionRS(WIUtility::GetLastErrorMessage().c_str());			
 		}
 		if(m_pRecviveEvent != NULL)
 		{
@@ -65,9 +73,23 @@ bool ReceiveSocket::CreateThread()
 unsigned int ReceiveSocket::ThreadRun(void* pData)
 {
 	ReceiveSocket* pSock = (ReceiveSocket*)pData;
-	if(pSock != NULL)
+	try
 	{
-		pSock->ReceivtThreadRun();
+		if(pSock != NULL)
+		{
+			pSock->ReceivtThreadRun();
+		}
 	}
+	catch (exceptionRS e) //여기부터 검사.
+	{
+		cout << e.what() << endl;
+		cout << "데이터 수신 Thread 가 종료 되었습니다." << endl;
+	}
+	catch(exception e)
+	{
+		cout << e.what() << endl;
+		cout << "데이터 수신 Thread 가 종료 되었습니다." << endl;
+	}
+	
 	return 0;
 }
