@@ -10,8 +10,9 @@ using namespace std;
 #define _PASS_SIZE_ 20
 //사용할 패킷을 정의 한다.
 
+
 struct _Header
-{	
+{
 	char cmd1;
 	char cmd2;
 	int  pakID; //Ack/Nak 확인 용으로 사용
@@ -30,38 +31,44 @@ struct _Login
 	char pass[_PASS_SIZE_];
 	_Login(){};
 	char SecretKey; //인증키.
+
 	int cont;
-	_Login(char cmd1,char cmd2,int  pakID,char* id,char* pass)
+	_Login(char cmd1, char cmd2, int  pakID, char* id, char* pass)
 	{
-		header.cmd1		= cmd1;
-		header.cmd2		= cmd2;
-		header.pakID	= pakID;
-		strcpy(header.id,id);
-		strcpy(this->id,id);
-		strcpy(this->pass,pass);
+		header.cmd1 = cmd1;
+		header.cmd2 = cmd2;
+		header.pakID = pakID;
+		strcpy(header.id, id);
+		strcpy(this->id, id);
+		strcpy(this->pass, pass);
 		cont = 0;
 	}
 
 	//내자신을 초기화 한다.
 	void InitData()
 	{
-		memset(this,0x00,sizeof(this));
+		memset(this, 0x00, sizeof(this));
 	}
 	//buff 의 내용을 구조체에 채운다.
 	void SetCopyBuff(char* data)
 	{
-		memcpy(this,data,sizeof(this));
+		memcpy(this, data, sizeof(this));
 	}
 	string ToString()
 	{
 		char buff[1024];
+<<<<<<< HEAD
 		sprintf(buff,"%c%c key[%d] , id [%s], pass [%s] 순서[%d]",header.cmd1,header.cmd2,header.pakID,id,pass,cont);
+=======
+		sprintf(buff, "%c%c key[%c] , id [%d] count [%d]", header.cmd1, header.cmd2, header.pakID, id, cont);
+>>>>>>> 419366dc4ad1694ec71fb35dc213db2cd1f82032
 		return string(buff);
 	}
 };
 
-//학생검색 SR -- 서정민
-struct _SearchStudent 
+
+
+struct _SearchStudent
 {
 
 };
@@ -75,7 +82,7 @@ struct _CreateStudent
 //학생 삭제. SD  - 영준
 struct _DeleteStudent
 {
-
+	
 };
 
 //학생 수정. SU   - 영준
@@ -84,7 +91,6 @@ struct _UpdateStudent
 
 };
 
-//성적 수정. GU  - 영준
 struct _UpdateGrade
 {
 
@@ -93,37 +99,5 @@ struct _UpdateGrade
 //과목별 평균. AA -- 승욱 형님.
 struct _AverageAll
 {
-	_Header header;
-	char id[_ID_SIZE_];
-	char pass[_PASS_SIZE_];
-	_AverageAll(){};
-	char SecretKey; //인증키.
-	int cont;
-	_AverageAll(char cmd1,char cmd2,int  pakID,char* id,char* pass)
-	{
-		header.cmd1		= cmd1;
-		header.cmd2		= cmd2;
-		header.pakID	= pakID;
-		strcpy(header.id,id);
-		strcpy(this->id,id);
-		strcpy(this->pass,pass);
-		cont = 0;
-	}
 
-	//내자신을 초기화 한다.
-	void InitData()
-	{
-		memset(this,0x00,sizeof(this));
-	}
-	//buff 의 내용을 구조체에 채운다.
-	void SetCopyBuff(char* data)
-	{
-		memcpy(this,data,sizeof(this));
-	}
-	string ToString()
-	{
-		char buff[1024];
-		sprintf(buff,"%c%c key[%c] , id [%d] 순서[%d]",header.cmd1,header.cmd2,header.pakID,id,cont);
-		return string(buff);
-	}
 };

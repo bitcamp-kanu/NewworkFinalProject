@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StudentMgr", "StudentMgr\StudentMgr.vcxproj", "{0844BA68-37EE-46A7-B969-99CCA3F510A6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LoginSevr", "LoginSevr\LoginSevr.vcxproj", "{2FEBA87C-9B99-4CCB-A411-1E39A98C8150}"
@@ -11,8 +13,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GateWaySevr", "GateWaySevr\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WorkSevr", "WorkSevr\WorkSevr.vcxproj", "{7A988C66-6DF1-4E4C-89F2-27C7385A9E3F}"
 EndProject
+<<<<<<< HEAD
+=======
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "참고프로젝트", "참고프로젝트", "{DBA590BA-6135-44C9-83E1-FED516B87237}"
 EndProject
+>>>>>>> f5ef890529abd0fe444de189795236cabc08f008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClientTest", "ClientTest\ClientTest.vcxproj", "{FD6BBF79-550A-4190-9495-09B7BCC49FAD}"
 EndProject
 Global

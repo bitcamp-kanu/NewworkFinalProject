@@ -27,11 +27,11 @@ int DBService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 
 		if(m_pDbManager->IsUserPassword(logData.id,logData.pass))
 		{
-			logData.header.pakID = 'T';
+			logData.header.pakID = 111;
 		}
 		else
 		{
-			logData.header.pakID = 'F';
+			logData.header.pakID = 110;
 		}
 		
 		logData.cont++;

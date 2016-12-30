@@ -37,7 +37,7 @@ DBManager::~DBManager(void)
 bool DBManager::Open()
 {
 	m_podb = new CDatabase();
-	return m_podb -> OpenEx("DSN=bitcamp;Uid=<username>;Pwd=<password>");
+	return m_podb -> OpenEx("DSN=Database;Uid=<username>;Pwd=<password>");
 }
 
 vector<string> DBManager::Select(string& query)
@@ -80,23 +80,50 @@ bool DBManager::IsUserPassword(string id, string pass)
 	tempid	2	test1234	기라성	010-2222-1111	20161215101010	1
 	testid	1	test1234	홍길동	010-2222-3333	20161213101010	1
 	*/
-		
-		
-	CString strQuery ="";
-	strQuery.Format("SELECT Id , Pass FROM TB_USER WHERE Id = '%s' and Pass = '%s' ",id.c_str(),pass.c_str());
+	CString strQuery = "";
+	strQuery.Format("SELECT Id , Pass FROM TB_USER WHERE Id = '%s' and Pass = '%s' and Flag = '1' ", id.c_str(), pass.c_str());
 	CRecordset rs(m_podb);
-	if(!rs.Open(CRecordset::dynaset,strQuery,0))		
+	if (!rs.Open(CRecordset::dynaset, strQuery, 0))
 	{
 		AfxMessageBox("오픈실패");
 		return false;
 	}
 	int rowCnt = 0;
-	while(!rs.IsEOF()) //데이터의 끝까지 읽어라.
+	while (!rs.IsEOF()) //데이터의 끝까지 읽어라.
 	{
 		rowCnt++;
 		rs.MoveNext();
 	}
-	return (rowCnt == 1)?true:false;
+	return (rowCnt == 1) ? true : false;
 	return true;
 
 }
+
+
+
+//bool DBManager::IsUserSecretKey(string id, char key)
+//{
+//
+//	/*Id	Seq	Pass	UName	Tell	UDate	Flag
+//	tempabc	3	test1234	거북이	010-1113-1312	20161216091919	1
+//	tempid	2	test1234	기라성	010-2222-1111	20161215101010	1
+//	testid	1	test1234	홍길동	010-2222-3333	20161213101010	1
+//	*/
+//	CString strQuery = "";
+//	strQuery.Format("SELECT Id , Pass FROM TB_USER WHERE Id = '%s' and Pass = '%s' and Flag = '1' ", id.c_str(), pass.c_str());
+//	CRecordset rs(m_podb);
+//	if (!rs.Open(CRecordset::dynaset, strQuery, 0))
+//	{
+//		AfxMessageBox("오픈실패");
+//		return false;
+//	}
+//	int rowCnt = 0;
+//	while (!rs.IsEOF()) //데이터의 끝까지 읽어라.
+//	{
+//		rowCnt++;
+//		rs.MoveNext();
+//	}
+//	return (rowCnt == 1) ? true : false;
+//	return true;
+//
+//}
