@@ -15,7 +15,6 @@ Config::~Config(void)
 
 bool Config::SaveConfig()
 {
-
 	m_dbServerIP = "127.0.0.1";
 	m_nDbServerPort = 9003;
 	return true;

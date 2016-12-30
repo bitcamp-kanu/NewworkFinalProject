@@ -37,7 +37,10 @@ DBManager::~DBManager(void)
 bool DBManager::Open()
 {
 	m_podb = new CDatabase();
-	return m_podb -> OpenEx("DSN=Database;Uid=<username>;Pwd=<password>");
+	//return m_podb -> OpenEx("DSN=Database;Uid=<username>;Pwd=<password>");
+	return m_podb -> OpenEx("DSN=bitcamp;Uid=<username>;Pwd=<password>");
+
+	
 }
 
 vector<string> DBManager::Select(string& query)
