@@ -25,13 +25,16 @@ int LoginService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 		try
 		{
 			memcpy(&logData,pData,sizeof(_Login));
-			cout << "DB Server 수신 " << logData.ToString() << endl;
+			cout << "DB Server 패킷 전송 " << logData.ToString() << endl;
 			logData.cont ++;
 			m_pClinetSock->Send((char*)&logData,sizeof(_Login));
 			logData.cont++;
 			m_pClinetSock->Receive((char*)&logData,sizeof(_Login));
+			memcpy(&logData,pData,sizeof(_Login));
+			cout << "DB Server 패킷 수신  " << logData.ToString() << endl;
 			logData.cont++;
 			pSockBase->Send((char*)&logData,sizeof(_Login));
+			cout << "Client Server 패킷 전송  " << logData.ToString() << endl;
 		}
 		catch (exceptionCS e)
 		{
@@ -48,7 +51,8 @@ int LoginService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 	{
 		_Login logData;
 		
-		int key=rand()%127 + 1;
+		int ikey = rand()%127 + 1;
+		logData.SecretKey = char(ikey);
 		try
 		{
 			memcpy(&logData,pData,sizeof(_Login));

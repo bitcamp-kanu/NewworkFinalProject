@@ -103,7 +103,7 @@ bool DBManager::IsUserPassword(string id, string pass)
 }
 
 
-
+//
 //bool DBManager::IsUserSecretKey(string id, char key)
 //{
 //
@@ -113,8 +113,12 @@ bool DBManager::IsUserPassword(string id, string pass)
 //	testid	1	test1234	홍길동	010-2222-3333	20161213101010	1
 //	*/
 //	CString strQuery = "";
-//	strQuery.Format("SELECT Id , Pass FROM TB_USER WHERE Id = '%s' and Pass = '%s' and Flag = '1' ", id.c_str(), pass.c_str());
+//	CString UDate = "";
+//	
+//	strQuery.Format("insert into TB_KEY(Id, SKey, UDate, Flag) values('%s', '%s', '%s', '1') ", id.c_str(), key, UDate);
 //	CRecordset rs(m_podb);
+//
+//	//stmt.executeUpdate(sql);
 //	if (!rs.Open(CRecordset::dynaset, strQuery, 0))
 //	{
 //		AfxMessageBox("오픈실패");
