@@ -57,11 +57,7 @@ struct _Login
 	string ToString()
 	{
 		char buff[1024];
-<<<<<<< HEAD
 		sprintf(buff,"%c%c key[%d] , id [%s], pass [%s] 순서[%d]",header.cmd1,header.cmd2,header.pakID,id,pass,cont);
-=======
-		sprintf(buff, "%c%c key[%c] , id [%d] count [%d]", header.cmd1, header.cmd2, header.pakID, id, cont);
->>>>>>> 419366dc4ad1694ec71fb35dc213db2cd1f82032
 		return string(buff);
 	}
 };
