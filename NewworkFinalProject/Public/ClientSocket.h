@@ -36,6 +36,7 @@ public:
 
 	bool CreateThread();
 	void Release();
+	string GetInof();
 private:
 	unsigned int  static CALLBACK ThreadRun(void* pData);
 };

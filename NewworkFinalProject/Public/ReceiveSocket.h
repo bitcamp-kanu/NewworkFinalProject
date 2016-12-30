@@ -25,6 +25,8 @@ public:
 	virtual int ReceivtThreadRun();
 	bool CreateThread();
 	void Release();
+	string GetInof();
+
 private:
 	unsigned int  static CALLBACK ThreadRun(void* pData);
 };
