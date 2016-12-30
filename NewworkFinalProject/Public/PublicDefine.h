@@ -8,33 +8,17 @@ using namespace std;
 #define _RECV_BUFFER_SIZE 2048
 #define _ID_SIZE_ 20
 #define _PASS_SIZE_ 20
-<<<<<<< HEAD
-
-//[LYJ ½ÃÀÛ]
-#define _CLASSID_SIZE_ 20
-#define _NAME_SIZE_ 20
-#define _DATE_SIZE_ 16
-//[LYJ ³¡]
-//»ç¿ëÇÒ ÆĞÅ¶À» Á¤ÀÇ ÇÑ´Ù.
-=======
 //ì‚¬ìš©í•  íŒ¨í‚·ì„ ì •ì˜ í•œë‹¤.
->>>>>>> f5ef890529abd0fe444de189795236cabc08f008
+
 
 struct _Header
 {
 	char cmd1;
 	char cmd2;
-<<<<<<< HEAD
-	int  pakID; //Ack/Nak È®ÀÎ ¿ëÀ¸·Î »ç¿ë
-				//--- ÀÎÁõ °ü·Ã À¸·Î ¹«Á¶°Ç ÇÊ¿ä.
-	char id[_ID_SIZE_];	    //ÀÚ¸´ ¼ö´Â ÃßÈÄ Á¤ÇØ¾ß ÇÔ.
-	char SecretKey; //ÀÎÁõÅ°.
-=======
 	int  pakID; //Ack/Nak í™•ì¸ ìš©ìœ¼ë¡œ ì‚¬ìš©
 		//--- ì¸ì¦ ê´€ë ¨ ìœ¼ë¡œ ë¬´ì¡°ê±´ í•„ìš”.
 	char id[_ID_SIZE_];	    //ìë¦¿ ìˆ˜ëŠ” ì¶”í›„ ì •í•´ì•¼ í•¨.
 	char SecretKey; //ì¸ì¦í‚¤.
->>>>>>> f5ef890529abd0fe444de189795236cabc08f008
 };
 
 //A ì „ì²´, S í•™ìƒ G ì„±ì 
@@ -45,13 +29,9 @@ struct _Login
 	_Header header;
 	char id[_ID_SIZE_];
 	char pass[_PASS_SIZE_];
-<<<<<<< HEAD
-	_Login() {};
-	char SecretKey; //ÀÎÁõÅ°.
-=======
 	_Login(){};
 	char SecretKey; //ì¸ì¦í‚¤.
->>>>>>> f5ef890529abd0fe444de189795236cabc08f008
+
 	int cont;
 	_Login(char cmd1, char cmd2, int  pakID, char* id, char* pass)
 	{
@@ -77,60 +57,14 @@ struct _Login
 	string ToString()
 	{
 		char buff[1024];
-<<<<<<< HEAD
-		sprintf(buff, "%c%c key[%c] , id [%d] ¼ø¼­[%d]", header.cmd1, header.cmd2, header.pakID, id, cont);
+		sprintf(buff, "%c%c key[%c] , id [%d] ï¿½ï¿½ï¿½ï¿½[%d]", header.cmd1, header.cmd2, header.pakID, id, cont);
 		return string(buff);
 	}
 };
 
-//Gate AL ÀÌ¿µÁØ
-struct _Gate
-{
-	_Header header;
-	char id[_ID_SIZE_];
-	char pass[_PASS_SIZE_];
-	_Gate() {};
-	char SecretKey; //ÀÎÁõÅ°.
-	int cont;
-	_Gate(char cmd1, char cmd2, int  pakID, char* id, char* pass)
-	{
-		header.cmd1 = cmd1;
-		header.cmd2 = cmd2;
-		header.pakID = pakID;
-		strcpy(header.id, id);
-		strcpy(this->id, id);
-		strcpy(this->pass, pass);
-		cont = 0;
-	}
 
-	//³»ÀÚ½ÅÀ» ÃÊ±âÈ­ ÇÑ´Ù.
-	void InitData()
-	{
-		memset(this, 0x00, sizeof(this));
-	}
-	//buff ÀÇ ³»¿ëÀ» ±¸Á¶Ã¼¿¡ Ã¤¿î´Ù.
-	void SetCopyBuff(char* data)
-	{
-		memcpy(this, data, sizeof(this));
-	}
-	string ToString()
-	{
-		char buff[1024];
-		sprintf(buff, "%c%c key[%c] , id [%d] ¼ø¼­[%d]", header.cmd1, header.cmd2, header.pakID, id, cont);
-=======
-		sprintf(buff,"%c%c key[%c] , id [%d] ìˆœì„œ[%d]",header.cmd1,header.cmd2,header.pakID,id,cont);
->>>>>>> f5ef890529abd0fe444de189795236cabc08f008
-		return string(buff);
-	}
-};
 
-<<<<<<< HEAD
-//ÇĞ»ı°Ë»ö SR -- ¼­Á¤¹Î
 struct _SearchStudent
-=======
-//í•™ìƒê²€ìƒ‰ SR -- ì„œì •ë¯¼
-struct _SearchStudent 
->>>>>>> f5ef890529abd0fe444de189795236cabc08f008
 {
 
 };
@@ -141,244 +75,25 @@ struct _CreateStudent
 
 };
 
-<<<<<<< HEAD
-//ÇĞ»ı »èÁ¦. SD  - ¿µÁØ // ÃßÈÄ ÇÊ¿ä¾ø´Â ÄÃ·³ »©¾ßÇÔ.
-=======
 //í•™ìƒ ì‚­ì œ. SD  - ì˜ì¤€
->>>>>>> f5ef890529abd0fe444de189795236cabc08f008
 struct _DeleteStudent
 {
-	_Header header;
-	int ClassNum;
-	char ClassId[_CLASSID_SIZE_];
-	int Seq;
-	char SName[_NAME_SIZE_];
-	int C_Score;
-	int Cpp_Score;
-	int Cshart_Score;
-	int Network_Score;
-	int Unity_Score;
-	int Total;
-	float Avg;
-	char UDate[_DATE_SIZE_];
-	char Flag;
-	_DeleteStudent() {};
-	int cont;
-	_DeleteStudent(char cmd1, char cmd2, int  pakID, char* id,
-		int ClassNum, char* ClassId, int Seq, char* SName, int C_Score, int Cpp_Score,
-		int Cshart_Score, int Network_Score, int Unity_Score, int Total, float Avg,
-		char* UDate, char Flag)
-	{
-		header.cmd1 = cmd1;
-		header.cmd2 = cmd2;
-		header.pakID = pakID;
-		strcpy(header.id, id);
-		this->ClassNum = ClassNum;
-		strcpy(this->ClassId, ClassId);
-		this->Seq = Seq;
-		strcpy(this->SName, SName);
-		this->C_Score = C_Score;
-		this->Cpp_Score = Cpp_Score;
-		this->Cshart_Score = Cshart_Score;
-		this->Network_Score = Network_Score;
-		this->Unity_Score = Unity_Score;
-		this->Total = Total;
-		this->Avg = Avg;
-		strcpy(this->UDate, UDate);
-		this->Flag = Flag;
-		cont = 0;
-	}
-
-	//³»ÀÚ½ÅÀ» ÃÊ±âÈ­ ÇÑ´Ù.
-	void InitData()
-	{
-		memset(this, 0x00, sizeof(this));
-	}
-	//buff ÀÇ ³»¿ëÀ» ±¸Á¶Ã¼¿¡ Ã¤¿î´Ù.
-	void SetCopyBuff(char* data)
-	{
-		memcpy(this, data, sizeof(this));
-	}
-	string ToString()
-	{
-		char buff[1024];
-		sprintf(buff, "%c%c key[%c] , id [%d] ¼ø¼­[%d]", header.cmd1, header.cmd2, header.pakID,
-			ClassNum, ClassId, Seq, SName, C_Score, Cpp_Score, Cshart_Score, Network_Score,
-			Unity_Score, Total, Avg, UDate, Flag);
-		return string(buff);
-	}
+	
 };
 
-<<<<<<< HEAD
-//ÇĞ»ı ¼öÁ¤. SU   - ¿µÁØ // ÃßÈÄ ÇÊ¿ä¾ø´Â ÄÃ·³ »©¾ßÇÔ.
-=======
 //í•™ìƒ ìˆ˜ì •. SU   - ì˜ì¤€
->>>>>>> f5ef890529abd0fe444de189795236cabc08f008
 struct _UpdateStudent
 {
-	_Header header;
-	int ClassNum;
-	char ClassId[_CLASSID_SIZE_];
-	int Seq;
-	char SName[_NAME_SIZE_];
-	int C_Score;
-	int Cpp_Score;
-	int Cshart_Score;
-	int Network_Score;
-	int Unity_Score;
-	int Total;
-	float Avg;
-	char UDate[_DATE_SIZE_];
-	char Flag;
-	_UpdateStudent() {};
-	int cont;
-	_UpdateStudent(char cmd1, char cmd2, int  pakID, char* id,
-		int ClassNum, char* ClassId, int Seq, char* SName, int C_Score, int Cpp_Score,
-		int Cshart_Score, int Network_Score, int Unity_Score, int Total, float Avg,
-		char* UDate, char Flag)
-	{
-		header.cmd1 = cmd1;
-		header.cmd2 = cmd2;
-		header.pakID = pakID;
-		strcpy(header.id, id);
-		this->ClassNum = ClassNum;
-		strcpy(this->ClassId, ClassId);
-		this->Seq = Seq;
-		strcpy(this->SName, SName);
-		this->C_Score = C_Score;
-		this->Cpp_Score = Cpp_Score;
-		this->Cshart_Score = Cshart_Score;
-		this->Network_Score = Network_Score;
-		this->Unity_Score = Unity_Score;
-		this->Total = Total;
-		this->Avg = Avg;
-		strcpy(this->UDate, UDate);
-		this->Flag = Flag;
-		cont = 0;
-	}
 
-	//³»ÀÚ½ÅÀ» ÃÊ±âÈ­ ÇÑ´Ù.
-	void InitData()
-	{
-		memset(this, 0x00, sizeof(this));
-	}
-	//buff ÀÇ ³»¿ëÀ» ±¸Á¶Ã¼¿¡ Ã¤¿î´Ù.
-	void SetCopyBuff(char* data)
-	{
-		memcpy(this, data, sizeof(this));
-	}
-	string ToString()
-	{
-		char buff[1024];
-		sprintf(buff, "%c%c key[%c] , id [%d] ¼ø¼­[%d]", header.cmd1, header.cmd2, header.pakID,
-			ClassNum, ClassId, Seq, SName, C_Score, Cpp_Score, Cshart_Score, Network_Score,
-			Unity_Score, Total, Avg, UDate, Flag);
-		return string(buff);
-	}
 };
 
-<<<<<<< HEAD
-//¼ºÀû ¼öÁ¤. GU  - ¿µÁØ // ÃßÈÄ ÇÊ¿ä¾ø´Â ÄÃ·³ »©¾ßÇÔ.
-=======
-//ì„±ì  ìˆ˜ì •. GU  - ì˜ì¤€
->>>>>>> f5ef890529abd0fe444de189795236cabc08f008
 struct _UpdateGrade
 {
-	_Header header;
-	int ClassNum;
-	char ClassId[_CLASSID_SIZE_];
-	int Seq;
-	char SName[_NAME_SIZE_];
-	int C_Score;
-	int Cpp_Score;
-	int Cshart_Score;
-	int Network_Score;
-	int Unity_Score;
-	int Total;
-	float Avg;
-	char UDate[_DATE_SIZE_];
-	char Flag;
-	_UpdateGrade() {};
-	int cont;
-	_UpdateGrade(char cmd1, char cmd2, int  pakID, char* id,
-		int ClassNum, char* ClassId, int Seq, char* SName, int C_Score, int Cpp_Score,
-		int Cshart_Score, int Network_Score, int Unity_Score, int Total, float Avg,
-		char* UDate, char Flag)
-	{
-		header.cmd1 = cmd1;
-		header.cmd2 = cmd2;
-		header.pakID = pakID;
-		strcpy(header.id, id);
-		this->ClassNum = ClassNum;
-		strcpy(this->ClassId, ClassId);
-		this->Seq = Seq;
-		strcpy(this->SName, SName);
-		this->C_Score = C_Score;
-		this->Cpp_Score = Cpp_Score;
-		this->Cshart_Score = Cshart_Score;
-		this->Network_Score = Network_Score;
-		this->Unity_Score = Unity_Score;
-		this->Total = Total;
-		this->Avg = Avg;
-		strcpy(this->UDate, UDate);
-		this->Flag = Flag;
-		cont = 0;
-	}
 
-	//³»ÀÚ½ÅÀ» ÃÊ±âÈ­ ÇÑ´Ù.
-	void InitData()
-	{
-		memset(this, 0x00, sizeof(this));
-	}
-	//buff ÀÇ ³»¿ëÀ» ±¸Á¶Ã¼¿¡ Ã¤¿î´Ù.
-	void SetCopyBuff(char* data)
-	{
-		memcpy(this, data, sizeof(this));
-	}
-	string ToString()
-	{
-		char buff[1024];
-		sprintf(buff, "%c%c key[%c] , id [%d] ¼ø¼­[%d]", header.cmd1, header.cmd2, header.pakID,
-			ClassNum, ClassId, Seq, SName, C_Score, Cpp_Score, Cshart_Score, Network_Score,
-			Unity_Score, Total, Avg, UDate, Flag);
-		return string(buff);
-	}
 };
 
 //ê³¼ëª©ë³„ í‰ê· . AA -- ìŠ¹ìš± í˜•ë‹˜.
 struct _AverageAll
 {
-	_Header header;
-	char id[_ID_SIZE_];
-	char pass[_PASS_SIZE_];
-	_AverageAll(){};
-	char SecretKey; //ì¸ì¦í‚¤.
-	int cont;
-	_AverageAll(char cmd1,char cmd2,int  pakID,char* id,char* pass)
-	{
-		header.cmd1		= cmd1;
-		header.cmd2		= cmd2;
-		header.pakID	= pakID;
-		strcpy(header.id,id);
-		strcpy(this->id,id);
-		strcpy(this->pass,pass);
-		cont = 0;
-	}
 
-	//ë‚´ìì‹ ì„ ì´ˆê¸°í™” í•œë‹¤.
-	void InitData()
-	{
-		memset(this,0x00,sizeof(this));
-	}
-	//buff ì˜ ë‚´ìš©ì„ êµ¬ì¡°ì²´ì— ì±„ìš´ë‹¤.
-	void SetCopyBuff(char* data)
-	{
-		memcpy(this,data,sizeof(this));
-	}
-	string ToString()
-	{
-		char buff[1024];
-		sprintf(buff,"%c%c key[%c] , id [%d] ìˆœì„œ[%d]",header.cmd1,header.cmd2,header.pakID,id,cont);
-		return string(buff);
-	}
 };

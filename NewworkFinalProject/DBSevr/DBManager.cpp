@@ -80,8 +80,6 @@ bool DBManager::IsUserPassword(string id, string pass)
 	tempid	2	test1234	기라성	010-2222-1111	20161215101010	1
 	testid	1	test1234	홍길동	010-2222-3333	20161213101010	1
 	*/
-		
-		
 	CString strQuery ="";
 	strQuery.Format("SELECT Id , Pass FROM TB_USER WHERE Id = '%s' and Pass = '%s' ",id.c_str(),pass.c_str());
 	CRecordset rs(m_podb);
