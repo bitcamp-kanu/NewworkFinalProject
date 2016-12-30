@@ -57,7 +57,7 @@ struct _Login
 	string ToString()
 	{
 		char buff[1024];
-		sprintf(buff, "%c%c key[%c] , id [%d] ����[%d]", header.cmd1, header.cmd2, header.pakID, id, cont);
+		sprintf(buff, "%c%c key[%c] , id [%d] count [%d]", header.cmd1, header.cmd2, header.pakID, id, cont);
 		return string(buff);
 	}
 };
