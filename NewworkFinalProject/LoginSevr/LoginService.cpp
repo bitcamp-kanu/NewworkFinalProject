@@ -1,4 +1,5 @@
-﻿#include "LoginService.h"
+﻿
+#include "LoginService.h"
 #include "..\Public\WIUtility.h"
 #include "..\Public\PublicDefine.h"
 #include "..\Public\ClientSocket.h"
@@ -50,19 +51,25 @@ int LoginService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 	else if(WIUtility::IsCommand(pData,"AL")) //Admin Login CMD 이면
 	{
 		_Login logData;
-
+		
 		try
 		{
 			memcpy(&logData,pData,sizeof(_Login));
-			int ikey = rand() % 127 + 1;
+			int ikey = rand()%127 + 1;
 			logData.SecretKey = char(ikey);
+			logData.SecretKey = 'A';
+
 			cout << "DB Server 수신 " << logData.ToString() << endl;
 			logData.cont ++;
 			m_pClinetSock->Send((char*)&logData,sizeof(_Login));
 			logData.cont++;
 			m_pClinetSock->Receive((char*)&logData,sizeof(_Login));
+			
+			cout << "DB Server 패킷 수신  " << logData.ToString() << endl;
 			logData.cont++;
 			pSockBase->Send((char*)&logData,sizeof(_Login));
+			
+			cout << "Client Server 패킷 전송  " << logData.ToString() << endl;
 		}
 		catch (exceptionCS e)
 		{
