@@ -8,6 +8,7 @@ using namespace std;
 #define _RECV_BUFFER_SIZE 2048
 #define _ID_SIZE_ 20
 #define _PASS_SIZE_ 20
+#define _CLASSID_SIZE_ 20
 //사용할 패킷을 정의 한다.
 
 
@@ -21,8 +22,8 @@ struct _Header
 	char SecretKey; //인증키.
 };
 
-//A 전체, S 학생 G 성적
-#pragma pack(push 1)
+//A 전체, S 학생 G 성적 U 유저
+#pragma pack(push ,1)
 
 //Login AL 서정민
 struct _Login
@@ -61,6 +62,43 @@ struct _Login
 		sprintf(buff,"%c%c key[%d] , id [%s], pass [%s] 순서[%d]",header.cmd1,header.cmd2,header.pakID,id,pass,cont);
 		return string(buff);
 	}
+};
+
+////US  유저정보요청
+struct _DemandUserInfo
+{
+	_Header header;
+	char id[_ID_SIZE_];
+	char ClassId[_CLASSID_SIZE_];
+	_DemandUserInfo() {};
+	int cont;
+	_DemandUserInfo(char cmd1, char cmd2, int pakID, char* id, char SecretKey, char* ClassId)
+	{
+		header.cmd1 = cmd1;
+		header.cmd2 = cmd2;
+		header.pakID = pakID;
+		strcpy(header.id, id);
+		strcpy(this->id, id);
+		header.SecretKey = SecretKey; 
+		strcpy(this->ClassId, ClassId);
+		cont = 0;
+	}
+		//내자신을 초기화 한다.
+		void InitData()
+		{
+			memset(this, 0x00, sizeof(this));
+		}
+		//buff 의 내용을 구조체에 채운다.
+		void SetCopyBuff(char* data)
+		{
+			memcpy(this, data, sizeof(this));
+		}
+		string ToString()
+		{
+			char buff[1024];
+			sprintf(buff, "%c%c key[%d] , id [%s], SecretKey [%c], ClassId [%s] 순서[%d]", header.cmd1, header.cmd2, header.pakID, id, header.SecretKey, ClassId, cont);
+			return string(buff);
+		}
 };
 
 
