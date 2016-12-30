@@ -97,8 +97,6 @@ bool DBManager::IsUserPassword(string id, string pass)
 	}
 	rs.Close();
 	return (rowCnt == 1) ? true : false;
-	return true;
-
 }
 
 
@@ -149,10 +147,9 @@ bool DBManager::InsertSecretKey(string id, char key)
 	rs.Close();
 
 	if (rowCnt == 0)
-		strQuery.Format("insert into TB_KEY (Id, SKey, UDate) values ('%s', '%c', '%s') ", id.c_str(), key, UDate);
+		strQuery.Format("insert into TB_KEY (Id, SKey, UDate) values ('%s', '%c', '%s') ", id.c_str(), key, UDate.c_str());
 	else
-		strQuery.Format("update TB_KEY set SKey = '%c', UDate = '%s' where Id = '%s' ", key, UDate, id.c_str());
-
+		strQuery.Format("update TB_KEY set SKey = '%c', UDate = '%s' where Id = '%s' ", key, UDate.c_str(), id.c_str());
 
 	try
 	{
@@ -165,4 +162,43 @@ bool DBManager::InsertSecretKey(string id, char key)
 		AfxMessageBox(pe->m_strError);
 	}
 	return true;
+}
+
+//3. UserId 받으면 ClassId, ClassName, UName 반환해주는 함수 - 패킷 US
+string DBManager::SelectStudent(string id)
+{
+	CString strQuery = "";
+
+	strQuery.Format("SELECT Id,UName, ClassId ,ClassName FROM TB_USER LEFT JOIN TB_CLASS ON  TB_USER.Id = TB_CLASS.ClassId WHERE ID = '%s'", id.c_str());
+	CRecordset rs(m_podb);
+
+	try
+	{
+		if (!rs.Open(CRecordset::dynaset, strQuery, 0))
+		{
+			AfxMessageBox("TB_USER 고유아이디 확인 실패");
+		}
+	}
+	catch (CDBException* pe)
+	{
+		pe->ReportError();
+		pe->Delete();
+		AfxMessageBox(pe->m_strError);
+	}
+	
+	CString Id, UName, ClassId, ClassName, result;
+	int rowCnt = 0;
+	while (!rs.IsEOF()) //데이터의 끝까지 읽어라.
+	{
+		rs.GetFieldValue("Id", Id);
+		rs.GetFieldValue("UName", UName);
+		rs.GetFieldValue("ClassId", ClassId);
+		rs.GetFieldValue("ClassName", ClassName);
+		rs.MoveNext();
+	}
+
+	result = Id + ";" + UName + ";" + ClassId + ";" + ClassName;
+	
+	//cout << result << endl;
+	return result;
 }
