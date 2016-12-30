@@ -50,6 +50,9 @@ int ReceiveSocket::ReceivtThreadRun()
 {
 	char buffer[_RECV_BUFFER_SIZE] = {0};
 	int recvLen = 0;
+
+	cout << "Recvive Sock Start." << endl;
+	cout << GetInof() << endl;
 	while(true)
 	{
 		recvLen = 0;
@@ -92,4 +95,11 @@ unsigned int ReceiveSocket::ThreadRun(void* pData)
 	}
 	
 	return 0;
+}
+string ReceiveSocket::GetInof()
+{
+	string str = WIUtility::GetFormatString("IP:[%s] ,Port[%s]"
+											,WIUtility::GetSocketIP(m_oSockInfo.m_sockAddrIn)
+											,WIUtility::GetSocketPORT(m_oSockInfo.m_sockAddrIn));
+	return str;
 }

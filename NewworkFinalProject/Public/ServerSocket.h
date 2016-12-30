@@ -37,6 +37,6 @@ public:
 	bool Bind();
 	int  Listen(int cnt = 5);
 	ReceiveSocket*  Accept();
-
 	void ReleaseSocket();
+	string GetInof();
 };

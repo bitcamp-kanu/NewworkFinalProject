@@ -52,7 +52,9 @@ bool ClientSocket::InitSock()
 
 bool ClientSocket::Connect()
 {
-	
+	cout << "ClientSocket Connect()." << endl;
+	cout << GetInof() << endl;
+
 	if(0 != connect(m_oSockInfo.m_socket 
 					,(SOCKADDR*)(&m_oSockInfo.m_sockAddrIn)
 					,sizeof(m_oSockInfo.m_sockAddrIn)))
@@ -87,4 +89,11 @@ int ClientSocket::ReceivtThreadRun()
 {
 	cout << "ClientSocket::ReceivtThreadRun() 사용않함" << endl;	
 	return true;
+}
+string ClientSocket::GetInof()
+{
+	string str = WIUtility::GetFormatString("IP:[%s] ,Port[%s]"
+		,WIUtility::GetSocketIP(m_oSockInfo.m_sockAddrIn)
+		,WIUtility::GetSocketPORT(m_oSockInfo.m_sockAddrIn));
+	return str;
 }
