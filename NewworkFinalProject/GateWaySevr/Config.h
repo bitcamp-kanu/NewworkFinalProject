@@ -8,11 +8,13 @@ class Config
 public:
 	static Config* m_pConfig;
 	string m_strConfigFileName;
+	string  m_strLogFileName;
 
 	int		m_nServerPort;
 	int		m_nListenCnt;
 
 	//연결한 타켓 서버
+	
 	string	m_dbServerIP;
 	int		m_nDbServerPort;
 	Config(void);

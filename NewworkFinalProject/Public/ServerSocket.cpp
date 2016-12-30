@@ -80,6 +80,8 @@ int ServerSocket::Listen(int cnt /*= 5*/)
 	{
 		throw exceptionSS(WIUtility::GetLastErrorMessage().c_str());
 	}
+	cout << "Server Listen()." << endl;
+	cout << GetInof() << endl;
 	return 0;
 }
 //UPD 에서는 사용하지 않는다.
@@ -88,6 +90,10 @@ ReceiveSocket* ServerSocket::Accept()
 	ReceiveSocket* pRrecvSocket = NULL;
 	pRrecvSocket = new ReceiveSocket();
 	int addrLen = sizeof(m_oSockInfo.m_sockAddr);
+
+	cout << "Server 소켓을 시작 합니다. " << endl;
+	cout << GetInof() << endl;
+	
 	pRrecvSocket -> m_oSockInfo.m_socket = accept(m_oSockInfo.m_socket
 												,&m_oSockInfo.m_sockAddr
 												,&addrLen);
@@ -111,4 +117,12 @@ void ServerSocket::ReleaseSocket()
 	//	closesocket(m_clientSocket);
 	//	m_clientSocket = 0x00;	
 	//}
+}
+
+string ServerSocket::GetInof()
+{
+	string str = WIUtility::GetFormatString("IP:[%s] ,Port[%s]"
+		,WIUtility::GetSocketIP(m_oSockInfo.m_sockAddrIn)
+		,WIUtility::GetSocketPORT(m_oSockInfo.m_sockAddrIn));
+	return str;
 }

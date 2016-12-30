@@ -18,6 +18,7 @@ public:
 	bool Open();
 	//로그인을 검사 한다.
 	bool IsUserPassword(string id, string pass);
+	bool DBManager::InsertSecretKey(string id, char key);
 	vector<string> Select(string& query);
 	DBManager(void);
 	//DBManager(CString& str);
