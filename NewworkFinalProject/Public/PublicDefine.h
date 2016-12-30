@@ -112,16 +112,20 @@ struct _DemandUserInfo
 	_Header header;
 	char id[_ID_SIZE_];
 	char ClassId[_CLASSID_SIZE_];
+	char ClassName[_ID_SIZE_];
+	char UName[_ID_SIZE_];
 	_DemandUserInfo() {};
 	int cont;
-	_DemandUserInfo(char cmd1, char cmd2, int pakID, char* id, char SecretKey, char* ClassId)
+	_DemandUserInfo(char cmd1, char cmd2, int pakID, char* id, char SecretKey, char* ClassId, char* ClassName, char* UName)
 	{
 		header.cmd1 = cmd1;
 		header.cmd2 = cmd2;
 		header.pakID = pakID;
 		strcpy(header.id, id);
 		header.SecretKey = SecretKey;
-		strcpy(ClassId, ClassId);	
+		strcpy(ClassId, ClassId);
+		strcpy(ClassName, ClassName);
+		strcpy(UName, UName);
 	}
 	void InitData()
 	{
@@ -133,14 +137,7 @@ struct _DemandUserInfo
 	{
 		memcpy(this, data, sizeof(this));
 	}
-
-	string ToString()
-	{
-		char buff[1024];
-		sprintf(buff, "%c%c key[%d] , id [%s], SecretKey [%c], ClassId [%s] 순서[%d]", header.cmd1, header.cmd2, header.pakID, id, header.SecretKey, ClassId, cont);
-		return string(buff);
-	}
-}
+};
 
 struct _SearchStudent
 {
