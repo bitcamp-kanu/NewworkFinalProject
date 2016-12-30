@@ -52,6 +52,7 @@ bool ServerSocket::InitSock()
 		throw exceptionSS(WIUtility::GetLastErrorMessage().c_str());
 		return false;
 	}
+	return true;
 }
 
 bool ServerSocket::Bind()
@@ -121,8 +122,8 @@ void ServerSocket::ReleaseSocket()
 
 string ServerSocket::GetInof()
 {
-	string str = WIUtility::GetFormatString("IP:[%s] ,Port[%s]"
-		,WIUtility::GetSocketIP(m_oSockInfo.m_sockAddrIn)
-		,WIUtility::GetSocketPORT(m_oSockInfo.m_sockAddrIn));
+	string str = WIUtility::GetFormatString("IP:[%s] ,Port[%d]"
+											,WIUtility::GetSocketIP(m_oSockInfo.m_sockAddrIn).c_str()
+											,WIUtility::GetSocketPORT(m_oSockInfo.m_sockAddrIn));
 	return str;
 }

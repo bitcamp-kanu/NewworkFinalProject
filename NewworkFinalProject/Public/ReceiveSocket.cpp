@@ -97,9 +97,9 @@ unsigned int ReceiveSocket::ThreadRun(void* pData)
 	return 0;
 }
 string ReceiveSocket::GetInof()
-{
-	string str = WIUtility::GetFormatString("IP:[%s] ,Port[%s]"
-											,WIUtility::GetSocketIP(m_oSockInfo.m_sockAddrIn)
-											,WIUtility::GetSocketPORT(m_oSockInfo.m_sockAddrIn));
+{	
+	string str = WIUtility::GetFormatString("IP:[%s] ,Port[%d]"
+		,WIUtility::GetSocketIP(m_oSockInfo.m_sockAddrIn).c_str()
+		,WIUtility::GetSocketPORT(m_oSockInfo.m_sockAddrIn));
 	return str;
 }
