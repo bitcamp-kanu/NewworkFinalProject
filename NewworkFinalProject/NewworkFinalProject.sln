@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StudentMgr", "StudentMgr\StudentMgr.vcxproj", "{0844BA68-37EE-46A7-B969-99CCA3F510A6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LoginSevr", "LoginSevr\LoginSevr.vcxproj", "{2FEBA87C-9B99-4CCB-A411-1E39A98C8150}"
@@ -10,12 +12,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GateWaySevr", "GateWaySevr\GateWaySevr.vcxproj", "{25FAD9C5-416B-4106-A7DF-2E41A8EA447F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WorkSevr", "WorkSevr\WorkSevr.vcxproj", "{7A988C66-6DF1-4E4C-89F2-27C7385A9E3F}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tellinfo_Client", "Tellinfo_Client\Tellinfo_Client.vcxproj", "{E22ACCAD-E6CD-4500-A657-E01DA7AA63DF}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tellinfo_Server", "Tellinfo_Server\Tellinfo_Server.vcxproj", "{A62F2107-34DC-42EA-BB5A-1D4869D8264B}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "참고프로젝트", "참고프로젝트", "{DBA590BA-6135-44C9-83E1-FED516B87237}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClientTest", "ClientTest\ClientTest.vcxproj", "{FD6BBF79-550A-4190-9495-09B7BCC49FAD}"
 EndProject
@@ -45,14 +41,6 @@ Global
 		{7A988C66-6DF1-4E4C-89F2-27C7385A9E3F}.Debug|Win32.Build.0 = Debug|Win32
 		{7A988C66-6DF1-4E4C-89F2-27C7385A9E3F}.Release|Win32.ActiveCfg = Release|Win32
 		{7A988C66-6DF1-4E4C-89F2-27C7385A9E3F}.Release|Win32.Build.0 = Release|Win32
-		{E22ACCAD-E6CD-4500-A657-E01DA7AA63DF}.Debug|Win32.ActiveCfg = Debug|Win32
-		{E22ACCAD-E6CD-4500-A657-E01DA7AA63DF}.Debug|Win32.Build.0 = Debug|Win32
-		{E22ACCAD-E6CD-4500-A657-E01DA7AA63DF}.Release|Win32.ActiveCfg = Release|Win32
-		{E22ACCAD-E6CD-4500-A657-E01DA7AA63DF}.Release|Win32.Build.0 = Release|Win32
-		{A62F2107-34DC-42EA-BB5A-1D4869D8264B}.Debug|Win32.ActiveCfg = Debug|Win32
-		{A62F2107-34DC-42EA-BB5A-1D4869D8264B}.Debug|Win32.Build.0 = Debug|Win32
-		{A62F2107-34DC-42EA-BB5A-1D4869D8264B}.Release|Win32.ActiveCfg = Release|Win32
-		{A62F2107-34DC-42EA-BB5A-1D4869D8264B}.Release|Win32.Build.0 = Release|Win32
 		{FD6BBF79-550A-4190-9495-09B7BCC49FAD}.Debug|Win32.ActiveCfg = Debug|Win32
 		{FD6BBF79-550A-4190-9495-09B7BCC49FAD}.Debug|Win32.Build.0 = Debug|Win32
 		{FD6BBF79-550A-4190-9495-09B7BCC49FAD}.Release|Win32.ActiveCfg = Release|Win32
@@ -60,9 +48,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{A62F2107-34DC-42EA-BB5A-1D4869D8264B} = {DBA590BA-6135-44C9-83E1-FED516B87237}
-		{E22ACCAD-E6CD-4500-A657-E01DA7AA63DF} = {DBA590BA-6135-44C9-83E1-FED516B87237}
 	EndGlobalSection
 EndGlobal
