@@ -20,6 +20,7 @@ public:
 	bool IsUserPassword(string id, string pass);
 	bool IsSecretKey(string id, char key);
 	bool InsertSecretKey(string id, char key);
+	string SelectStudent(string id);
 	vector<string> Select(string& query);
 	DBManager(void);
 	//DBManager(CString& str);

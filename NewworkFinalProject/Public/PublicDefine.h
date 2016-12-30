@@ -140,6 +140,7 @@ struct _DemandUserInfo
 	}
 };
 
+
 struct _SearchStudent
 {
 	_Header header;

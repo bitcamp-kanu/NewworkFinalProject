@@ -66,7 +66,7 @@ void main()
 			{
 				oSock.Receive((char*)&pkLogin, sizeof(pkLogin));
 
-				if(pkLogin.header.pakID == 'T')
+				if(pkLogin.header.pakID == 111)
 				{
 					AfxMessageBox("로그인에 성공하였습니다.");
 				}
