@@ -1,3 +1,4 @@
+#pragma warning(disable: 4996)
 #include "WIFile.h"
 #include <iostream>
 #include <string>
