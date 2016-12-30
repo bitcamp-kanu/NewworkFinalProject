@@ -107,7 +107,7 @@ struct _SecretKeyChedk
 	}
 };
 
-////US  유저정보요청
+//US  유저정보요청
 struct _DemandUserInfo
 {
 	_Header header;
@@ -169,7 +169,7 @@ struct _UpdateGrade
 	_Header header;
 };
 
-//과목별 평균. AA -- 승욱 형님.
+//학생정보 가져오기. AA -- 승욱 형님.
 struct _WorkData
 {
 	_Header header;
