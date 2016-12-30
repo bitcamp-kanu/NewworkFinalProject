@@ -74,12 +74,12 @@ void main()
 		rgpRevcSocket.push_back(pRecvSocket);
 	}
 
-	for (int i = 0; i < rgpRevcSocket.size(); i++)
+	for (unsigned int i = 0; i < rgpRevcSocket.size(); i++)
 	{
 		WaitForSingleObject(pRecvSocket->m_hThread, INFINITE);
 	}
 
-	for (int i = 0; i < rgpRevcSocket.size(); i++)
+	for (unsigned int i = 0; i < rgpRevcSocket.size(); i++)
 	{
 		delete rgpRevcSocket[i];
 		rgpRevcSocket[i] = NULL;

@@ -22,6 +22,7 @@ using namespace std;
 // 200 인증 실패 - 보인키가 없음.
 // 210 인증 실패 - 보안키 유효 시간이 초과 되었음. 
 //prefix All:전체 Student::학생 Grade:성적  Etc:기타   U 유저
+// C 생성 R (읽기,조회) 
 //A 전체, S 학생 G 성적
 #pragma pack(push,1)
 
@@ -111,7 +112,6 @@ struct _SecretKeyChedk
 struct _DemandUserInfo
 {
 	_Header header;
-	char id[_ID_SIZE_];
 	char ClassId[_CLASSID_SIZE_];
 	char ClassName[_ID_SIZE_];
 	char UName[_ID_SIZE_];
@@ -140,6 +140,7 @@ struct _DemandUserInfo
 	}
 };
 
+//학생 조회. SS 
 struct _SearchStudent
 {
 	_Header header;
@@ -164,12 +165,7 @@ struct _UpdateStudent
 	_Header header;
 };
 
-struct _UpdateGrade
-{
-	_Header header;
-};
-
-//학생정보 가져오기. AA -- 승욱 형님.
+//학생정보 가져오기. AA -- 승욱 형님. GU 성적 수정.
 struct _WorkData
 {
 	_Header header;

@@ -75,10 +75,7 @@ void main()
 			{
 				oSock.Receive((char*)&pkLogin, sizeof(pkLogin));
 
-				SecretKey = pkLogin.header.SecretKey;
-				cout << SecretKey;//검사
-
-				if (pkLogin.header.pakID == 111) //111 로그인 성공
+				if(pkLogin.header.pakID == 111)
 				{
 					AfxMessageBox("로그인에 성공하였습니다.");
 					break;
