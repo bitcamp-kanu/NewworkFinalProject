@@ -56,9 +56,8 @@ int LoginService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 		{
 			memcpy(&logData,pData,sizeof(_Login));
 			int ikey = rand()%127 + 1;
-			logData.SecretKey = char(ikey);
-			logData.SecretKey = 'A';
-
+			logData.header.SecretKey = char(ikey);
+	
 			cout << "DB Server 수신 " << logData.ToString() << endl;
 			logData.cont ++;
 			m_pClinetSock->Send((char*)&logData,sizeof(_Login));
