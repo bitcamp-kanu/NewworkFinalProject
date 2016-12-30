@@ -17,6 +17,9 @@ public:
 	
 	string	m_dbServerIP;
 	int		m_nDbServerPort;
+
+	string	m_workServerIP;
+	int		m_nWorkServerPort;
 	Config(void);
 public:
 	//시간상 Get Set 은 생략 한다. 절대 이렇게 코딩 하면 않됨.

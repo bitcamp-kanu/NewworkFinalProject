@@ -19,6 +19,7 @@
 
 void main()
 {
+	cout << "--------- GateWay Server 을 시작 합니다.----------------" << endl;
 	Config::Instance()->LoadConfig();
 	CLog::Instance()->SetFilePath(Config::Instance()->m_strLogFileName);
 	//Recvive 를 저장할 소켓.
@@ -26,8 +27,12 @@ void main()
 	GateWayService oGateWaySvc;
 	
 	ServerSocket oServerSock;
-	ClientSocket oSock(Config::Instance()->m_dbServerIP
+	ClientSocket oSockDb(Config::Instance()->m_dbServerIP
 		, Config::Instance()->m_nDbServerPort, ClientSocket::eTCP);
+
+
+	ClientSocket oSockWs(Config::Instance()->m_workServerIP
+		, Config::Instance()->m_nWorkServerPort, ClientSocket::eTCP);
 
 	try
 	{
@@ -37,9 +42,13 @@ void main()
 		oServerSock.Bind();
 		oServerSock.Listen(Config::Instance()->m_nListenCnt);
 
-		oSock.InitWinsock();
-		oSock.InitSock();
-		oSock.Connect();//DB 서버에 연결 한다.	
+		oSockDb.InitWinsock();
+		oSockDb.InitSock();
+		oSockDb.Connect();//DB 서버에 연결 한다.	
+
+		oSockWs.InitWinsock();
+		oSockWs.InitSock();
+		oSockWs.Connect();//DB 서버에 연결 한다.	
 	}
 	catch (exceptionCS e)
 	{
@@ -58,7 +67,8 @@ void main()
 		cout << "알수 없는 오류. " << e.what() << endl;
 	}
 	
-	oGateWaySvc.SetDBSvrConcSocket(&oSock); // 서버 연결 소켓을 설정 한다.
+	oGateWaySvc.SetDBSvrConcSocket(&oSockDb); // 서버 연결 소켓을 설정 한다.
+	oGateWaySvc.SetWorkSvrConcSocket(&oSockDb);
 	
 
 

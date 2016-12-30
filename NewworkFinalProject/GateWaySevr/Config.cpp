@@ -35,5 +35,9 @@ bool Config::LoadConfig()
 	//연결할 DB 서버 정보. 
 	m_dbServerIP = "127.0.0.1";
 	m_nDbServerPort = 9003;
+
+	m_workServerIP = "127.0.0.1";
+	m_nWorkServerPort = 9002;
+
 	return true;
 }

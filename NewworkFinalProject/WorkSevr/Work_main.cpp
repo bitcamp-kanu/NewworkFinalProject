@@ -17,6 +17,7 @@
 
 void main()
 {
+	cout << "--------- Work Server 을 시작 합니다.----------------" << endl;
 	Config::Instance()->LoadConfig();
 	//로그파일 파일명을 설정한다.
 	//CLog::Instance()->SetFilePath(Config::Instance()->m_strLogFileName);

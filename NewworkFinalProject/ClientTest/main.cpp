@@ -17,28 +17,56 @@ void main()
 {
 	int port = 9000;
 	srand((unsigned int)time(NULL));
-	if(rand()%2 == 1)
+	int num = rand()%3 ; 
+
+	_Login pkLogin('T','L','A',"로그인서버","비밀번호입니다");
+	switch(num)
 	{
-		port = 9000;
+		case 0:
+			port = 9000;
+			pkLogin.header.cmd2 = 'L';
+			cout << "-----Clinet: Login 서버로 접속 합니다.";
+			break;
+		case 1:
+			port = 9001;
+			pkLogin.header.cmd2 = 'G';
+			cout << "-----Clinet: GateWayServer로 접속 합니다.";
+			break;
+		case 2:
+			port = 9002;
+			pkLogin.header.cmd2 = 'W';
+			cout << "-----Clinet: GateWayServer 로 접속 합니다.";
+			break;
 	}
-	else
-	{
-		port = 9001;
-	}
-	port = 9001;
+	
+	//port = 9000; //로그인 서버.
+
 	//string str = WIUtility::GetFormatString("%s %d 등", "로그인 서버",1);
 	ClientSocket oSockLogin("127.0.0.1",port);		//로그인 서버.
-	//ClientSocket oSockLogin("127.0.0.1",9000);		//로그인 서버.
-	oSockLogin.InitWinsock();
-	oSockLogin.InitSock();
-	oSockLogin.Connect();
+	try
+	{
+		//ClientSocket oSockLogin("127.0.0.1",9000);		//로그인 서버.
+		oSockLogin.InitWinsock();
+		oSockLogin.InitSock();
+		oSockLogin.Connect();
+	}
+	catch (exceptionCS e)
+	{
+		cout << e.what() << endl;
+		
+	}
+	
+	
 
 	//ClientSocket oSockGate("127.0.0.1",9001);		//GateWay 서버.
 	//oSockGate.InitWinsock();
 	//oSockGate.InitSock();
 	//oSockGate.Connect();
 
-	_Login pkLogin('A','L','A',"로그인서버","비밀번호입니다");
+	//TL 로그인 서버
+	//TG GateServer 서서
+	//TW WorkServer
+	
 	//if(port == 9001)
 	//{
 	//	pkLogin.header.cmd2 = '2';
@@ -47,6 +75,7 @@ void main()
 	{
 		if(0 <  oSockLogin.Send((char*)&pkLogin,sizeof(pkLogin)))
 		{
+			cout << 
 			oSockLogin.Receive((char*)&pkLogin,sizeof(pkLogin));
 			cout << pkLogin.ToString() << endl;
 		}

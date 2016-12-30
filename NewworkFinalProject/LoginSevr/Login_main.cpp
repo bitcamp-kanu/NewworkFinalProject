@@ -19,6 +19,7 @@
 
 void main()
 {
+	cout << "--------- Login Server 을 시작 합니다..----------------" << endl;
 	srand(unsigned int(time(NULL)));
 
 	Config::Instance()->LoadConfig();

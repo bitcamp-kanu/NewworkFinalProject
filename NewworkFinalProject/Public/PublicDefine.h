@@ -48,6 +48,7 @@ struct _Login
 	int cont;
 	_Login(char cmd1, char cmd2, int  pakID, char* id, char* pass)
 	{
+		memset(this, 0x00, sizeof(this));
 		header.cmd1 = cmd1;
 		header.cmd2 = cmd2;
 		header.pakID = pakID;
@@ -65,7 +66,7 @@ struct _Login
 	//buff 의 내용을 구조체에 채운다.
 	void SetCopyBuff(char* data)
 	{
-		memcpy(this, data, sizeof(this));
+		memcpy(this, data, sizeof(_Login));
 	}
 	string ToString()
 	{

@@ -8,6 +8,8 @@ class DBService : public IReceiveEvent
 public:
 	virtual int ReceiveEvent(SockBase* pSockBase,char* pData, int len);	
 public:
+
+	int WorkTeset(SockBase* pSockBase,char* pData, int len);
 	DBService(void);
 	~DBService(void);
 };

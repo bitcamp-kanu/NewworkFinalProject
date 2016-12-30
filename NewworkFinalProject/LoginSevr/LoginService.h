@@ -13,6 +13,8 @@ public:
 public:
 	//DB 서버와 연결할 소켓 정보를 설정 한다.
 	void SetDBSvrConcSocket(ClientSocket* pClinetSock);
+
+	int WorkTeset(SockBase* pSockBase,char* pData, int len);
 	LoginService(void);
 	~LoginService(void);
 };

@@ -30,6 +30,7 @@ using namespace std;
 
 void main(int argc, char* argv[])
 {
+	cout << "--------- DB Server 을 시작 합니다." << endl;
 	DBManager db;
 	db.Open();
 	db.SelectStudent("testid");
