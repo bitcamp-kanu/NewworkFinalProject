@@ -35,7 +35,7 @@ int WorkService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 		cout << "Client Server - All Average Data 전송 " << WorkData.ToString() << endl;
 	}
 
-	if(WIUtility::IsCommand(pData,"SC")) //학생 점수 등록 이면
+	if(WIUtility::IsCommand(pData,"GU")) //학생 점수 수정 이면
 	{
 		_WorkData WorkData;
 		memcpy(&WorkData,pData,sizeof(_WorkData));

@@ -111,7 +111,6 @@ struct _SecretKeyChedk
 struct _DemandUserInfo
 {
 	_Header header;
-	char id[_ID_SIZE_];
 	char ClassId[_CLASSID_SIZE_];
 	char ClassName[_ID_SIZE_];
 	char UName[_ID_SIZE_];
@@ -169,7 +168,7 @@ struct _UpdateGrade
 	_Header header;
 };
 
-//학생정보 가져오기. AA -- 승욱 형님.
+//학생정보 가져오기. SS SC SG-- 승욱 형님.
 struct _WorkData
 {
 	_Header header;
