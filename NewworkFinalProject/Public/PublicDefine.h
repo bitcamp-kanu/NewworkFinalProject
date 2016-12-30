@@ -10,6 +10,7 @@ using namespace std;
 #define _PASS_SIZE_ 20
 //사용할 패킷을 정의 한다.
 
+#pragma pack(push,1)
 
 struct _Header
 {
@@ -22,7 +23,6 @@ struct _Header
 };
 
 //A 전체, S 학생 G 성적
-#pragma pack(push 1)
 
 //Login AL 서정민
 struct _Login
@@ -31,7 +31,6 @@ struct _Login
 	char id[_ID_SIZE_];
 	char pass[_PASS_SIZE_];
 	_Login(){};
-	char SecretKey; //인증키.
 
 	int cont;
 	_Login(char cmd1, char cmd2, int  pakID, char* id, char* pass)
@@ -94,9 +93,78 @@ struct _UpdateGrade
 };
 
 //과목별 평균. AA -- 승욱 형님.
-struct _AverageAll
+struct _WorkData
 {
+	_Header header;
+	char ClassId[_ID_SIZE_];
+	int ClassNum;
 
+	char SName[_ID_SIZE_];
+	char SSex;
+	char STel[_ID_SIZE_];
+	int C;
+	int CPP;
+	int CSharp;
+	int Network;
+	int Unity;
+	int Total;
+	DOUBLE Ave;
+	int UDate;
+
+	_WorkData(){};
+	int cont;
+
+	_WorkData(char cmd1,char cmd2,int  pakID,char* id,char* skey,
+		char* mClassId, int mClassNum, char* mSName, char mSSex, char* mSTel,
+		int mC, int mCPP,	int mCSharp, int mNetwork, int mUnity,
+		int mTotal, DOUBLE mAve, int mUDate)
+	{
+		header.cmd1		= cmd1;
+		header.cmd2		= cmd2;
+		header.pakID	= pakID;
+		strcpy(header.id,id);
+		header.SecretKey,skey;
+		//---------------------
+		strcpy(ClassId,mClassId);
+		ClassNum=mClassNum;
+		strcpy(SName,mSName);
+		SSex=mSSex;
+		strcpy(STel,mSTel);
+		
+		C=mC;
+		CPP=mCPP;
+		CSharp=mCSharp;
+		Network=mNetwork;
+		Unity=mUnity;
+		Total=mTotal;
+		Ave=mAve;
+		UDate=mUDate;
+
+		cont = 0;
+	}
+
+	//내자신을 초기화 한다.
+	void InitData()
+	{
+		memset(this,0x00,sizeof(this));
+	}
+	//buff 의 내용을 구조체에 채운다.
+	void SetCopyBuff(char* data)
+	{
+		memcpy(this,data,sizeof(this));
+	}
+	string ToString()
+	{
+		char buff[1024];
+		sprintf(buff,"%c%c pakID[%d] , id[%s], key[%d], 순서[%d] \n \
+					ClassId[%s] ClassNum[%d] SName[%s] SSex[%c] STel[%s] \n \
+					C[%d] CPP[%d] CSharp[%d] Network[%d] Unity[%d] \n \
+					Total[%d] Ave[%.2l] UDate[%s] \n ",
+					header.cmd1,header.cmd2,header.pakID,header.id,header.SecretKey, cont, \
+					ClassId, ClassNum, SName, SSex, STel, \
+					C, CPP, CSharp, Network, Unity, Total, Ave, UDate);
+
+		return string(buff);
+	}
 };
-
 #pragma pack(pop)
