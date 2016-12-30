@@ -27,7 +27,11 @@ int DBService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 
 		if(m_pDbManager->IsUserPassword(logData.id,logData.pass))
 		{
+			cout << "======1======" << endl;
+			m_pDbManager->InsertSecretKey(logData.id, logData.SecretKey);
+			cout << "======2======" << endl;
 			logData.header.pakID = 111;
+			cout << "======3======" << endl;
 		}
 		else
 		{
