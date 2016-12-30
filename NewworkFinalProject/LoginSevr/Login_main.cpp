@@ -13,6 +13,7 @@
 #include "..\Public\PublicDefine.h"
 #include "..\public\ServerSocket.h"
 #include "..\public\Log.h"
+#include "..\public\WIUtility.h"
 
 #include "LoginService.h"
 
@@ -31,6 +32,11 @@ void main()
 	ServerSocket oServerSock;
 	ClientSocket oSock(Config::Instance()->m_dbServerIP
 					,Config::Instance()->m_nDbServerPort,ClientSocket::eTCP);
+
+
+	string str = WIUtility::GetLastErrorMessage();
+	cout << str.c_str();
+	system("puese");
 
 
 	oServerSock.SetPort(Config::Instance()->m_nServerPort);
@@ -70,12 +76,12 @@ void main()
 		rgpRevcSocket.push_back(pRecvSocket);
 	}	
 
-	for(int i = 0 ; i < rgpRevcSocket.size(); i++)
+	for(unsigned int i = 0 ; i < rgpRevcSocket.size(); i++)
 	{
 		WaitForSingleObject(pRecvSocket ->m_hThread,INFINITE);
 	}
 
-	for(int i = 0 ; i < rgpRevcSocket.size(); i++)
+	for(unsigned int i = 0 ; i < rgpRevcSocket.size(); i++)
 	{
 		delete rgpRevcSocket[i];
 		rgpRevcSocket[i] = NULL;

@@ -15,22 +15,41 @@
 
 void main()
 {
-	string str = WIUtility::GetFormatString("%s %d 등", "대한민국",1);
-	//ClientSocket oSock("127.0.0.1",9000);
-	//oSock.InitWinsock();
-	//oSock.InitSock();
-	//oSock.Connect();
+	int port = 9000;
+	srand((unsigned int)time(NULL));
+	if(rand()%2 == 1)
+	{
+		port = 9000;
+	}
+	else
+	{
+		port = 9001;
+	}
+	port = 9001;
+	//string str = WIUtility::GetFormatString("%s %d 등", "로그인 서버",1);
+	ClientSocket oSockLogin("127.0.0.1",port);		//로그인 서버.
+	//ClientSocket oSockLogin("127.0.0.1",9000);		//로그인 서버.
+	oSockLogin.InitWinsock();
+	oSockLogin.InitSock();
+	oSockLogin.Connect();
 
-	//_Login pkLogin('T','E','A',"도봉산아이디","비밀번호입니다");
-	//while(true)
+	//ClientSocket oSockGate("127.0.0.1",9001);		//GateWay 서버.
+	//oSockGate.InitWinsock();
+	//oSockGate.InitSock();
+	//oSockGate.Connect();
+
+	_Login pkLogin('A','L','A',"로그인서버","비밀번호입니다");
+	//if(port == 9001)
 	//{
-	//	if(0 <  oSock.Send((char*)&pkLogin,sizeof(pkLogin)))
-	//	{
-	//		oSock.Receive((char*)&pkLogin,sizeof(pkLogin));
-	//		cout << pkLogin.ToString() << endl;
-	//	}
-
-	//	Sleep(1000);
-	//	
+	//	pkLogin.header.cmd2 = '2';
 	//}
+	while(true)
+	{
+		if(0 <  oSockLogin.Send((char*)&pkLogin,sizeof(pkLogin)))
+		{
+			oSockLogin.Receive((char*)&pkLogin,sizeof(pkLogin));
+			cout << pkLogin.ToString() << endl;
+		}
+		Sleep(500);	
+	}
 }

@@ -1,4 +1,5 @@
 #pragma comment(lib,"Ws2_32.lib") //winsock 2.2 라이브러리
+#pragma warning(disable: 4996)
 #define WINVER 0x0501
 #define _WIN32_WINNT 0x0501
 
