@@ -37,10 +37,8 @@ DBManager::~DBManager(void)
 bool DBManager::Open()
 {
 	m_podb = new CDatabase();
-	//return m_podb -> OpenEx("DSN=Database;Uid=<username>;Pwd=<password>");
-	return m_podb -> OpenEx("DSN=bitcamp;Uid=<username>;Pwd=<password>");
-
-	
+	return m_podb -> OpenEx("DSN=Database;Uid=<username>;Pwd=<password>");
+	//return m_podb -> OpenEx("DSN=bitcamp;Uid=<username>;Pwd=<password>");
 }
 
 vector<string> DBManager::Select(string& query)
@@ -104,11 +102,10 @@ bool DBManager::IsUserPassword(string id, string pass)
 }
 
 
-
 bool DBManager::InsertSecretKey(string id, char key)
 {
 	CString strQuery = "";
-	string UDate = WIUtility::GetCurTime("YYYYMMDDHHMMSS");
+	string UDate = WIUtility::GetCurTime();
 
 	strQuery.Format("SELECT Id FROM TB_KEY WHERE Id = '%s' ", id.c_str());
 	CRecordset rs(m_podb);
@@ -124,15 +121,23 @@ bool DBManager::InsertSecretKey(string id, char key)
 		rowCnt++;
 		rs.MoveNext();
 	}
+	rs.Close();
 
 	if (rowCnt == 0)
 		strQuery.Format("insert into TB_KEY (Id, SKey, UDate) values ('%s', '%c', '%s') ", id.c_str(), key, UDate);
 	else
 		strQuery.Format("update TB_KEY set SKey = '%c', UDate = '%s' where Id = '%s' ", key, UDate, id.c_str());
 
-	m_podb->ExecuteSQL(strQuery);
 
-	AfxMessageBox("DB조회성공");
-	rs.Close();
+	try
+	{
+		m_podb->ExecuteSQL(strQuery);
+	}
+	catch (CDBException* pe)
+	{
+		pe->ReportError();
+		pe->Delete();
+		AfxMessageBox(pe->m_strError);
+	}
 	return true;
 }

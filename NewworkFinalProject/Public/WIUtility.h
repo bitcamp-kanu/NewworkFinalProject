@@ -36,7 +36,7 @@ public:
 	YYYYMMDDHHMM -> 2016-12-23 12:01
 	YYYYMMDD -> 2016-12-23
 	*/
-	static string GetCurTime(const string& str = "YYYYMMDDHHMMSS");
+	static string GetCurTime(const string& str);
 	
 	/*
 	작성자:DSurfer

@@ -50,12 +50,12 @@ int LoginService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 	else if(WIUtility::IsCommand(pData,"AL")) //Admin Login CMD 이면
 	{
 		_Login logData;
-		
-		int ikey = rand()%127 + 1;
-		logData.SecretKey = char(ikey);
+
 		try
 		{
 			memcpy(&logData,pData,sizeof(_Login));
+			int ikey = rand() % 127 + 1;
+			logData.SecretKey = char(ikey);
 			cout << "DB Server 수신 " << logData.ToString() << endl;
 			logData.cont ++;
 			m_pClinetSock->Send((char*)&logData,sizeof(_Login));

@@ -22,7 +22,7 @@ struct _Header
 };
 
 //A 전체, S 학생 G 성적
-#pragma pack(push 1)
+#pragma pack(push, 1)
 
 //Login AL 서정민
 struct _Login
