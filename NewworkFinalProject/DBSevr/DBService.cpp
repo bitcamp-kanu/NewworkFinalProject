@@ -27,18 +27,31 @@ int DBService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 
 		if(m_pDbManager->IsUserPassword(logData.id,logData.pass))
 		{
-			m_pDbManager->InsertSecretKey(logData.id, logData.SecretKey);
+			m_pDbManager->InsertSecretKey(logData.id, logData.header.SecretKey);
 			logData.header.pakID = 111;
 		}
 		else
 		{
 			logData.header.pakID = 110;
 		}
-		
 		logData.cont++;
 		int error = pSockBase->Send((char*)&logData,sizeof(_Login));
-
-		printf(" %d ",error);
+	}
+	else if (WIUtility::IsCommand(pData, "EC")) //보안키를 확인 한다.
+	{
+		_SecretKeyChedk sechtKey;
+		memcpy(&sechtKey, pData, sizeof(_SecretKeyChedk));
+		cout << "DB Server 수신 " << sechtKey.ToString() << endl;
+		if(m_pDbManager->IsSecretKey(sechtKey.header.id, sechtKey.header.SecretKey))
+		{
+			sechtKey.header.pakID = 201; //인증 성공
+		}
+		else
+		{ 
+			sechtKey.header.pakID = 200; //인증 실패.
+		}
+		
+		int error = pSockBase->Send((char*)&sechtKey, sizeof(_SecretKeyChedk));
 	}
 	else if(WIUtility::IsCommand(pData,"AA")) //테스트 CMD 이면
 	{

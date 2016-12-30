@@ -21,12 +21,11 @@ using namespace std;
 // 201 인증 성공
 // 200 인증 실패 - 보인키가 없음.
 // 210 인증 실패 - 보안키 유효 시간이 초과 되었음. 
-#pragma pack(push,1)
-
-
-
+//prefix All:전체 Student::학생 Grade:성적  Etc:기타   U 유저
 //A 전체, S 학생 G 성적
 #pragma pack(push,1)
+
+
 struct _Header
 {
 	char cmd1;
@@ -36,9 +35,6 @@ struct _Header
 	char id[_ID_SIZE_];	    //자릿 수는 추후 정해야 함.
 	char SecretKey; //인증키.
 };
-
-//prefix All:전체 Student::학생 Grade:성적  Etc:기타   U 유저
-#pragma pack(push ,1)
 
 //Login AL 서정민
 struct _Login
@@ -83,6 +79,11 @@ struct _SecretKeyChedk
 {
 	_Header header;
 	char	chBSucess; //'T'  성공
+
+	_SecretKeyChedk()
+	{
+
+	}
 	_SecretKeyChedk(char cmd1, char cmd2, int  pakID, char* id, char chBSucess)
 	{
 		chBSucess = chBSucess;

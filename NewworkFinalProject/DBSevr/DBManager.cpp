@@ -102,6 +102,31 @@ bool DBManager::IsUserPassword(string id, string pass)
 }
 
 
+bool DBManager::IsSecretKey(string id, char key)
+{
+	/*Seq	Id	SKey	UDate
+	1	testid	a	20161221101010
+	2	bitcamp002	b	20161221101011
+	3	bitcamp003	c	20161221101012*/
+	
+	CString strQuery = "";
+	strQuery.Format("SELECT Id FROM TB_KEY WHERE Id = '%s' and SKey = '%c' ", id.c_str(), key);
+	CRecordset rs(m_podb);
+	if (!rs.Open(CRecordset::dynaset, strQuery, 0))
+	{
+		AfxMessageBox("오픈실패");
+		return false;
+	}
+	int rowCnt = 0;
+	while (!rs.IsEOF()) //데이터의 끝까지 읽어라.
+	{
+		rowCnt++;
+		rs.MoveNext();
+	}
+	rs.Close();
+	return (rowCnt == 1) ? true : false;
+}
+
 bool DBManager::InsertSecretKey(string id, char key)
 {
 	CString strQuery = "";
