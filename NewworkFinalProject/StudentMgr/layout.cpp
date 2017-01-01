@@ -291,12 +291,13 @@ void MainLayout1()
 	WIUtility::Gotoxy(7, 9);
 	cout << "반: " << endl;
 	WIUtility::Gotoxy(7, 11);
-	cout << "학생 이름: " << endl;
+	cout << "번호: " << endl;
 	WIUtility::Gotoxy(7, 13);
-	cout << "성별: " << endl;
+	cout << "학생 이름: " << endl;
 	WIUtility::Gotoxy(7, 15);
+	cout << "성별: " << endl;
+	WIUtility::Gotoxy(7, 17);
 	cout << "전화번호: " << endl;
-
 }
 
 //학생 삭제

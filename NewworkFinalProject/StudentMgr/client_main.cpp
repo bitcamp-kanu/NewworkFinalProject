@@ -23,6 +23,7 @@ void main()
 	char buff[1024];
 	char ID[20];
 	char SecretKey;
+//LoginServer와 연결
 	//소켓
 	//ClientSocket oSock("192.168.0.59", 9000);
 	ClientSocket oSock("127.0.0.1", 9000);
@@ -42,7 +43,7 @@ void main()
 	{
 		cout << "오류가 발생하였습니다. " << e.what() << endl;
 	}
-	//로그인
+//로그인
 	while (1)
 	{
 	//1. 로그인레이아웃
@@ -67,10 +68,10 @@ void main()
 			if (0 < oSock.Send((char*)&pkLogin, sizeof(pkLogin)))
 			{
 				oSock.Receive((char*)&pkLogin, sizeof(pkLogin));
-
 				if(pkLogin.header.pakID == 111)
 				{
 					AfxMessageBox("로그인에 성공하였습니다.");
+					SecretKey = pkLogin.header.SecretKey;//SecretKey저장
 					break;
 				}
 				else
@@ -93,7 +94,7 @@ void main()
 
 	if (1)//로그인성공
 	{
-		//GATEWAY SERVER와 연결
+//GATEWAY SERVER와 연결
 		//소켓
 		ClientSocket oSock("127.0.0.1", 9000);
 		try
@@ -101,7 +102,7 @@ void main()
 			oSock.InitWinsock();
 			oSock.InitSock();
 			oSock.Connect();
-			WIUtility::Gotoxy(130, 2);
+			WIUtility::Gotoxy(130, 4);
 			cout << "연결완료";
 		}
 		catch (exceptionCS e)
@@ -112,7 +113,7 @@ void main()
 		{
 			cout << "오류가 발생하였습니다. " << e.what() << endl;
 		}
-		//반 이름, 유저정보 요청 
+//반 이름, 유저정보 요청 
 		//_DemandUserInfo(char cmd1, char cmd2, int pakID, char* id, char SecretKey, char* ClassId, char* ClassName, char* UName)
 		_DemandUserInfo UInfo('U', 'S', 99, ID, SecretKey, "0","0","0");
 		while (1) // 인증성공할때까지 계속 요청
@@ -126,17 +127,14 @@ void main()
 				}
 			}
 		}
-
-		// 학생정보 요청
-
-//_WorkData(char cmd1,char cmd2,int  pakID,char* id,char* skey, \
-char* mClassId, int mClassNum, char* mSName, char mSSex, char* mSTel,\
-int mC, int mCPP, int mCSharp, int mNetwork, int mUnity,\
-int mTotal, DOUBLE mAve, int mUDate)
+		WIUtility::Gotoxy(35, 4);//유저정보 출력
+		cout << UInfo.ClassId << "\t\t" << UInfo.ClassName << "\t\t" << UInfo.UName;
+// 학생정보 요청 AA??
+		//_WorkData(char cmd1,char cmd2,int  pakID,char* id,char* skey, \
+		char* mClassId, int mClassNum, char* mSName, char mSSex, char* mSTel,\
+		int mC, int mCPP, int mCSharp, int mNetwork, int mUnity,\
+		int mTotal, DOUBLE mAve, int mUDate)
 	
-
-
-
 
 		////메인 레이아웃
 		system("cls");
@@ -144,112 +142,117 @@ int mTotal, DOUBLE mAve, int mUDate)
 		//메뉴선택
 		while (1)
 		{
-			int key;
-			char stdname[20] = { 0 };
+			char ClassId[20] = { 0 };
+			int ClassNum = 0; 
+			char SName[20] = { 0 };
+			char SSex = 0;
+			char STel[20] = { 0 };
+			int C = 0;
+			int CPP = 0;
+			int CSharp = 0;
+			int Network = 0;
+			int Unity = 0;
+			int Total = 0;
+			double Ave = 0;
+			int UDate = 0;
+			int key; //키보드 입력
 			kbhit();
 			key = getch();
 			switch (key)
 			{
-			case 49: //1.학생 등록
+			case 49://1.학생 등록 SC
 				system("cls");
 				MainLayout1();
-				// 입력받기
+			// 입력받기
 				WIUtility::Gotoxy(11, 9);// 반 입력 커서이동
-				memset(buff, 0, sizeof(buff));
-				cin >> buff;
-				sprintf(stdname, "%s", buff);
-				WIUtility::Gotoxy(18, 11);// 이름 입력 커서이동
-				memset(buff, 0, sizeof(buff));
-				cin >> buff;
-				sprintf(stdname, "%s", buff);
-				WIUtility::Gotoxy(13, 13); // 성별 입력 커서이동
-				memset(buff, 0, sizeof(buff));
-				cin >> buff;
-				sprintf(stdname, "%s", buff);
-				WIUtility::Gotoxy(17, 15); //전화번호 입력 커서이동
-				memset(buff, 0, sizeof(buff));
-				cin >> buff;
-				sprintf(stdname, "%s", buff);
-			
+				memset(ClassId, 0, sizeof(ClassId));
+				cin >> ClassId;
+				WIUtility::Gotoxy(13, 11);// 번호 입력 커서이동
+				cin >> ClassNum;
+				WIUtility::Gotoxy(18, 13); // 이름 입력 커서이동
+				memset(SName, 0, sizeof(SName));
+				cin >> SName;
+				WIUtility::Gotoxy(13, 15); //성별 입력 커서이동
+				cin >> SSex;
+				WIUtility::Gotoxy(17, 17); //전화번호 입력 커서이동
+				memset(STel, 0, sizeof(STel));
+				cin >> STel;
+			//패킷 구성 빨간줄..ㅠㅠ
+				//_WorkData SCData('S', 'C', 99, ID, SecretKey,
+				//	ClassId, ClassNum, SName, SSex, STel,
+				//	0, 0, 0, 0, 0,
+				//	0, 0, 0);
+				//if (0 < oSock.Send((char*)&SCData, sizeof(SCData)))
+				//{
+				//	oSock.Receive((char*)&SCData, sizeof(SCData));
+				//	if (SCData.header.pakID == 201) //201 인증 성공
+				//	{
+				//		AfxMessageBox("등록에 성공하였습니다.");
+				//	}else
+				//	{
+				//		AfxMessageBox("등록에 실패하였습니다.");
+				//	}
+				//}
 				break;
-			case 50: // 2.학생 삭제
+			case 50: // 2.학생 삭제 SD
 				system("cls");
 				MainLayout2();
 				WIUtility::Gotoxy(11, 9); //반
-				memset(buff, 0, sizeof(buff));
-				cin >> buff;
-				sprintf(stdname, "%s", buff);
+				memset(ClassId, 0, sizeof(ClassId));
+				cin >> ClassId;
 				WIUtility::Gotoxy(18, 11); //이름
-				memset(buff, 0, sizeof(buff));
-				cin >> buff;
-				sprintf(stdname, "%s", buff);
+				memset(SName, 0, sizeof(SName));
+				cin >> SName;
 				break;
-			case 51: //3.학생수정
+			case 51: //3.학생수정 SU
 				system("cls");
 				MainLayout3();
 				// 입력받기
 				WIUtility::Gotoxy(11, 9);// 반 입력 커서이동
-				memset(buff, 0, sizeof(buff));
-				cin >> buff;
-				sprintf(stdname, "%s", buff);
+				memset(ClassId, 0, sizeof(ClassId));
+				cin >> ClassId;
 				WIUtility::Gotoxy(18, 11);// 이름 입력 커서이동
-				memset(buff, 0, sizeof(buff));
-				cin >> buff;
-				sprintf(stdname, "%s", buff);
+				memset(SName, 0, sizeof(SName));
+				cin >> SName;
 				WIUtility::Gotoxy(13, 13); // 성별 입력 커서이동
-				memset(buff, 0, sizeof(buff));
-				cin >> buff;
-				sprintf(stdname, "%s", buff);
+				cin >> SSex;
 				WIUtility::Gotoxy(17, 15); //전화번호 입력 커서이동
-				memset(buff, 0, sizeof(buff));
-				cin >> buff;
-				sprintf(stdname, "%s", buff);
+				memset(STel, 0, sizeof(STel));
+				cin >> STel;
 				break;
-			case 52://4.점수 수정
+			case 52://4.점수 수정 SG
 				system("cls");
 				MainLayout4();
 				WIUtility::Gotoxy(11, 10);//반
-				memset(buff, 0, sizeof(buff));
-				cin >> buff;
-				sprintf(stdname, "%s", buff);
+				memset(ClassId, 0, sizeof(ClassId));
+				cin >> ClassId;
 				WIUtility::Gotoxy(13, 13);//이름
-				memset(buff, 0, sizeof(buff));
-				cin >> buff;
-				sprintf(stdname, "%s", buff);
+				memset(SName, 0, sizeof(SName));
+				cin >> SName;
 				WIUtility::Gotoxy(10, 16);//C
-				memset(buff, 0, sizeof(buff));
-				cin >> buff;
-				sprintf(stdname, "%s", buff);
+				cin >> C;
 				WIUtility::Gotoxy(12, 19);//C++
-				memset(buff, 0, sizeof(buff));
-				cin >> buff;
-				sprintf(stdname, "%s", buff);
+				cin >> CPP;
 				WIUtility::Gotoxy(11, 22);//C#
-				memset(buff, 0, sizeof(buff));
-				cin >> buff;
-				sprintf(stdname, "%s", buff);
+				cin >> CSharp;
 				WIUtility::Gotoxy(16, 25);//Network
-				memset(buff, 0, sizeof(buff));
-				cin >> buff;
-				sprintf(stdname, "%s", buff);
+				cin >> Network;
 				WIUtility::Gotoxy(14, 28);//Unity
-				memset(buff, 0, sizeof(buff));
-				cin >> buff;
-				sprintf(stdname, "%s", buff);
+				cin >> Unity;
 				break;
-			case 53://5.학생검색
+			case 53://5.학생검색 SS
+				system("cls");
+				MainLayout2();
+				WIUtility::Gotoxy(11, 9); //반
+				memset(ClassId, 0, sizeof(ClassId));
+				cin >> ClassId;
+				WIUtility::Gotoxy(18, 11); //이름
+				memset(SName, 0, sizeof(SName));
+				cin >> SName;
 				system("cls");
 				MainLayout5();
 				break;
-
 			}
 		}
-
 	}
-
-
-	////로그인실패
-	//else
-	//Display::DrawRect(Point(1, 1), Point(140, 35));
-//	AfxMessageBox("정보가 없음");
 }
