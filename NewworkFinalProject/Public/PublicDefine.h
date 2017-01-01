@@ -11,6 +11,7 @@ using namespace std;
 #define _ID_SIZE_ 20
 #define _PASS_SIZE_ 20
 #define _CLASSID_SIZE_ 20
+#define _DATE_SIZE_ 15
 //사용할 패킷을 정의 한다.
 
 //pakID
@@ -182,7 +183,7 @@ struct _WorkData
 	int Network;
 	int Unity;
 	int Total;
-	DOUBLE Ave;
+	double Ave;
 	int UDate;
 
 	_WorkData(){};
@@ -191,7 +192,7 @@ struct _WorkData
 	_WorkData(char cmd1,char cmd2,int  pakID,char* id,char* skey,
 		char* mClassId, int mClassNum, char* mSName, char mSSex, char* mSTel,
 		int mC, int mCPP,	int mCSharp, int mNetwork, int mUnity,
-		int mTotal, DOUBLE mAve, int mUDate)
+		int mTotal, double mAve, int mUDate)
 	{
 		header.cmd1		= cmd1;
 		header.cmd2		= cmd2;
