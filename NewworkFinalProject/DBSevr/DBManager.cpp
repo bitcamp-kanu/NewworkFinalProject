@@ -154,6 +154,7 @@ bool DBManager::InsertSecretKey(string id, char key)
 	try
 	{
 		m_podb->ExecuteSQL(strQuery);
+
 	}
 	catch (CDBException* pe)
 	{
@@ -169,7 +170,7 @@ string DBManager::SelectStudent(string id)
 {
 	CString strQuery = "";
 
-	strQuery.Format("SELECT Id,UName, ClassId ,ClassName FROM TB_USER LEFT JOIN TB_CLASS ON  TB_USER.Id = TB_CLASS.ClassId WHERE ID = '%s'", id.c_str());
+	strQuery.Format("SELECT Id, UName, ClassId, ClassName FROM TB_USER LEFT JOIN TB_CLASS ON TB_USER.Id = TB_CLASS.ClassId WHERE ID = '%s'", id.c_str());
 	CRecordset rs(m_podb);
 
 	try
@@ -186,8 +187,8 @@ string DBManager::SelectStudent(string id)
 		AfxMessageBox(pe->m_strError);
 	}
 	
-	CString Id, UName, ClassId, ClassName, result;
-	int rowCnt = 0;
+	CString Id, UName, ClassId, ClassName, temp;
+	string result;
 	while (!rs.IsEOF()) //데이터의 끝까지 읽어라.
 	{
 		rs.GetFieldValue("Id", Id);
@@ -197,8 +198,150 @@ string DBManager::SelectStudent(string id)
 		rs.MoveNext();
 	}
 
-	result = Id + ";" + UName + ";" + ClassId + ";" + ClassName;
-	
-	//cout << result << endl;
+	temp = Id + ";" + UName + ";" + ClassId + ";" + ClassName;	
+	result = temp.GetBuffer();
 	return result;
+}
+
+
+//4. 학생 정보 가져오기 - 조건 - classid, classnum, sname(like)
+//로그인 id와 tb_student의 classid가 동일
+string* DBManager::SelectStudentInfo(string id, string sname)
+{
+	CString strQuery = "";
+
+	//???
+	//strQuery.Format("SELECT ClassNum, SName, SSex, STel FROM TB_STUDENT \
+	//					WHERE ID = '%s' AND SName like '\%%s\%'", id.c_str(), sname.c_str());
+
+	//??? 원래는 쿼리에서 공통된 부분은 같이 쓰고 sname에 값 유무에 따라 where절에 if를 걸지만 표기방법을 모르겠음.
+	if(sname == "")
+		strQuery.Format("SELECT ClassNum, SName, SSex, STel FROM TB_STUDENT \
+						WHERE ClassId = '%s' AND Flag = '1'", id.c_str());
+	else
+		strQuery.Format("SELECT ClassNum, SName, SSex, STel FROM TB_STUDENT \
+						WHERE ClassId = '%s' AND SName like '%s' AND Flag = '1'", id.c_str(), sname.c_str());
+
+	CRecordset rs(m_podb);
+
+	try
+	{
+		if (!rs.Open(CRecordset::dynaset, strQuery, 0))
+		{
+			AfxMessageBox("TB_USER 고유아이디 확인 실패");
+		}
+	}
+	catch (CDBException* pe)
+	{
+		pe->ReportError();
+		pe->Delete();
+		AfxMessageBox(pe->m_strError);
+	}
+
+	int rowCnt = 0;
+	while (!rs.IsEOF()) //데이터의 끝까지 읽어라.
+	{
+		//rs.GetFieldValue("Id", Id);
+		rowCnt++;
+		rs.MoveNext();
+	}
+
+	rs.MoveFirst();
+
+	CString ClassNum, SName, SSex, STel, temp;
+	int row = rowCnt;
+	rowCnt = 0;
+
+	string* result = (string*)malloc(sizeof(string)*row);
+	for(int i=0; i<row; i++)
+	{
+		rs.GetFieldValue("ClassNum", ClassNum);
+		rs.GetFieldValue("SName", SName);
+		rs.GetFieldValue("SSex", SSex);
+		rs.GetFieldValue("STel", STel);
+		temp = ClassNum + ";" + SName + ";" + SSex + ";" + STel;
+		*(result + i) = temp.GetBuffer();			//??? Error
+		rowCnt++;
+		rs.MoveNext();
+	}
+
+	return result;
+}
+
+
+bool DBManager::updateStudentInfo(string id, int classNum, string sName, char sSex, string sTel)
+{
+	CString strQuery = "";
+	string UDate = WIUtility::GetCurTime();
+
+	strQuery.Format("update TB_STUDENT set \
+			SName = '%s', SSex = '%c', STel = '%s', UDate = '%s' \
+			where ClassId = '%s' and ClassNum = %d and Flag = '1' ",
+			sName.c_str(), sSex, sTel.c_str(), UDate.c_str(), id.c_str(), classNum);
+
+	try
+	{
+		m_podb->ExecuteSQL(strQuery);
+	}
+	catch (CDBException* pe)
+	{
+		pe->ReportError();
+		pe->Delete();
+		AfxMessageBox(pe->m_strError);
+		return false;
+	}
+	return true;
+}
+
+
+bool DBManager::deleteStudent(string id, int classNum)
+{
+	CString strQuery = "";
+	string UDate = WIUtility::GetCurTime();
+
+	strQuery.Format("update TB_STUDENT set \
+			Flag = '9', UDate = '%s' \
+			where ClassId = '%s' and ClassNum = %d and Flag = '1' ",
+			UDate.c_str(), id.c_str(), classNum);
+
+	try
+	{
+		m_podb->ExecuteSQL(strQuery);
+	}
+	catch (CDBException* pe)
+	{
+		pe->ReportError();
+		pe->Delete();
+		AfxMessageBox(pe->m_strError);
+		return false;
+	}
+	return true;
+}
+
+
+bool DBManager::updateStudentGrade(string id, int classNum, int c, int cpp, int csharp, int network, int unity)
+{
+	CString strQuery = "";
+	string UDate = WIUtility::GetCurTime();
+	int total = c + cpp + csharp + network + unity;
+	float avg = total / 5;
+
+	strQuery.Format("update TB_STUDENT set \
+			C = %d, Cpp = %d, Csharp = %d, Network = %d, \
+			Unity = %d, Total = %d, Avg = %f, UDate = '%s' \
+			where ClassId = '%s' and ClassNum = %d and Flag = '1' ",
+			c, cpp, csharp, network, unity, total, avg, UDate.c_str(), id.c_str(), classNum);
+
+	try
+	{
+		m_podb->ExecuteSQL(strQuery);
+	}
+	catch (CDBException* pe)
+	{
+		pe->ReportError();
+		pe->Delete();
+		AfxMessageBox(pe->m_strError);
+		return false;
+	}
+	return true;
 }

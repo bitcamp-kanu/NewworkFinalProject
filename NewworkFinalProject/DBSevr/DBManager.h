@@ -22,6 +22,11 @@ public:
 	bool InsertSecretKey(string id, char key);
 	string SelectStudent(string id);
 	vector<string> Select(string& query);
+	string* SelectStudentInfo(string id, string sname);
+	bool updateStudentInfo(string id, int classNum, string sName
+						 , char sSex, string sTel);
+	bool deleteStudent(string id, int classNum);
+	bool updateStudentGrade(string id, int classNum, int c, int cpp, int csharp, int network, int unity);
 	DBManager(void);
 	//DBManager(CString& str);
 	virtual ~DBManager(void);

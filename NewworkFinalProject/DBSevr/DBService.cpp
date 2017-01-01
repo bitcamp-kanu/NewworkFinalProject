@@ -1,7 +1,9 @@
 ﻿#include "DBService.h"
 
+#include "..\Public\DefineSchema.h"
 #include "..\Public\WIUtility.h"
 #include "..\Public\PublicDefine.h"
+
 
 #include "DBManager.h"
 
