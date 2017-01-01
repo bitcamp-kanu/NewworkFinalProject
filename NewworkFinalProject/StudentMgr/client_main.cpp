@@ -15,6 +15,7 @@
 
 #include "..\Public\WIDisplay.h"
 #include "..\Public\WIUtility.h"
+#include "layout.h"
 
 using namespace std;
 void main()
@@ -46,27 +47,19 @@ void main()
 	{
 	//1. 로그인레이아웃
 		system("cls");
-		Display::DrawRect(Point(1, 1), Point(140, 35));
-		Display::DrawRect(Point(40, 12), Point(70, 18));
-		Display::DrawRect(Point(47, 15), Point(55, 5));
-		Display::DrawRect(Point(47, 22), Point(55, 5));
-		WIUtility::Gotoxy(48, 14);
-		std::cout << "ID" << endl;
-		WIUtility::Gotoxy(48, 21);
-		std::cout << "PASSWORD" << endl;
+		LoginLayout();
 	//2.로그인
 	//ID
-		WIUtility::Gotoxy(50, 17);
+		WIUtility::Gotoxy(53, 18);
 		cin >> buff;
 		sprintf(ID, "%s", buff);
-
 	//PW
-		WIUtility::Gotoxy(50, 24);
+		WIUtility::Gotoxy(53, 26);
 		memset(buff, 0, sizeof(buff));
 		cin >> buff;
 		char str[20];
 		sprintf(str, "%s", buff);
-		WIUtility::Gotoxy(1, 38);
+		WIUtility::Gotoxy(1, 41);
 	//데이터보내기
 		_Login pkLogin('A', 'L', 99, ID, str);
 		try
@@ -147,25 +140,7 @@ int mTotal, DOUBLE mAve, int mUDate)
 
 		////메인 레이아웃
 		system("cls");
-		Display::DrawRect(Point(1, 1), Point(140, 35));
-		Display::DrawXLine(Point(1, 7), 140);
-		Display::DrawXLine(Point(1, 30), 140);
-		WIUtility::Gotoxy(4, 4);
-		cout << "학급 및 매니저 정보" << endl;
-
-		WIUtility::Gotoxy(20, 4);
-		cout << UInfo.ClassName << endl;
-		cout << UInfo.UName << endl;
-
-		WIUtility::Gotoxy(4, 9);
-		cout << "학생 목록" << endl;
-		WIUtility::Gotoxy(4, 11);
-		//cout << "출석번호\t이름\t\tC\t\tC++\t\tC#\t\tNetwork\t\tUnity\t\tTotal\t\tAvg" << endl;
-		WIUtility::Gotoxy(4, 31);
-		cout << "메뉴 정보" << endl;
-		WIUtility::Gotoxy(4, 33);
-		cout << "1.학생등록\t\t2.학생삭제\t\t3.학생수정\t\t4.점수수정\t\t5.학생검색\t\t6.과목별평균" << endl;
-
+		MainLayout();
 		//메뉴선택
 		while (1)
 		{
@@ -175,96 +150,98 @@ int mTotal, DOUBLE mAve, int mUDate)
 			key = getch();
 			switch (key)
 			{
-			case 49:
+			case 49: //1.학생 등록
 				system("cls");
-				Display::DrawRect(Point(1, 1), Point(140, 35));
-				Display::DrawXLine(Point(1, 7), 140);
-				Display::DrawXLine(Point(1, 30), 140);
-				WIUtility::Gotoxy(4, 4);
-				cout << "학생 등록" << endl;
-				WIUtility::Gotoxy(4, 9);
-				cout << "학생 이름: " << endl;
-				WIUtility::Gotoxy(4, 33);
-				cout << "1.학생등록\t\t2.학생삭제\t\t3.학생수정\t\t4.점수수정\t\t5.학생검색\t\t6.과목별평균" << endl;
-				WIUtility::Gotoxy(15, 9);// 커서이동
-			// 입력받기
+				MainLayout1();
+				// 입력받기
+				WIUtility::Gotoxy(11, 9);// 반 입력 커서이동
 				memset(buff, 0, sizeof(buff));
 				cin >> buff;
 				sprintf(stdname, "%s", buff);
-
-
-
-
+				WIUtility::Gotoxy(18, 11);// 이름 입력 커서이동
+				memset(buff, 0, sizeof(buff));
+				cin >> buff;
+				sprintf(stdname, "%s", buff);
+				WIUtility::Gotoxy(13, 13); // 성별 입력 커서이동
+				memset(buff, 0, sizeof(buff));
+				cin >> buff;
+				sprintf(stdname, "%s", buff);
+				WIUtility::Gotoxy(17, 15); //전화번호 입력 커서이동
+				memset(buff, 0, sizeof(buff));
+				cin >> buff;
+				sprintf(stdname, "%s", buff);
+			
 				break;
-			case 50:
+			case 50: // 2.학생 삭제
 				system("cls");
-				Display::DrawRect(Point(1, 1), Point(140, 35));
-				Display::DrawXLine(Point(1, 7), 140);
-				Display::DrawXLine(Point(1, 30), 140);
-				WIUtility::Gotoxy(4, 4);
-				cout << "학생 삭제" << endl;
-				WIUtility::Gotoxy(4, 33);
-				cout << "1.학생등록\t\t2.학생삭제\t\t3.학생수정\t\t4.점수수정\t\t5.학생검색\t\t6.과목별평균" << endl;
+				MainLayout2();
+				WIUtility::Gotoxy(11, 9); //반
+				memset(buff, 0, sizeof(buff));
+				cin >> buff;
+				sprintf(stdname, "%s", buff);
+				WIUtility::Gotoxy(18, 11); //이름
+				memset(buff, 0, sizeof(buff));
+				cin >> buff;
+				sprintf(stdname, "%s", buff);
 				break;
-			case 51:
+			case 51: //3.학생수정
 				system("cls");
-				Display::DrawRect(Point(1, 1), Point(140, 35));
-				Display::DrawXLine(Point(1, 7), 140);
-				Display::DrawXLine(Point(1, 30), 140);
-				WIUtility::Gotoxy(4, 4);
-				cout << "학생 수정" << endl;
-				WIUtility::Gotoxy(4, 33);
-				cout << "1.학생등록\t\t2.학생삭제\t\t3.학생수정\t\t4.점수수정\t\t5.학생검색\t\t6.과목별평균" << endl;
+				MainLayout3();
+				// 입력받기
+				WIUtility::Gotoxy(11, 9);// 반 입력 커서이동
+				memset(buff, 0, sizeof(buff));
+				cin >> buff;
+				sprintf(stdname, "%s", buff);
+				WIUtility::Gotoxy(18, 11);// 이름 입력 커서이동
+				memset(buff, 0, sizeof(buff));
+				cin >> buff;
+				sprintf(stdname, "%s", buff);
+				WIUtility::Gotoxy(13, 13); // 성별 입력 커서이동
+				memset(buff, 0, sizeof(buff));
+				cin >> buff;
+				sprintf(stdname, "%s", buff);
+				WIUtility::Gotoxy(17, 15); //전화번호 입력 커서이동
+				memset(buff, 0, sizeof(buff));
+				cin >> buff;
+				sprintf(stdname, "%s", buff);
 				break;
-			case 52:
+			case 52://4.점수 수정
 				system("cls");
-				Display::DrawRect(Point(1, 1), Point(140, 35));
-				Display::DrawXLine(Point(1, 7), 140);
-				Display::DrawXLine(Point(1, 30), 140);
-				WIUtility::Gotoxy(4, 4);
-				cout << "점수 수정" << endl;
-				WIUtility::Gotoxy(4, 10);
-				cout << "출석번호" << endl;
-				WIUtility::Gotoxy(4, 12);
-				cout << "이름" << endl;
-				WIUtility::Gotoxy(4, 14);
-				cout << "C" << endl;
-				WIUtility::Gotoxy(4, 16);
-				cout << "C++" << endl;
-				WIUtility::Gotoxy(4, 18);
-				cout << "C#" << endl;
-				WIUtility::Gotoxy(4, 20);
-				cout << "Network" << endl;
-				WIUtility::Gotoxy(4, 22);
-				cout << "Unity" << endl;
-				WIUtility::Gotoxy(4, 24);
-				WIUtility::Gotoxy(4, 33);
-				cout << "1.학생등록\t\t2.학생삭제\t\t3.학생수정\t\t4.점수수정\t\t5.학생검색\t\t6.과목별평균" << endl;
+				MainLayout4();
+				WIUtility::Gotoxy(11, 10);//반
+				memset(buff, 0, sizeof(buff));
+				cin >> buff;
+				sprintf(stdname, "%s", buff);
+				WIUtility::Gotoxy(13, 13);//이름
+				memset(buff, 0, sizeof(buff));
+				cin >> buff;
+				sprintf(stdname, "%s", buff);
+				WIUtility::Gotoxy(10, 16);//C
+				memset(buff, 0, sizeof(buff));
+				cin >> buff;
+				sprintf(stdname, "%s", buff);
+				WIUtility::Gotoxy(12, 19);//C++
+				memset(buff, 0, sizeof(buff));
+				cin >> buff;
+				sprintf(stdname, "%s", buff);
+				WIUtility::Gotoxy(11, 22);//C#
+				memset(buff, 0, sizeof(buff));
+				cin >> buff;
+				sprintf(stdname, "%s", buff);
+				WIUtility::Gotoxy(16, 25);//Network
+				memset(buff, 0, sizeof(buff));
+				cin >> buff;
+				sprintf(stdname, "%s", buff);
+				WIUtility::Gotoxy(14, 28);//Unity
+				memset(buff, 0, sizeof(buff));
+				cin >> buff;
+				sprintf(stdname, "%s", buff);
+				break;
+			case 53://5.학생검색
+				system("cls");
+				MainLayout5();
+				break;
 
-				break;
-			case 53:
-				system("cls");
-				Display::DrawRect(Point(1, 1), Point(140, 35));
-				Display::DrawXLine(Point(1, 7), 140);
-				Display::DrawXLine(Point(1, 30), 140);
-				WIUtility::Gotoxy(4, 4);
-				cout << "학생 검색" << endl;
-				WIUtility::Gotoxy(4, 10);
-				cout << "출석번호\t이름\t성별\t전화번호\t\tC\tC++\tC#\tNetwork\tUnity\tTotal\tAvg" << endl;
-				WIUtility::Gotoxy(4, 33);
-				cout << "1.학생등록\t\t2.학생삭제\t\t3.학생수정\t\t4.점수수정\t\t5.학생검색\t\t6.과목별평균" << endl;
-				break;
-
-			case 54:
-				system("cls");
-				Display::DrawRect(Point(1, 1), Point(140, 35));
-				Display::DrawXLine(Point(1, 7), 140);
-				Display::DrawXLine(Point(1, 30), 140);
-				WIUtility::Gotoxy(4, 4);
-				cout << "과목별 평균" << endl;
-				WIUtility::Gotoxy(4, 33);
-				cout << "1.학생등록\t\t2.학생삭제\t\t3.학생수정\t\t4.점수수정\t\t5.학생검색\t\t6.과목별평균" << endl;
-				break;
 			}
 		}
 
