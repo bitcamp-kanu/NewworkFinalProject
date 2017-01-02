@@ -66,6 +66,7 @@ int DBService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 				strcpy(userInof.ClassId		,vec[0]->ClassId.c_str());
 				strcpy(userInof.ClassName	,vec[0]->ClassName.c_str());
 				strcpy(userInof.UName		,vec[0]->UName.c_str());
+				userInof.header.pakID = 901;
 			}
 			else
 			{
