@@ -23,6 +23,7 @@ bool Config::SaveConfig()
 }
 bool Config::LoadConfig()
 {
+	//C:\github\bitcamp_Network_Project\NewworkFinalProject\ClientTest
 	m_strConnsetStr = "DSN=Database;Uid=<username>;Pwd=<password>";
 	m_nServerPort = 9003;
 	m_nListenCnt = 5;

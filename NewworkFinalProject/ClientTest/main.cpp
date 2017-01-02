@@ -15,6 +15,12 @@
 
 void main()
 {
+
+	string str  = WIUtility::GetCurrentDir();
+	//cout << .c_str() << endl;
+	//MessageBox(NULL,,"",0);
+
+	WritePrivateProfileString("TEST","KEYNAME","1004","AAA.ini");
 	int port = 9000;
 	srand((unsigned int)time(NULL));
 	int num = rand()%3 ; 

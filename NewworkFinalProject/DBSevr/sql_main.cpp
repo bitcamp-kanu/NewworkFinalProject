@@ -31,11 +31,18 @@ int main()
 
 		//oDBEx.UpdateStudentInfoEx("001",1,"강백호2",'1',"555-5555-5555");
 
-		vector<_Student*> vec = oDBEx.SelectStudent("",0,"학생");
-		
+		//vector<_Student*> vec = oDBEx.SelectStudent("",0,"학생");
+		//
+		//for(int i = 0; i <vec.size() ; i++ )
+		//{
+		//	cout << vec[i]->SName << endl;
+		//}
+		//} 
+		vector<_Tb_Class*> vec = oDBEx.SelectClassInfo("testid");
+
 		for(int i = 0; i <vec.size() ; i++ )
 		{
-			cout << vec[i]->SName << endl;
+			cout << vec[i]->ClassName << endl;
 		}
 
 	}

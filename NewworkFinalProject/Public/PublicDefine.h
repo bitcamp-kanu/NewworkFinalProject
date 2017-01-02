@@ -170,7 +170,38 @@ struct _UpdateStudent
 	_Header header;
 };
 
+
+struct _WordPaket
+{
+	char ClassId[_ID_SIZE_];
+	int ClassNum;
+
+	char SName[_ID_SIZE_];
+	char SSex;
+	char STel[_ID_SIZE_];
+	int C;
+	int CPP;
+	int CSharp;
+	int Network;
+	int Unity;
+	int Total;
+	double Ave;
+	char UDate[_DATE_SIZE_];
+};
+
+
 //학생정보 가져오기. AA -- 승욱 형님. GU 성적 수정.
+struct _WorkDataEx
+{
+	_Header header;
+	//조회 조건.
+	char ClassId[_ID_SIZE_];
+	int ClassNum;
+	char SName[_ID_SIZE_];
+	short len;
+};
+//_WordPaket 동적 할당.
+//학생정보 가져오기.  -- 승욱 형님. GU 성적 수정.
 struct _WorkData
 {
 	_Header header;
