@@ -232,7 +232,7 @@ vector<_Tb_Class*> DBManagerEx::SelectClassInfo(string userId)
 
 }
 //학생 정보를 추가 한다. 반 번호는 내부에서 생성 한다.
-bool DBManagerEx::InsertStudentEx(string classID,string sName, string sex,string tel)
+bool DBManagerEx::InsertStudentEx(string classID,string sName, char sex,string tel)
 {
 	if(!m_podb->IsOpen() || m_podb == NULL)
 	{
@@ -245,11 +245,11 @@ bool DBManagerEx::InsertStudentEx(string classID,string sName, string sex,string
 	strQuery.Append(		"(ClassNum 	,ClassId	,SName ");		
 	strQuery.Append(		",SSex		,STelNo		,C");
 	strQuery.Append(		",CPP		,CSharp		,Network");
-	strQuery.Append(		",Unity		,Total		,Avg");	
+	strQuery.Append(		",Unity		,Total		,eAvg");	
 	strQuery.Append(		",UDate		,Flag) ");
 	strQuery.Append(	"VALUES	");
 	strQuery.AppendFormat("(  %d, '%s','%s' ",classNum,classID.c_str(),sName.c_str());
-	strQuery.AppendFormat("	,'%s','%s',0",sex.c_str(),tel.c_str());
+	strQuery.AppendFormat("	,'%c','%s',0",sex,tel.c_str());
 	strQuery.Append(	   ",0,0,0");
 	strQuery.Append(	   ",0,0,0");
 	strQuery.AppendFormat( ",'%s',1)",UDate.c_str());
@@ -339,7 +339,7 @@ bool DBManagerEx::UpdateStudentGrade( int nSeq	,string classId	,int classNum
 
 	strQuery.Format("update TB_STUDENT set \
 					C = %d, Cpp = %d, Csharp = %d, Network = %d, \
-					Unity = %d, Total = %d, Avg = %f, UDate = '%s' \
+					Unity = %d, Total = %d, eAvg = %f, UDate = '%s' \
 					where ClassId = '%s' and ClassNum = %d and Flag = '1' ",
 					c, cpp, csharp, network, unity, total, avg, UDate.c_str(), classId.c_str(), classNum);
 
@@ -369,12 +369,12 @@ vector<_Student*> DBManagerEx::SelectStudent(string classID,int classNum,string 
 	vector<_Student*> vecStudents;
 
 	CString strQuery = "";
-	strQuery.Append("SELECT ");
+	strQuery.Append("SELECT TOP 20 ");
 	strQuery.Append(	" ClassNum	,ClassId	,Seq ");
 	strQuery.Append(	",SName,SSex,STelNo ");
 	strQuery.Append(	",C,CPP,CSharp ");
 	strQuery.Append(	",Network,Unity,Total ");
-	strQuery.Append(	",Avg,UDate,Flag ");
+	strQuery.Append(	",eAvg,UDate,Flag ");
 	strQuery.Append("FROM TB_STUDENT ");
 	strQuery.Append("WHERE 1 = 1 ");
 	if(classID.size() > 0)
@@ -415,7 +415,7 @@ vector<_Student*> DBManagerEx::SelectStudent(string classID,int classNum,string 
 		rs.GetFieldValue("Network"	,Network	);
 		rs.GetFieldValue("Unity"	,Unity		);
 		rs.GetFieldValue("Total"	,Total		);
-		rs.GetFieldValue("Avg"		,Avg		);
+		rs.GetFieldValue("eAvg"		,Avg		);
 		rs.GetFieldValue("UDate"	,UDate		);
 		rs.GetFieldValue("Flag"		,Flag);
 		

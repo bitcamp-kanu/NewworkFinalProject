@@ -98,28 +98,60 @@ int DBService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 				pData[i].Total			= atoi(vec[i]->Total.c_str());
 				pData[i].Ave			= atof(vec[i]->Avg.c_str());
 				strcpy(pData[i].UDate	,vec[i]->UDate.c_str());
+				//if(i == 20) //20개 까지만 처리.
+				//{
+				//	workDataEx.len = 20;
+				//	break;
+				//}
 			}
-			int len = sizeof(_WorkDataEx) + sizeof(_WorkDataEx) * workDataEx.len;
+			int len = sizeof(_WorkDataEx) + sizeof(_WorkPacket) * workDataEx.len;
 			char* buff = new char[len];
 
 			len = 0;
 			memcpy(buff + len,&workDataEx,sizeof(_WorkDataEx));
 			len = sizeof(_WorkDataEx);
-			memcpy(buff + len,pData,sizeof(_WorkDataEx) * workDataEx.len);
-			len += sizeof(_WorkDataEx) * workDataEx.len;
+			memcpy(buff + len,pData,sizeof(_WorkPacket) * workDataEx.len);
+			len += sizeof(_WorkPacket) * workDataEx.len;
 			pSockBase->Send(buff,len);
 
+			for(int i = 0 ; i < vec.size() ; i++)
+			{
+				delete vec[i];
+				vec[i] = NULL;
+			}
 
 		}
 		else if(WIUtility::IsCommand(pData,"SC")) //테스트 CMD 이면
 		{
 			_WorkData workData;
 			try
-			{
-				string sex = WIUtility::GetFormatString("%c",workData.SSex);
+			{				
+				//string sex = WIUtility::GetFormatString("%c",workData.SSex);
 
 				memcpy(&workData,pData,sizeof(_WorkData));
-				if(m_pDbManagerEx->InsertStudentEx(workData.ClassId,workData.SName,sex,workData.STel))
+				if(m_pDbManagerEx->InsertStudentEx(workData.ClassId,workData.SName,workData.SSex,workData.STel))
+				{					
+					workData.header.pakID = 901;
+				}
+				else
+				{
+					workData.header.pakID = 900;
+				}
+				int error = pSockBase->Send((char*)&workData, sizeof(_WorkData));
+			}
+			catch (exceptionDB e)
+			{
+				cout << e.what() << endl;
+			}
+		}
+		else if(WIUtility::IsCommand(pData,"SG")) 
+		{
+			_WorkData workData;
+			try
+			{				
+				//string sex = WIUtility::GetFormatString("%c",workData.SSex);
+				memcpy(&workData,pData,sizeof(_WorkData));
+				if(m_pDbManagerEx->UpdateStudentGrade(0,workData.ClassId,workData.ClassNum,workData.C,workData.CPP,workData.CSharp,workData.Network,workData.Unity))
 				{					
 					workData.header.pakID = 901;
 				}
@@ -157,7 +189,6 @@ int DBService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 		cout << "Recvive Socket 이 문제가 발생하였습니다." << endl;
 		cout << e.what();
 	}
-	
 	return true;
 }
 

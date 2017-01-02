@@ -7,7 +7,7 @@ using namespace std;
 //공통으로사용할 define 
 
 //수신 buffer 사이즈 
-#define _RECV_BUFFER_SIZE 2048
+#define _RECV_BUFFER_SIZE 4096
 #define _ID_SIZE_ 20
 #define _PASS_SIZE_ 20
 #define _CLASSID_SIZE_ 20
@@ -292,8 +292,7 @@ struct _WorkData
 		header.pakID		= pakID;
 		strcpy(header.id,id);
 
-		header.SecretKey=skey;
-
+		header.SecretKey = skey;
 		//---------------------
 		strcpy(ClassId,mClassId);
 		ClassNum=mClassNum;

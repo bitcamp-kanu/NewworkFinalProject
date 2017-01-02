@@ -29,11 +29,11 @@ int WorkService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 			cout << "DB Server - All Average Data 전송요청 " << endl;
 			m_pClinetSock->Send((char*)&WorkHeader,sizeof(_WorkDataEx));
 			
-			char buff[4096];
+			char buff[_RECV_BUFFER_SIZE];
 			int len = m_pClinetSock->Receive((char*)&buff,sizeof(buff));
 			cout << "DB Server - All Average Data 수신 " << endl;
 
-			pSockBase->Send((char*)&buff,len);
+			pSockBase->Send((char*)&buff,4096);
 			cout << "Client Server - All Average Data 전송 " << endl;
 		}
 		else if(WIUtility::IsCommand(pData,"SC"))

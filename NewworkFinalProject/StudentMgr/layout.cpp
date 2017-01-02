@@ -172,13 +172,13 @@ void MainLayout()
 	cout << "┓";
 
 	//왼쪽
-	for (int i = 2; i<40; i++)
+	for (int i = 2; i < 40; i++)
 	{
 		WIUtility::Gotoxy(2, i);
 		cout << "┃";
 	}
 	//오른쪽
-	for (int i = 2; i<40; i++)
+	for (int i = 2; i < 40; i++)
 	{
 		WIUtility::Gotoxy(144, i);
 		cout << "┃";
@@ -220,9 +220,8 @@ void MainLayout()
 	cout << "학급 및 매니저 정보" << endl;
 	//하단 메뉴
 	WIUtility::Gotoxy(7, 38);
-	cout << "1.학생등록\t\t2.학생삭제\t\t3.학생수정\t\t4.점수수정\t\t5.학생검색" << endl;
+	cout << "1.학생등록\t\t2.점수수정\t\t3.학생목록" << endl;
 }
-
 // 학생 등록
 void MainLayout1()
 {
@@ -287,7 +286,7 @@ void MainLayout1()
 	cout << "학생 등록" << endl;
 	//하단 메뉴
 	WIUtility::Gotoxy(7, 38);
-	cout << "1.학생등록\t\t2.학생삭제\t\t3.학생수정\t\t4.점수수정\t\t5.학생검색" << endl;
+	cout << "1.학생등록\t\t2.점수수정\t\t3.학생목록" << endl;
 	WIUtility::Gotoxy(7, 9);
 	cout << "반: " << endl;
 	WIUtility::Gotoxy(7, 11);
@@ -364,7 +363,7 @@ void MainLayout2()
 	cout << "학생 삭제" << endl;
 	//하단 메뉴
 	WIUtility::Gotoxy(7, 38);
-	cout << "1.학생등록\t\t2.학생삭제\t\t3.학생수정\t\t4.점수수정\t\t5.학생검색" << endl;
+	cout << "1.학생등록\t\t2.점수수정\t\t3.학생목록" << endl;
 	WIUtility::Gotoxy(7, 9);
 	cout << "반: " << endl;
 	WIUtility::Gotoxy(7, 11);
@@ -435,7 +434,7 @@ void MainLayout3()
 	cout << "학생 수정" << endl;
 	//하단 메뉴
 	WIUtility::Gotoxy(7, 38);
-	cout << "1.학생등록\t\t2.학생삭제\t\t3.학생수정\t\t4.점수수정\t\t5.학생검색" << endl;
+	cout << "1.학생등록\t\t2.점수수정\t\t3.학생목록" << endl;
 	WIUtility::Gotoxy(7, 9);
 	cout << "반: " << endl;
 	WIUtility::Gotoxy(7, 11);
@@ -511,11 +510,11 @@ void MainLayout4()
 	cout << "점수 수정" << endl;
 	//하단 메뉴
 	WIUtility::Gotoxy(7, 38);
-	cout << "1.학생등록\t\t2.학생삭제\t\t3.학생수정\t\t4.점수수정\t\t5.학생검색" << endl;
+	cout << "1.학생등록\t\t2.점수수정\t\t3.학생목록" << endl;
 	WIUtility::Gotoxy(7, 10);
 	cout << "반:" << endl;
 	WIUtility::Gotoxy(7, 13);
-	cout << "이름:" << endl;
+	cout << "번호:" << endl;
 	WIUtility::Gotoxy(7, 16);
 	cout << "C:" << endl;
 	WIUtility::Gotoxy(7, 19);
@@ -593,8 +592,8 @@ void MainLayout5()
 	cout << "학생 검색" << endl;
 	//하단 메뉴
 	WIUtility::Gotoxy(7, 38);
-	cout << "1.학생등록\t\t2.학생삭제\t\t3.학생수정\t\t4.점수수정\t\t5.학생검색" << endl;
+	cout << "1.학생등록\t\t2.점수수정\t\t3.학생목록" << endl;
 	WIUtility::Gotoxy(10, 8);
-	printf("%-15s %-15s %-5s %-15s %5s %5s %5s %5s %5s %s %5s "
-		, "반","이름", "성별", "전화번호", "C", "C++", "C#", "Network","Unity", "Total", "Avg");	
+	printf("%-10s %5s %-15s %-5s %-15s %5s %5s %5s %5s %5s %s %5s "
+		, "반","번호","이름", "성별", "전화번호", "C", "C++", "C#", "Network","Unity", "Total", "Avg");	
 }

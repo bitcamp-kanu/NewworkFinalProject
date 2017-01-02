@@ -68,9 +68,8 @@ void main()
 	}
 	
 	oGateWaySvc.SetDBSvrConcSocket(&oSockDb); // 서버 연결 소켓을 설정 한다.
-	oGateWaySvc.SetWorkSvrConcSocket(&oSockDb);
+	oGateWaySvc.SetWorkSvrConcSocket(&oSockWs);
 	
-
 
 	cout << "Gate ServerWay+ 입니다." << endl;
 	ReceiveSocket* pRecvSocket = NULL;
