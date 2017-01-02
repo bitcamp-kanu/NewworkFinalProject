@@ -19,27 +19,23 @@
 
 void main()
 {
-	cout << "--------- Login Server 을 시작 합니다..----------------" << endl;
+	cout << "--------- Login Server 을 시작 합니다 1.----------------" << endl;
 	srand(unsigned int(time(NULL)));
-
 	Config::Instance()->LoadConfig();
+	cout << "---------환경설정 파일을 불러 옵니다.------------" << endl;
 	//로그파일 파일명을 설정한다.
 	//CLog::Instance()->SetFilePath(Config::Instance()->m_strLogFileName);
 
 	//Recvive 를 저장할 소켓.
 	vector<ReceiveSocket*> rgpRevcSocket; 
-
 	LoginService oLoginSvc;
 	ServerSocket oServerSock;
 	ClientSocket oSock(Config::Instance()->m_dbServerIP
 					,Config::Instance()->m_nDbServerPort,ClientSocket::eTCP);
+	
 
-
-	string str = WIUtility::GetLastErrorMessage();
-	cout << str.c_str();
-	system("puese");
-
-
+	//string str = WIUtility::GetLastErrorMessage();
+	//cout << str.c_str();
 	oServerSock.SetPort(Config::Instance()->m_nServerPort);
 	oServerSock.InitWinsock();
 	oServerSock.InitSock();
@@ -50,7 +46,8 @@ void main()
 	{
 		oSock.InitWinsock();
 		oSock.InitSock();
-		oSock.Connect();//DB 서버에 연결 한다.	
+		oSock.Connect();//DB 서버에 연결 한다.
+		cout << "Test 중 입니다." << endl;
 	}
 	catch (exception e)
 	{
@@ -59,7 +56,6 @@ void main()
 		system("pause");
 		return;
 	}
-	
 	
 	oLoginSvc.SetDBSvrConcSocket(&oSock); // DB 서버 연결 소켓을 설정 한다.
 	//_Login pkLogin('T','E','A',"도봉산아이디","비밀번호입니다");

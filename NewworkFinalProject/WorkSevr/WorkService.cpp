@@ -5,12 +5,14 @@
 
 WorkService::WorkService(void)
 {
+	InitializeCriticalSection(&m_cs);
 	m_pClinetSock = NULL;
 }
 
 
 WorkService::~WorkService(void)
 {
+	DeleteCriticalSection(&m_cs);
 }
 //DB 서버와 연결할 소켓 정보를 설정 한다.
 void WorkService::SetDBSvrConcSocket(ClientSocket* pClinetSock)
@@ -27,10 +29,12 @@ int WorkService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 			memcpy(&WorkHeader,pData,sizeof(_WorkDataEx));
 			
 			cout << "DB Server - All Average Data 전송요청 " << endl;
+			this->Lock();
 			m_pClinetSock->Send((char*)&WorkHeader,sizeof(_WorkDataEx));
 			
 			char buff[_RECV_BUFFER_SIZE];
 			int len = m_pClinetSock->Receive((char*)&buff,sizeof(buff));
+			this->UnLock();
 			cout << "DB Server - All Average Data 수신 " << endl;
 
 			pSockBase->Send((char*)&buff,4096);
@@ -73,9 +77,11 @@ int WorkService::WorkStudentGrade(SockBase* pSockBase,char* pData, int len)
 	//============================================
 	cout << "DB Server - WorkData 수신 " << WorkData.ToString() << endl;
 	WorkData.cont ++;
+	this->Lock();
 	m_pClinetSock->Send((char*)&WorkData,sizeof(_WorkData));
 	WorkData.cont++;
 	m_pClinetSock->Receive((char*)&WorkData,sizeof(_WorkData));
+	this->UnLock();
 	cout << "DB Server - WorkData 수신 " << WorkData.ToString() << endl;
 	WorkData.cont++;
 	pSockBase->Send((char*)&WorkData,sizeof(_WorkData));
@@ -89,10 +95,12 @@ int WorkService::WorkTeset(SockBase* pSockBase,char* pData, int len)
 	logData.SetCopyBuff(pData);
 	logData.cont++;
 	cout << "WorkService: 데이터를 수신하였습니다." << logData.ToString() << endl;
+	this->Lock();
 	m_pClinetSock->Send((char*)&logData,sizeof(_Login));
 	logData.cont++;
 	cout << "WorkService: 데이터를 DBServer 로 전송합니다.." << logData.ToString() << endl;
 	m_pClinetSock->Receive((char*)&logData,sizeof(_Login));
+	this->UnLock();
 	logData.cont++;
 	cout << "WorkService: DBServer 에서 데이터를 수신하였습니다." << logData.ToString() << endl;
 	logData.cont++;

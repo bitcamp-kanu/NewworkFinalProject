@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "..\Public\baseSocket.h"
+#include <process.h>
 class DBManagerEx;
 class DBService : public IReceiveEvent
 {

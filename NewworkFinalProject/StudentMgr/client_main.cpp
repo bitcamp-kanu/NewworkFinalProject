@@ -22,8 +22,8 @@
 using namespace std;
 void main()
 {
-
 	Config::Instance()->LoadConfig();
+	cout << "---------환경설정 파일을 불러 옵니다.------------" << endl;
 	char buff[1024];
 	char ID[20];
 	unsigned char SecretKey;
@@ -32,25 +32,35 @@ void main()
 	int ClassNum = 0;
 	char UName[20] = { 0 };
 	int key; //키보드 입력
-	//LoginServer와 연결
-		//소켓
-	ClientSocket oSock(Config::Instance()->m_loginServerIP, Config::Instance()->m_nLoginServerPort);
+
+
+	//GateWay 소켓
+	ClientSocket oSock(Config::Instance()->m_gateServerIP, Config::Instance()->m_nGateServerPort);
+	//LoginServer와 연결 소켓		
+	ClientSocket oLoginSock(Config::Instance()->m_loginServerIP, Config::Instance()->m_nLoginServerPort);
 	//ClientSocket oSock("127.0.0.1", 9000);
 	try
 	{
+		oLoginSock.InitWinsock();
+		oLoginSock.InitSock();
+		oLoginSock.Connect();
+		
 		oSock.InitWinsock();
 		oSock.InitSock();
 		oSock.Connect();
 		WIUtility::Gotoxy(130, 2);
 		cout << "연결완료";
+		
 	}
 	catch (exceptionCS e)
 	{
 		cout << "Client Socket 에서 문제가 발생하였습니다. " << e.what() << endl;
+		return;
 	}
 	catch (exception e)
 	{
 		cout << "오류가 발생하였습니다. " << e.what() << endl;
+		return;
 	}
 	//로그인
 	while (1)
@@ -86,9 +96,9 @@ void main()
 		_Login pkLogin('A', 'L', 99, ID, str);
 		try
 		{
-			if (0 < oSock.Send((char*)&pkLogin, sizeof(pkLogin)))
+			if (0 < oLoginSock.Send((char*)&pkLogin, sizeof(pkLogin)))
 			{
-				oSock.Receive((char*)&pkLogin, sizeof(pkLogin));
+				oLoginSock.Receive((char*)&pkLogin, sizeof(pkLogin));
 				if (pkLogin.header.pakID == 111)
 				{
 					AfxMessageBox("로그인에 성공하였습니다.");
@@ -117,26 +127,10 @@ void main()
 		//GATEWAY SERVER와 연결
 				//소켓
 		//ClientSocket oSock("127.0.0.1", 9001);
-		ClientSocket oSock(Config::Instance()->m_gateServerIP, Config::Instance()->m_nGateServerPort);
-		try
-		{
-			oSock.InitWinsock();
-			oSock.InitSock();
-			oSock.Connect();
-			WIUtility::Gotoxy(130, 4);
-			cout << "연결완료";
-		}
-		catch (exceptionCS e)
-		{
-			cout << "Client Socket 에서 문제가 발생하였습니다. " << e.what() << endl;
-		}
-		catch (exception e)
-		{
-			cout << "오류가 발생하였습니다. " << e.what() << endl;
-		}
+
 		//반 이름, 유저정보 요청 
 				//_DemandUserInfo(char cmd1, char cmd2, int pakID, char* id, char SecretKey, char* ClassId, char* ClassName, char* UName)
-
+		WIUtility::Gotoxy(130, 4);
 		_DemandUserInfo UInfo('U', 'S', 99, ID, SecretKey, "0", "0", "0");
 		while (1)
 		{

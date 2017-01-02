@@ -6,12 +6,14 @@
 
 LoginService::LoginService(void)
 {
+	InitializeCriticalSection(&m_cs);
 	m_pClinetSock = NULL;
 }
 
 
 LoginService::~LoginService(void)
 {
+	DeleteCriticalSection(&m_cs);
 }
 //DB 서버와 연결할 소켓 정보를 설정 한다.
 void LoginService::SetDBSvrConcSocket(ClientSocket* pClinetSock)
@@ -28,9 +30,11 @@ int LoginService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 			memcpy(&logData,pData,sizeof(_Login));
 			cout << "DB Server 패킷 전송 " << logData.ToString() << endl;
 			logData.cont ++;
+			this->Lock();
 			m_pClinetSock->Send((char*)&logData,sizeof(_Login));
 			logData.cont++;
 			m_pClinetSock->Receive((char*)&logData,sizeof(_Login));
+			this->UnLock();
 			memcpy(&logData,pData,sizeof(_Login));
 			cout << "DB Server 패킷 수신  " << logData.ToString() << endl;
 			logData.cont++;
@@ -46,9 +50,11 @@ int LoginService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 
 			cout << "DB Server 수신 " << logData.ToString() << endl;
 			logData.cont ++;
+			this->Lock();
 			m_pClinetSock->Send((char*)&logData,sizeof(_Login));
 			logData.cont++;
 			m_pClinetSock->Receive((char*)&logData,sizeof(_Login));
+			this->UnLock();
 
 			cout << "DB Server 패킷 수신  " << logData.ToString() << endl;
 			logData.cont++;
@@ -83,10 +89,12 @@ int LoginService::WorkTeset(SockBase* pSockBase,char* pData, int len)
 	logData.SetCopyBuff(pData);
 	logData.cont++;
 	cout << "LoginServer: 데이터를 수신하였습니다." << logData.ToString() << endl;
+	this->Lock();
 	m_pClinetSock->Send((char*)&logData,sizeof(_Login));
 	logData.cont++;
 	cout << "LoginServer: 데이터를 DBServer 로 전송합니다.." << logData.ToString() << endl;
 	m_pClinetSock->Receive((char*)&logData,sizeof(_Login));
+	this->UnLock();
 	logData.cont++;
 	cout << "LoginServer: DBServer 에서 데이터를 수신하였습니다." << logData.ToString() << endl;
 	logData.cont++;

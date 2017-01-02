@@ -53,8 +53,7 @@ bool ClientSocket::InitSock()
 bool ClientSocket::Connect()
 {
 	cout << "ClientSocket Connect()." << endl;
-	cout << GetInof() << endl;
-
+	cout << GetInof()  << "로 접속 합니다. "<< endl;
 	if(0 != connect(m_oSockInfo.m_socket 
 					,(SOCKADDR*)(&m_oSockInfo.m_sockAddrIn)
 					,sizeof(m_oSockInfo.m_sockAddrIn)))
