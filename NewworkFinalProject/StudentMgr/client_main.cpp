@@ -27,6 +27,7 @@ void main()
 	char ClassName[20] = { 0 };
 	int ClassNum = 0;
 	char UName[20] = { 0 };
+	int key; //키보드 입력
 	//LoginServer와 연결
 		//소켓
 		//ClientSocket oSock("192.168.0.59", 9000);
@@ -60,10 +61,21 @@ void main()
 		sprintf(ID, "%s", buff);
 		//PW
 		WIUtility::Gotoxy(53, 26);
-		memset(buff, 0, sizeof(buff));
-		cin >> buff;
-		char str[20];
-		sprintf(str, "%s", buff);
+		char str[20] = { 0 };
+		int i = 0;
+		while (1)
+		{
+			if (kbhit())
+			{
+				str[i] = getch();
+				cout << "*";
+				if (i==7)
+				{
+					break;
+				}
+				i++;
+			}
+		}
 		WIUtility::Gotoxy(1, 41);
 		//데이터보내기
 		_Login pkLogin('A', 'L', 99, ID, str);
@@ -93,14 +105,13 @@ void main()
 		{
 			cout << "오류가 발생하였습니다. " << e.what() << endl;
 		}
-		Sleep(2000);
+		Sleep(1000);
 	}
-
 	if (1)//로그인성공
 	{
 		//GATEWAY SERVER와 연결
 				//소켓
-		ClientSocket oSock("127.0.0.1", 9000);
+		ClientSocket oSock("127.0.0.1", 9001);
 		try
 		{
 			oSock.InitWinsock();
@@ -121,19 +132,33 @@ void main()
 				//_DemandUserInfo(char cmd1, char cmd2, int pakID, char* id, char SecretKey, char* ClassId, char* ClassName, char* UName)
 
 		_DemandUserInfo UInfo('U', 'S', 99, ID, SecretKey, "0", "0", "0");
-		while (1) // 인증성공할때까지 계속 요청
+		while (1)
 		{
-			if (0 < oSock.Send((char*)&UInfo, sizeof(UInfo)))
+			try
 			{
-				oSock.Receive((char*)&UInfo, sizeof(UInfo));
-				if (UInfo.header.pakID == 201) //201 인증 성공
+				if (0 < oSock.Send((char*)&UInfo, sizeof(UInfo)))
 				{
-					break;
+					oSock.Receive((char*)&UInfo, sizeof(UInfo));
+					if (UInfo.header.pakID == 901)
+					{
+						break;
+					}
+					else
+					{
+						AfxMessageBox("불러오기에 실패하였습니다.");
+					}
 				}
 			}
+			catch (exceptionCS e)
+			{
+				cout << "Client Socket 에서 문제가 발생하였습니다. " << e.what() << endl;
+			}
+			catch (exception e)
+			{
+				cout << "오류가 발생하였습니다. " << e.what() << endl;
+			}
 		}
-		WIUtility::Gotoxy(35, 4);//유저정보 출력
-		cout << UInfo.ClassId << "\t\t" << UInfo.ClassName << "\t\t" << UInfo.UName;
+		
 		//// 학생정보 요청 AA??
 		//		//_WorkData(char cmd1,char cmd2,int  pakID,char* id,char* skey, \
 		//		char* mClassId, int mClassNum, char* mSName, char mSSex, char* mSTel,\
@@ -143,6 +168,8 @@ void main()
 
 		////메인 레이아웃
 		system("cls");
+		WIUtility::Gotoxy(35, 4);//유저정보 출력
+		cout << UInfo.ClassId << "\t\t" << UInfo.ClassName << "\t\t" << UInfo.UName;
 		MainLayout();
 		//메뉴선택
 		while (1)
@@ -158,13 +185,14 @@ void main()
 			int Total = 0;
 			double Ave = 0;
 			char UDate[15] = { 0 };
-			int key; //키보드 입력
 			kbhit();
 			key = getch();
 			switch (key)
 			{
 			case 49://1.학생 등록 SC
 				system("cls");
+				WIUtility::Gotoxy(35, 4);//유저정보 출력
+				cout << UInfo.ClassId << "\t\t" << UInfo.ClassName << "\t\t" << UInfo.UName;
 				MainLayout1();
 				// 입력받기
 				WIUtility::Gotoxy(11, 9);// 반 입력 커서이동
@@ -188,7 +216,7 @@ void main()
 					if (0 < oSock.Send((char*)&SCData, sizeof(SCData)))
 					{
 						oSock.Receive((char*)&SCData, sizeof(SCData));
-						if (SCData.header.pakID == 201) //201 인증 성공
+						if (SCData.header.pakID == 901) //901 인증 성공
 						{
 							AfxMessageBox("등록에 성공하였습니다.");
 						}
@@ -201,6 +229,8 @@ void main()
 				break;
 			case 50: // 2.학생 삭제 SD
 				system("cls");
+				WIUtility::Gotoxy(35, 4);//유저정보 출력
+				cout << UInfo.ClassId << "\t\t" << UInfo.ClassName << "\t\t" << UInfo.UName;
 				MainLayout2();
 				WIUtility::Gotoxy(11, 9); //반
 				memset(ClassId, 0, sizeof(ClassId));
@@ -230,6 +260,8 @@ void main()
 				break;
 			case 51: //3.학생수정 SU
 				system("cls");
+				WIUtility::Gotoxy(35, 4);//유저정보 출력
+				cout << UInfo.ClassId << "\t\t" << UInfo.ClassName << "\t\t" << UInfo.UName;
 				MainLayout3();
 				// 입력받기
 				WIUtility::Gotoxy(11, 9);// 반 입력 커서이동
@@ -252,7 +284,7 @@ void main()
 					if (0 < oSock.Send((char*)&SUData, sizeof(SUData)))
 					{
 						oSock.Receive((char*)&SUData, sizeof(SUData));
-						if (SUData.header.pakID == 201) //201 인증 성공
+						if (SUData.header.pakID == 901) //901 인증 성공
 						{
 							AfxMessageBox("수정에 성공하였습니다.");
 						}
@@ -265,6 +297,8 @@ void main()
 				break;
 			case 52://4.점수 수정 SG
 				system("cls");
+				WIUtility::Gotoxy(35, 4);//유저정보 출력
+				cout << UInfo.ClassId << "\t\t" << UInfo.ClassName << "\t\t" << UInfo.UName;
 				MainLayout4();
 				WIUtility::Gotoxy(11, 10);//반
 				memset(ClassId, 0, sizeof(ClassId));
@@ -291,7 +325,7 @@ void main()
 					if (0 < oSock.Send((char*)&SGData, sizeof(SGData)))
 					{
 						oSock.Receive((char*)&SGData, sizeof(SGData));
-						if (SGData.header.pakID == 201) //201 인증 성공
+						if (SGData.header.pakID == 901) //901 인증 성공
 						{
 							AfxMessageBox("수정에 성공하였습니다.");
 						}
@@ -304,6 +338,8 @@ void main()
 				break;
 			case 53://5.학생검색 SS
 				system("cls");
+				WIUtility::Gotoxy(35, 4);//유저정보 출력
+				cout << UInfo.ClassId << "\t\t" << UInfo.ClassName << "\t\t" << UInfo.UName;
 				MainLayout2();
 				WIUtility::Gotoxy(11, 9); //반
 				memset(ClassId, 0, sizeof(ClassId));
@@ -319,13 +355,13 @@ void main()
 					if (0 < oSock.Send((char*)&SSData, sizeof(SSData)))
 					{
 						oSock.Receive((char*)&SSData, sizeof(SSData));
-						if (SSData.header.pakID == 201) //201 인증 성공
+						if (SSData.header.pakID == 901) //901 인증 성공
 						{
-							AfxMessageBox("수정에 성공하였습니다.");
+							AfxMessageBox("검색에 성공하였습니다.");
 						}
 						else
 						{
-							AfxMessageBox("수정에 실패하였습니다.");
+							AfxMessageBox("검색에 실패하였습니다.");
 						}
 					}
 					//화면에 출력

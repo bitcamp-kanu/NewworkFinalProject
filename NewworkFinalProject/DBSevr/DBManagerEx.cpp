@@ -93,7 +93,7 @@ bool DBManagerEx::IsSecretKeyEx(string id, char key)
 //보안키를 추가한다.
 bool DBManagerEx::InsertSecretKey(string id, char key)
 {
-	if(InsertSecretKey(id,key))
+	if(IsSecretKeyEx(id,key))
 	{
 		_UpdateSecretKey(id,key);
 	}
