@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+
 using namespace std;
 //환경 설정 내용을 관리할 클래스.
 class Config

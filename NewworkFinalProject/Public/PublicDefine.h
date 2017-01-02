@@ -35,7 +35,7 @@ struct _Header
 	int  pakID; //111 성공 110 실패  //인증실패 211
 		//--- 인증 관련 으로 무조건 필요.
 	char id[_ID_SIZE_];	    //자릿 수는 추후 정해야 함.
-	char SecretKey; //인증키.
+	unsigned char SecretKey; //인증키.
 };
 
 //Login AL 서정민
@@ -184,15 +184,15 @@ struct _WorkData
 	int Unity;
 	int Total;
 	double Ave;
-	int UDate;
+	char UDate[_ID_SIZE_];
 
 	_WorkData(){};
 	int cont;
 
-	_WorkData(char cmd1,char cmd2,int  pakID,char* id,char* skey,
+	_WorkData(char cmd1,char cmd2,int  pakID,char* id,char skey,
 		char* mClassId, int mClassNum, char* mSName, char mSSex, char* mSTel,
 		int mC, int mCPP,	int mCSharp, int mNetwork, int mUnity,
-		int mTotal, double mAve, int mUDate)
+		int mTotal, double mAve, char* mUDate)
 	{
 		header.cmd1		= cmd1;
 		header.cmd2		= cmd2;
@@ -213,8 +213,8 @@ struct _WorkData
 		Unity=mUnity;
 		Total=mTotal;
 		Ave=mAve;
-		UDate=mUDate;
-
+		strcpy(UDate,mUDate);
+		
 		cont = 0;
 	}
 
@@ -234,7 +234,7 @@ struct _WorkData
 		sprintf(buff,"%c%c pakID[%d] , id[%s], key[%d], 순서[%d] \n \
 					ClassId[%s] ClassNum[%d] SName[%s] SSex[%c] STel[%s] \n \
 					C[%d] CPP[%d] CSharp[%d] Network[%d] Unity[%d] \n \
-					Total[%d] Ave[%.2l] UDate[%s] \n ",
+					Total[%d] Ave[%.2lf] UDate[%s] \n ",
 					header.cmd1,header.cmd2,header.pakID,header.id,header.SecretKey, cont, \
 					ClassId, ClassNum, SName, SSex, STel, \
 					C, CPP, CSharp, Network, Unity, Total, Ave, UDate);

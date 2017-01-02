@@ -26,6 +26,7 @@ int WorkService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 			_WorkData WorkData;
 
 			memcpy(&WorkData,pData,sizeof(_WorkData));
+			
 			cout << "DB Server - All Average Data 전송 " << WorkData.ToString() << endl;
 			WorkData.cont ++;
 			m_pClinetSock->Send((char*)&WorkData,sizeof(_WorkData));
@@ -36,24 +37,9 @@ int WorkService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 			pSockBase->Send((char*)&WorkData,sizeof(_WorkData));
 			cout << "Client Server - All Average Data 전송 " << WorkData.ToString() << endl;
 		}
-		else if(WIUtility::IsCommand(pData,"GU")) //학생 점수 수정 이면
+		else if(WIUtility::IsCommand(pData,"SG")) //학생 점수 수정 이면
 		{
-			_WorkData WorkData;
-			memcpy(&WorkData,pData,sizeof(_WorkData));
-			//============================================
-			WorkData.Total=WorkData.C + WorkData.CPP + WorkData.CSharp
-				+ WorkData.Network + WorkData.Unity;
-			WorkData.Ave=WorkData.Total/5;
-			//============================================
-			cout << "DB Server - WorkData 수신 " << WorkData.ToString() << endl;
-			WorkData.cont ++;
-			m_pClinetSock->Send((char*)&WorkData,sizeof(_WorkData));
-			WorkData.cont++;
-			m_pClinetSock->Receive((char*)&WorkData,sizeof(_WorkData));
-			cout << "DB Server - WorkData 수신 " << WorkData.ToString() << endl;
-			WorkData.cont++;
-			pSockBase->Send((char*)&WorkData,sizeof(_WorkData));
-			cout << "Client Server - WorkData 전송 " << WorkData.ToString() << endl;
+			WorkSudentGrade(pSockBase,pData, len);
 		}
 		else if(WIUtility::IsCommand(pData,"TW")) //학생 점수 수정 이면
 		{
@@ -72,6 +58,28 @@ int WorkService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 	}
 	return true;
 }
+int WorkService::WorkSudentGrade(SockBase* pSockBase,char* pData, int len)
+{
+	_WorkData WorkData;
+	memcpy(&WorkData,pData,sizeof(_WorkData));
+
+	//============================================
+	WorkData.Total=WorkData.C + WorkData.CPP + WorkData.CSharp
+		+ WorkData.Network + WorkData.Unity;
+	WorkData.Ave=WorkData.Total/5;
+	//============================================
+	cout << "DB Server - WorkData 수신 " << WorkData.ToString() << endl;
+	WorkData.cont ++;
+	m_pClinetSock->Send((char*)&WorkData,sizeof(_WorkData));
+	WorkData.cont++;
+	m_pClinetSock->Receive((char*)&WorkData,sizeof(_WorkData));
+	cout << "DB Server - WorkData 수신 " << WorkData.ToString() << endl;
+	WorkData.cont++;
+	pSockBase->Send((char*)&WorkData,sizeof(_WorkData));
+	cout << "Client Server - WorkData 전송 " << WorkData.ToString() << endl;
+	return 0;
+}
+
 int WorkService::WorkTeset(SockBase* pSockBase,char* pData, int len)
 {
 	_Login logData;

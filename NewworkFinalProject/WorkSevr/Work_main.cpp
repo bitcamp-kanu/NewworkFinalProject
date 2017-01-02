@@ -18,7 +18,9 @@
 void main()
 {
 	cout << "--------- Work Server 을 시작 합니다.----------------" << endl;
+	
 	Config::Instance()->LoadConfig();
+	Config::Instance()->SaveConfig();
 	//로그파일 파일명을 설정한다.
 	//CLog::Instance()->SetFilePath(Config::Instance()->m_strLogFileName);
 
@@ -42,7 +44,7 @@ void main()
 	oSock.Connect();//DB 서버에 연결 한다.	
 
 	oWorkSvc.SetDBSvrConcSocket(&oSock); // 서버 연결 소켓을 설정 한다.
-	//_WorkData pkWorkData('A','A','A',"Work ID","Work PW");
+	//_WorkData WorkData('S','G',111,"id001",'A',"class001",101,"마징가",'M',"111-222-3333",44,55,66,77,88,0,0,20170102);
 
 	cout << "Work Server 입니다." << endl;
 

@@ -18,16 +18,17 @@ void main()
 	oSock.InitSock();
 	oSock.Connect();
 
-	_AverageAll pkAverageAll('A','A','A',"Work ID","Work Password ");
+	//_AverageAll pkAverageAll('A','A','A',"Work ID","Work Password ");
+	_WorkData WorkData('A','A',111,"id001",'A',"class001",101,"¸¶Â¡°¡",'M',"111-222-3333",44,55,66,77,88,0,0.00,"20170102110425");
 
 	while(true)
 	{
-		if(0 <  oSock.Send((char*)&pkAverageAll,sizeof(pkAverageAll)))
+		if(0 <  oSock.Send((char*)&WorkData,sizeof(_WorkData)))
 		{
-			oSock.Receive((char*)&pkAverageAll,sizeof(pkAverageAll));
-			cout << pkAverageAll.ToString() << endl;
+			oSock.Receive((char*)&WorkData,sizeof(_WorkData));
+			cout << WorkData.ToString() << endl;
 		}
-
+		getchar();
 		Sleep(1000);
 
 	}
