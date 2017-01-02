@@ -90,7 +90,107 @@ int GateWayService::ReceiveEvent(SockBase* pSockBase, char* pData, int len)
 				return 0;
 			}
 		}
-		else if (WIUtility::IsCommand(pData, "SS")) //Search Student
+		else if (WIUtility::IsCommand(pData, "SS")) //Student Search
+		{
+			_Login logData;
+			_SearchStudent studentInof;
+			memcpy(&studentInof, pData, sizeof(_SearchStudent));
+			int secCode = IsSecretKey(pData);
+			if (secCode = !201) //인증 실패.
+			{
+				//인증에 실패 하면 실패 코드를 입력 하고 들어온 패킷을 반환 한다.
+				logData.header.pakID = secCode;
+				pSockBase->Send((char*)&logData, sizeof(_Login));
+				return 0;
+			}
+			//인증에 실패 하면 실패 코드를 입력 하고 들어온 패킷을 반환 한다.
+			studentInof.header.pakID = secCode;
+			m_pDBConnectSock->Send((char*)&studentInof, sizeof(_SearchStudent));
+			m_pDBConnectSock->Receive((char*)&studentInof, sizeof(_SearchStudent));
+			pSockBase->Send((char*)&studentInof, sizeof(_SearchStudent));
+			return 0;
+		}
+		else if (WIUtility::IsCommand(pData, "SC")) //Search Create
+		{
+			_Login logData;
+			_SearchStudent studentInof;
+			memcpy(&studentInof, pData, sizeof(_SearchStudent));
+			int secCode = IsSecretKey(pData);
+			if (secCode = !201) //인증 실패.
+			{
+				//인증에 실패 하면 실패 코드를 입력 하고 들어온 패킷을 반환 한다.
+				logData.header.pakID = secCode;
+				pSockBase->Send((char*)&logData, sizeof(_Login));
+				return 0;
+			}
+			//인증에 실패 하면 실패 코드를 입력 하고 들어온 패킷을 반환 한다.
+			studentInof.header.pakID = secCode;
+			m_pWSConnectSock->Send((char*)&studentInof, sizeof(_SearchStudent));
+			m_pWSConnectSock->Receive((char*)&studentInof, sizeof(_SearchStudent));
+			pSockBase->Send((char*)&studentInof, sizeof(_SearchStudent));
+			return 0;
+		}
+		else if (WIUtility::IsCommand(pData, "SU")) //Student update
+		{
+			_Login logData;
+			_SearchStudent studentInof;
+			memcpy(&studentInof, pData, sizeof(_SearchStudent));
+			int secCode = IsSecretKey(pData);
+			if (secCode = !201) //인증 실패.
+			{
+				//인증에 실패 하면 실패 코드를 입력 하고 들어온 패킷을 반환 한다.
+				logData.header.pakID = secCode;
+				pSockBase->Send((char*)&logData, sizeof(_Login));
+				return 0;
+			}
+			//인증에 실패 하면 실패 코드를 입력 하고 들어온 패킷을 반환 한다.
+			studentInof.header.pakID = secCode;
+			m_pDBConnectSock->Send((char*)&studentInof, sizeof(_SearchStudent));
+			m_pDBConnectSock->Receive((char*)&studentInof, sizeof(_SearchStudent));
+			pSockBase->Send((char*)&studentInof, sizeof(_SearchStudent));
+			return 0;
+		}
+		else if (WIUtility::IsCommand(pData, "SG")) //Student Grade
+		{
+			_Login logData;
+			_SearchStudent studentInof;
+			memcpy(&studentInof, pData, sizeof(_SearchStudent));
+			int secCode = IsSecretKey(pData);
+			if (secCode = !201) //인증 실패.
+			{
+				//인증에 실패 하면 실패 코드를 입력 하고 들어온 패킷을 반환 한다.
+				logData.header.pakID = secCode;
+				pSockBase->Send((char*)&logData, sizeof(_Login));
+				return 0;
+			}
+			//인증에 실패 하면 실패 코드를 입력 하고 들어온 패킷을 반환 한다.
+			studentInof.header.pakID = secCode;
+			m_pWSConnectSock->Send((char*)&studentInof, sizeof(_SearchStudent));
+			m_pWSConnectSock->Receive((char*)&studentInof, sizeof(_SearchStudent));
+			pSockBase->Send((char*)&studentInof, sizeof(_SearchStudent));
+			return 0;
+		}
+		else if (WIUtility::IsCommand(pData, "SD")) //Student delete
+		{
+			_Login logData;
+			_SearchStudent studentInof;
+			memcpy(&studentInof, pData, sizeof(_SearchStudent));
+			int secCode = IsSecretKey(pData);
+			if (secCode = !201) //인증 실패.
+			{
+				//인증에 실패 하면 실패 코드를 입력 하고 들어온 패킷을 반환 한다.
+				logData.header.pakID = secCode;
+				pSockBase->Send((char*)&logData, sizeof(_Login));
+				return 0;
+			}
+			//인증에 실패 하면 실패 코드를 입력 하고 들어온 패킷을 반환 한다.
+			studentInof.header.pakID = secCode;
+			m_pDBConnectSock->Send((char*)&studentInof, sizeof(_SearchStudent));
+			m_pDBConnectSock->Receive((char*)&studentInof, sizeof(_SearchStudent));
+			pSockBase->Send((char*)&studentInof, sizeof(_SearchStudent));
+			return 0;
+		}
+		else if (WIUtility::IsCommand(pData, "AA")) //학생검색 ALL
 		{
 			_Login logData;
 			_SearchStudent studentInof;
