@@ -1,4 +1,5 @@
 #include "Config.h"
+#include <Windows.h>
 
 //이분분 꼭 선언 해야함.
 Config* Config::m_pConfig = NULL;
@@ -17,8 +18,9 @@ Config::~Config(void)
 bool Config::SaveConfig()
 {
 	//WIFile m_pKnFile;
-	//m_pKnFile.Open(m_strFileName,"a+");
-	//m_pKnFile.WriteLine(string(buff));
+	/*m_pKnFile.Open(m_strFileName,"a+");
+	m_pKnFile.WriteLine(string(buff))*/;
+	::WritePrivateProfileStringA("DB_Server","IP","127.0.0.1","C:\\ysu\\WorkSevrWORKSevr.ini");
 	m_dbServerIP = "127.0.0.1";
 	m_nDbServerPort = 9003;
 	return true;
