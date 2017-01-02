@@ -291,7 +291,11 @@ struct _WorkData
 		header.cmd2			= cmd2;
 		header.pakID		= pakID;
 		strcpy(header.id,id);
+<<<<<<< HEAD
+		header.SecretKey=skey;
+=======
 		header.SecretKey = skey;
+>>>>>>> 5d0be505942df917889fa470aef5f1e40e8717ad
 		//---------------------
 		strcpy(ClassId,mClassId);
 		ClassNum=mClassNum;
