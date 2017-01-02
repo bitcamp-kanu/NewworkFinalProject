@@ -244,6 +244,10 @@ struct _WorkDataEx
 	int ClassNum;
 	char SName[_ID_SIZE_];
 	short len;
+	_WorkDataEx()
+	{
+
+	}
 	_WorkDataEx(char cmd1, char cmd2, int  pakID, char* id, char skey, char* mClassId, int mClassNum, char* mSName)
 	{
 		header.cmd1 = cmd1;
@@ -283,11 +287,15 @@ struct _WorkData
 		int mC, int mCPP,	int mCSharp, int mNetwork, int mUnity,
 		int mTotal, double mAve, char* mUDate)
 	{
-		header.cmd1		= cmd1;
-		header.cmd2		= cmd2;
-		header.pakID	= pakID;
+		header.cmd1			= cmd1;
+		header.cmd2			= cmd2;
+		header.pakID		= pakID;
 		strcpy(header.id,id);
+<<<<<<< HEAD
 		header.SecretKey=skey;
+=======
+		header.SecretKey = skey;
+>>>>>>> 5d0be505942df917889fa470aef5f1e40e8717ad
 		//---------------------
 		strcpy(ClassId,mClassId);
 		ClassNum=mClassNum;

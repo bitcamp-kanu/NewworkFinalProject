@@ -31,9 +31,9 @@ using namespace std;
 void main(int argc, char* argv[])
 {
 	cout << "--------- DB Server 을 시작 합니다." << endl;
-	DBManager db;
-	db.Open();
-	db.SelectStudent("testid");
+	//DBManager db;
+	//db.Open();
+	//db.SelectStudent("testid");
 
 	//환경 설정 파일을 불러온다.
 	Config::Instance()->LoadConfig();
@@ -42,8 +42,6 @@ void main(int argc, char* argv[])
 
 
 	DBService oDbServcie;
-
-
 	ServerSocket svrSocket;
 	
 	vector<ReceiveSocket*> rgpRevcSocket; 

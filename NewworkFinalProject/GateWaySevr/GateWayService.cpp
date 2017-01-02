@@ -31,6 +31,7 @@ int GateWayService::IsSecretKey(char* pData)
 	secrKey.header.cmd1 = 'E';
 	secrKey.header.cmd2 = 'C';
 	m_pDBConnectSock->Send((char*)&secrKey, sizeof(_SecretKeyChedk));
+	Sleep(300);
 	m_pDBConnectSock->Receive((char*)&secrKey, sizeof(_SecretKeyChedk));
 	return secrKey.header.SecretKey;
 }
@@ -115,24 +116,23 @@ int GateWayService::ReceiveEvent(SockBase* pSockBase, char* pData, int len)
 			pSockBase->Send((char*)&studentInof, sizeof(_SearchStudent));
 			return 0;
 		}
-		else if (WIUtility::IsCommand(pData, "SC")) //Search Create
+		else if (WIUtility::IsCommand(pData, "SC")) 
 		{
-			_Login logData;
-			_SearchStudent studentInof;
-			memcpy(&studentInof, pData, sizeof(_SearchStudent));
+			_WorkData wordData;
+			memcpy(&wordData, pData, sizeof(_WorkData));
 			int secCode = IsSecretKey(pData);
 			if (secCode = !201) //인증 실패.
 			{
 				//인증에 실패 하면 실패 코드를 입력 하고 들어온 패킷을 반환 한다.
-				logData.header.pakID = secCode;
-				pSockBase->Send((char*)&logData, sizeof(_Login));
+				wordData.header.pakID = secCode;
+				pSockBase->Send((char*)&wordData, sizeof(_WorkData));
 				return 0;
 			}
 			//인증에 실패 하면 실패 코드를 입력 하고 들어온 패킷을 반환 한다.
-			studentInof.header.pakID = secCode;
-			m_pWSConnectSock->Send((char*)&studentInof, sizeof(_SearchStudent));
-			m_pWSConnectSock->Receive((char*)&studentInof, sizeof(_SearchStudent));
-			pSockBase->Send((char*)&studentInof, sizeof(_SearchStudent));
+			wordData.header.pakID = secCode;
+			m_pWSConnectSock->Send((char*)&wordData, sizeof(_WorkData));
+			m_pWSConnectSock->Receive((char*)&wordData, sizeof(_WorkData));
+			pSockBase->Send((char*)&wordData, sizeof(_WorkData));
 			return 0;
 		}
 		else if (WIUtility::IsCommand(pData, "SU")) //Student update
