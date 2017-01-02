@@ -595,5 +595,6 @@ void MainLayout5()
 	WIUtility::Gotoxy(7, 38);
 	cout << "1.학생등록\t\t2.학생삭제\t\t3.학생수정\t\t4.점수수정\t\t5.학생검색" << endl;
 	WIUtility::Gotoxy(10, 8);
-	cout << "반\t이름\t 성별\t 전화번호\t\t C\t C++\t C#\t Network\tUnity\t Total\t Avg" << endl;
+	printf("%-15s %-15s %-5s %-15s %5s %5s %5s %5s %5s %s %5s "
+		, "반","이름", "성별", "전화번호", "C", "C++", "C#", "Network","Unity", "Total", "Avg");	
 }
