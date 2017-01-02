@@ -22,6 +22,8 @@
 using namespace std;
 void main()
 {
+
+	Config::Instance()->LoadConfig();
 	char buff[1024];
 	char ID[20];
 	unsigned char SecretKey;
