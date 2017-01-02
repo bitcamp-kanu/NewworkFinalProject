@@ -67,7 +67,7 @@ public:
 
 
 	//학생 정보를 추가 한다. 반 번호는 내부에서 생성 한다.
-	bool InsertStudentEx(string classID,string sName, string sex,string tel);
+	bool InsertStudentEx(string classID,string sName, char sex,string tel);
 	
 	//학생 정보를 업데이트 한다. 검색 조건 classID , classNum 을 가지고 학생 정보를 수정 한다.
 	bool UpdateStudentInfoEx(string classID , int classNum, string sName, char sSex, string sTel);
