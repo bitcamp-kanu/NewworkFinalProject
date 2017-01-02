@@ -77,6 +77,11 @@ int GateWayService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 				pSockBase->Send((char*)&userInof,sizeof(_DemandUserInfo));
 				return 0;
 			}
+			//DB Server 로 데이터를 전송 한다.
+			m_pDBConnectSock->Send((char*)&userInof,sizeof(_DemandUserInfo));
+			m_pDBConnectSock->Receive((char*)&userInof,sizeof(_DemandUserInfo));
+			pSockBase->Send((char*)&userInof,sizeof(_DemandUserInfo));
+
 		}
 		else if(WIUtility::IsCommand(pData,"AL")) //Admin Login CMD 이면
 		{

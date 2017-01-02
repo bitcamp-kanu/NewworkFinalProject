@@ -19,10 +19,7 @@ DBManager::DBManager(void)
 {
 	//m_strConnect = "DSN=bitcamp;Uid=<username>;Pwd=<password>";
 }
-//DBManager::DBManager(CString& str)
-//{
-//	//m_strConnect = str;
-//}
+
 DBManager::~DBManager(void)
 {
 	if(m_podb != NULL)
@@ -72,7 +69,6 @@ vector<string> DBManager::Select(string& query)
 	return rgVector;
 }
 
-
 bool DBManager::IsUserPassword(string id, string pass)
 {
 
@@ -98,7 +94,6 @@ bool DBManager::IsUserPassword(string id, string pass)
 	rs.Close();
 	return (rowCnt == 1) ? true : false;
 }
-
 
 bool DBManager::IsSecretKey(string id, char key)
 {
@@ -203,7 +198,6 @@ string DBManager::SelectStudent(string id)
 	return result;
 }
 
-
 //4. 학생 정보 가져오기 - 조건 - classid, classnum, sname(like)
 //로그인 id와 tb_student의 classid가 동일
 string* DBManager::SelectStudentInfo(string id, string sname)
@@ -268,7 +262,6 @@ string* DBManager::SelectStudentInfo(string id, string sname)
 	return result;
 }
 
-
 bool DBManager::updateStudentInfo(string id, int classNum, string sName, char sSex, string sTel)
 {
 	CString strQuery = "";
@@ -293,7 +286,6 @@ bool DBManager::updateStudentInfo(string id, int classNum, string sName, char sS
 	return true;
 }
 
-
 bool DBManager::deleteStudent(string id, int classNum)
 {
 	CString strQuery = "";
@@ -317,7 +309,6 @@ bool DBManager::deleteStudent(string id, int classNum)
 	}
 	return true;
 }
-
 
 bool DBManager::updateStudentGrade(string id, int classNum, int c, int cpp, int csharp, int network, int unity)
 {

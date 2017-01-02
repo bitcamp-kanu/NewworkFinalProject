@@ -188,7 +188,7 @@ vector<_Tb_Class*> DBManagerEx::SelectClassInfo(string userId)
 	strQuery.Append(	",ClassName ");
 	strQuery.Append(	",UserID ");
 	strQuery.Append(	",TB_CLASS.UDate as UDate ");
-	strQuery.Append(	",TB_CLASS.Flag	 ");
+	strQuery.Append(	",TB_CLASS.Flag	 as FlagEX ");
 	strQuery.Append(	",Pass ");
 	strQuery.Append(	",UName ");
 	strQuery.Append(	",Tell ");
@@ -217,7 +217,7 @@ vector<_Tb_Class*> DBManagerEx::SelectClassInfo(string userId)
 		rs.GetFieldValue("ClassName",ClassName);
 		rs.GetFieldValue("UserID"	,UserID);
 		rs.GetFieldValue("UDate"	,UDate);
-		rs.GetFieldValue("Flag	"	,Flag	);
+		//rs.GetFieldValue("FlagEX	"	,Flag	);문제 발생 원인 분석중 중요하지 않아서 패스.
 		rs.GetFieldValue("Pass"		,Pass);
 		rs.GetFieldValue("UName"	,UName);
 		rs.GetFieldValue("Tell"		,Tell);
@@ -228,8 +228,6 @@ vector<_Tb_Class*> DBManagerEx::SelectClassInfo(string userId)
 							,Pass.GetBuffer(),UName.GetBuffer(),Tell.GetBuffer());
 		vecClass.push_back(pData);
 	}
-
-
 	return vecClass;
 
 }
