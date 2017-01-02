@@ -22,7 +22,7 @@ void main()
 {
 	char buff[1024];
 	char ID[20];
-	char SecretKey;
+	unsigned char SecretKey;
 	char ClassId[20] = { 0 };
 	char ClassName[20] = { 0 };
 	int ClassNum = 0;
@@ -30,8 +30,8 @@ void main()
 	int key; //키보드 입력
 	//LoginServer와 연결
 		//소켓
-		//ClientSocket oSock("192.168.0.59", 9000);
-	ClientSocket oSock("127.0.0.1", 9000);
+	ClientSocket oSock("192.168.0.31", 9000);
+	//ClientSocket oSock("127.0.0.1", 9000);
 	try
 	{
 		oSock.InitWinsock();
@@ -69,13 +69,14 @@ void main()
 			{
 				str[i] = getch();
 				cout << "*";
-				if (i==7)
+				if (str[i]==13)
 				{
 					break;
 				}
 				i++;
 			}
 		}
+		str[strlen(str) - 1] = NULL;
 		WIUtility::Gotoxy(1, 41);
 		//데이터보내기
 		_Login pkLogin('A', 'L', 99, ID, str);
@@ -111,7 +112,8 @@ void main()
 	{
 		//GATEWAY SERVER와 연결
 				//소켓
-		ClientSocket oSock("127.0.0.1", 9001);
+		//ClientSocket oSock("127.0.0.1", 9001);
+		ClientSocket oSock("192.168.0.31", 9001);
 		try
 		{
 			oSock.InitWinsock();
@@ -158,19 +160,43 @@ void main()
 				cout << "오류가 발생하였습니다. " << e.what() << endl;
 			}
 		}
-		
-		//// 학생정보 요청 AA??
-		//		//_WorkData(char cmd1,char cmd2,int  pakID,char* id,char* skey, \
-		//		char* mClassId, int mClassNum, char* mSName, char mSSex, char* mSTel,\
-		//		int mC, int mCPP, int mCSharp, int mNetwork, int mUnity,\
-		//		int mTotal, DOUBLE mAve, int mUDate)
 
+		//// 학생정보 요청 AA
+		//_WorkDataEx(char cmd1, char cmd2, int  pakID, char* id, char skey, char* mClassId, int mClassNum, char* mSName)
+		_WorkDataEx WDE('A', 'A', 99, ID, SecretKey, UInfo.ClassId, 0, "");
+		char buffer[4096] = { 0 };
+		int recv = 0;
+		if (0 < oSock.Send((char*)&WDE, sizeof(WDE)))
+		{
+			recv = oSock.Receive((char*)buffer, sizeof(buffer));
+		}
+		memcpy(&WDE, buffer, sizeof(_WorkDataEx));
+		_WorkPacket* pPacket = (_WorkPacket*)(buffer + sizeof(_WorkDataEx));
 
 		////메인 레이아웃
 		system("cls");
+		MainLayout5();
 		WIUtility::Gotoxy(35, 4);//유저정보 출력
 		cout << UInfo.ClassId << "\t\t" << UInfo.ClassName << "\t\t" << UInfo.UName;
-		MainLayout();
+
+		for (int i = 0; i < WDE.len; i++)
+		{
+			WIUtility::Gotoxy(10, 10 + i); // 학생정보 출력
+			_WorkPacket* pData = ((_WorkPacket*)(pPacket + i));
+			printf("%-15s %-15s %c      %-15s %5d %5d %5d %5d %5d %5d %6.2f \n"
+				, pData->ClassId
+				, pData->SName
+				, pData->SSex
+				, pData->STel
+				, pData->C
+				, pData->CPP
+				, pData->CSharp
+				, pData->Network
+				, pData->Unity
+				, pData->Total
+				, pData->Ave);
+		}
+
 		//메뉴선택
 		while (1)
 		{
@@ -194,6 +220,8 @@ void main()
 				WIUtility::Gotoxy(35, 4);//유저정보 출력
 				cout << UInfo.ClassId << "\t\t" << UInfo.ClassName << "\t\t" << UInfo.UName;
 				MainLayout1();
+				WIUtility::Gotoxy(11, 20);
+				cout << SecretKey;
 				// 입력받기
 				WIUtility::Gotoxy(11, 9);// 반 입력 커서이동
 				memset(ClassId, 0, sizeof(ClassId));
@@ -206,27 +234,28 @@ void main()
 				WIUtility::Gotoxy(17, 15); //전화번호 입력 커서이동
 				memset(STel, 0, sizeof(STel));
 				cin >> STel;
-
 				//패킷 구성
 				{
-				_WorkData SCData('S', 'C', 99, ID, SecretKey,
-					ClassId, ClassNum, SName, SSex, STel,
-					C, CPP, CSharp, Network, Unity,
-					Ave, Total, UDate);
+					_WorkData SCData('S', 'C', 99, ID, SecretKey,
+						ClassId, ClassNum, SName, SSex, STel,
+						C, CPP, CSharp, Network, Unity,
+						Ave, Total, UDate);
 					if (0 < oSock.Send((char*)&SCData, sizeof(SCData)))
 					{
 						oSock.Receive((char*)&SCData, sizeof(SCData));
 						if (SCData.header.pakID == 901) //901 인증 성공
 						{
 							AfxMessageBox("등록에 성공하였습니다.");
+							break;
 						}
 						else
 						{
 							AfxMessageBox("등록에 실패하였습니다.");
+							break;
 						}
 					}
 				}
-				break;
+				
 			case 50: // 2.학생 삭제 SD
 				system("cls");
 				WIUtility::Gotoxy(35, 4);//유저정보 출력
@@ -240,14 +269,14 @@ void main()
 				cin >> SName;
 				//패킷 구성
 				{
-				_WorkData SDData('S', 'D', 99, ID, SecretKey,
-					ClassId, ClassNum, SName, SSex, STel,
-					C, CPP, CSharp, Network, Unity,
-					Ave, Total, UDate);
+					_WorkData SDData('S', 'D', 99, ID, SecretKey,
+						ClassId, ClassNum, SName, SSex, STel,
+						C, CPP, CSharp, Network, Unity,
+						Ave, Total, UDate);
 					if (0 < oSock.Send((char*)&SDData, sizeof(SDData)))
 					{
 						oSock.Receive((char*)&SDData, sizeof(SDData));
-						if (SDData.header.pakID == 201) //201 인증 성공
+						if (SDData.header.pakID == 901) //201 인증 성공
 						{
 							AfxMessageBox("삭제에 성공하였습니다.");
 						}
@@ -277,10 +306,10 @@ void main()
 				cin >> STel;
 				//패킷 구성
 				{
-				_WorkData SUData('S', 'U', 99, ID, SecretKey,
-					ClassId, ClassNum, SName, SSex, STel,
-					C, CPP, CSharp, Network, Unity,
-					Ave, Total, UDate);
+					_WorkData SUData('S', 'U', 99, ID, SecretKey,
+						ClassId, ClassNum, SName, SSex, STel,
+						C, CPP, CSharp, Network, Unity,
+						Ave, Total, UDate);
 					if (0 < oSock.Send((char*)&SUData, sizeof(SUData)))
 					{
 						oSock.Receive((char*)&SUData, sizeof(SUData));
@@ -318,10 +347,10 @@ void main()
 				cin >> Unity;
 				//패킷 구성
 				{
-				_WorkData SGData('S', 'G', 99, ID, SecretKey,
-					ClassId, ClassNum, SName, SSex, STel,
-					C, CPP, CSharp, Network, Unity,
-					Ave, Total, UDate);
+					_WorkData SGData('S', 'G', 99, ID, SecretKey,
+						ClassId, ClassNum, SName, SSex, STel,
+						C, CPP, CSharp, Network, Unity,
+						Ave, Total, UDate);
 					if (0 < oSock.Send((char*)&SGData, sizeof(SGData)))
 					{
 						oSock.Receive((char*)&SGData, sizeof(SGData));
@@ -336,40 +365,76 @@ void main()
 					}
 				}
 				break;
-			case 53://5.학생검색 SS
+			case 53://5.학생검색1명 SS
+				//system("cls");
+				//WIUtility::Gotoxy(35, 4);//유저정보 출력
+				//cout << UInfo.ClassId << "\t\t" << UInfo.ClassName << "\t\t" << UInfo.UName;
+				//MainLayout2();
+				//WIUtility::Gotoxy(11, 9); //반
+				//memset(ClassId, 0, sizeof(ClassId));
+				//cin >> ClassId;
+				//WIUtility::Gotoxy(18, 11); //이름
+				//memset(SName, 0, sizeof(SName));
+				//cin >> SName;
+				//{
+				//	_WorkData SSData('S', 'S', 99, ID, SecretKey,
+				//		ClassId, ClassNum, SName, SSex, STel,
+				//		C, CPP, CSharp, Network, Unity,
+				//		Ave, Total, UDate);
+				//	if (0 < oSock.Send((char*)&SSData, sizeof(SSData)))
+				//	{
+				//		oSock.Receive((char*)&SSData, sizeof(SSData));
+				//		if (SSData.header.pakID == 901) //901 인증 성공
+				//		{
+				//			AfxMessageBox("검색에 성공하였습니다.");
+				//		}
+				//		else
+				//		{
+				//			AfxMessageBox("검색에 실패하였습니다.");
+				//		}
+				//	}
+				//	//화면에 출력
+				//	system("cls");
+				//	MainLayout5();
+				//	WIUtility::Gotoxy(10, 10);
+				//	cout << SSData.ClassId<<"\t"<<SSData.SName<<"\t"<<SSData.SSex<<"\t"<< SSData.STel<<"\t\t"<<SSData.C<<"\t"<< SSData.C++<<"\t"<<SSData.CSharp<<"\t"<<SSData.Network<<"\t"<<SSData.Unity<<"\t"<<SSData.Total<<"\t"<<SSData.Ave << endl;
+				//}
+				//// 학생정보 요청 AA
+				//_WorkDataEx(char cmd1, char cmd2, int  pakID, char* id, char skey, char* mClassId, int mClassNum, char* mSName)
+				_WorkDataEx WDE('A', 'A', 99, ID, SecretKey, UInfo.ClassId, 0, "");
+				char buffer2[4096] = { 0 };
+				int recv = 0;
+				if (0 < oSock.Send((char*)&WDE, sizeof(WDE)))
+				{
+					recv = oSock.Receive((char*)buffer2, sizeof(buffer2));
+				}
+				memcpy(&WDE, buffer2, sizeof(_WorkDataEx));
+				_WorkPacket* pPacket = (_WorkPacket*)(buffer2 + sizeof(_WorkDataEx));
+
+				////메인 레이아웃
 				system("cls");
+				MainLayout5();
 				WIUtility::Gotoxy(35, 4);//유저정보 출력
 				cout << UInfo.ClassId << "\t\t" << UInfo.ClassName << "\t\t" << UInfo.UName;
-				MainLayout2();
-				WIUtility::Gotoxy(11, 9); //반
-				memset(ClassId, 0, sizeof(ClassId));
-				cin >> ClassId;
-				WIUtility::Gotoxy(18, 11); //이름
-				memset(SName, 0, sizeof(SName));
-				cin >> SName;
+
+				for (int i = 0; i < WDE.len; i++)
 				{
-					_WorkData SSData('S', 'S', 99, ID, SecretKey,
-						ClassId, ClassNum, SName, SSex, STel,
-						C, CPP, CSharp, Network, Unity,
-						Ave, Total, UDate);
-					if (0 < oSock.Send((char*)&SSData, sizeof(SSData)))
-					{
-						oSock.Receive((char*)&SSData, sizeof(SSData));
-						if (SSData.header.pakID == 901) //901 인증 성공
-						{
-							AfxMessageBox("검색에 성공하였습니다.");
-						}
-						else
-						{
-							AfxMessageBox("검색에 실패하였습니다.");
-						}
-					}
-					//화면에 출력
-					system("cls");
-					MainLayout5();
-					cout << SSData.ClassId<<"\t"<<SSData.SName<<"\t"<<SSData.SSex<<"\t"<< SSData.STel<<"\t\t"<<SSData.C<<"\t"<< SSData.C++<<"\t"<<SSData.CSharp<<"\t"<<SSData.Network<<"\t"<<SSData.Unity<<"\t"<<SSData.Total<<"\t"<<SSData.Ave << endl;
+					WIUtility::Gotoxy(10, 10 + i); // 학생정보 출력
+					_WorkPacket* pData = ((_WorkPacket*)(pPacket + i));
+					printf("%-15s %-15s %c      %-15s %5d %5d %5d %5d %5d %5d %6.2f \n"
+						, pData->ClassId
+						, pData->SName
+						, pData->SSex
+						, pData->STel
+						, pData->C
+						, pData->CPP
+						, pData->CSharp
+						, pData->Network
+						, pData->Unity
+						, pData->Total
+						, pData->Ave);
+					break;
 				}
-				break;
 			}
 		}
 	}

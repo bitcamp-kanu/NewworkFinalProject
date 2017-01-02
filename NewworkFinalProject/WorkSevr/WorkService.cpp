@@ -23,19 +23,18 @@ int WorkService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 	{
 		if(WIUtility::IsCommand(pData,"AA")) //전체 학생 목록 이면
 		{
-			_WorkData WorkData;
-
-			memcpy(&WorkData,pData,sizeof(_WorkData));
+			_WorkDataEx WorkHeader;
+			memcpy(&WorkHeader,pData,sizeof(_WorkDataEx));
 			
-			cout << "DB Server - All Average Data 전송 " << WorkData.ToString() << endl;
-			WorkData.cont ++;
-			m_pClinetSock->Send((char*)&WorkData,sizeof(_WorkData));
-			WorkData.cont++;
-			m_pClinetSock->Receive((char*)&WorkData,sizeof(_WorkData));
-			cout << "DB Server - All Average Data 수신 " << WorkData.ToString() << endl;
-			WorkData.cont++;
-			pSockBase->Send((char*)&WorkData,sizeof(_WorkData));
-			cout << "Client Server - All Average Data 전송 " << WorkData.ToString() << endl;
+			cout << "DB Server - All Average Data 전송요청 " << endl;
+			m_pClinetSock->Send((char*)&WorkHeader,sizeof(_WorkDataEx));
+			
+			char buff[4096];
+			int len = m_pClinetSock->Receive((char*)&buff,sizeof(buff));
+			cout << "DB Server - All Average Data 수신 " << endl;
+
+			pSockBase->Send((char*)&buff,len);
+			cout << "Client Server - All Average Data 전송 " << endl;
 		}
 		else if(WIUtility::IsCommand(pData,"SC"))
 		{
@@ -43,7 +42,7 @@ int WorkService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 		}
 		else if(WIUtility::IsCommand(pData,"SG")) //학생 점수 수정 이면
 		{
-			WorkSudentGrade(pSockBase,pData, len);
+			WorkStudentGrade(pSockBase,pData, len);
 		}
 		else if(WIUtility::IsCommand(pData,"TW")) //학생 점수 수정 이면
 		{
@@ -62,7 +61,7 @@ int WorkService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 	}
 	return true;
 }
-int WorkService::WorkSudentGrade(SockBase* pSockBase,char* pData, int len)
+int WorkService::WorkStudentGrade(SockBase* pSockBase,char* pData, int len)
 {
 	_WorkData WorkData;
 	memcpy(&WorkData,pData,sizeof(_WorkData));
