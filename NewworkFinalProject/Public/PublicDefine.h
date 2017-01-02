@@ -16,6 +16,9 @@ using namespace std;
 //사용할 패킷을 정의 한다.
 
 //pakID
+//000 공통
+// 901 성공.
+// 900 실패. 데이터 없음.
 //100 로그인
 //	110 로그인 실패.
 //	111 로성공
@@ -36,7 +39,7 @@ struct _Header
 	int  pakID; //111 성공 110 실패  //인증실패 211
 		//--- 인증 관련 으로 무조건 필요.
 	char id[_ID_SIZE_];	    //자릿 수는 추후 정해야 함.
-	char SecretKey; //인증키.
+	unsigned char SecretKey; //인증키.
 };
 
 //Login AL 서정민
@@ -213,7 +216,38 @@ struct _UpdateStudent
 	_Header header;
 };
 
+
+struct _WordPaket
+{
+	char ClassId[_ID_SIZE_];
+	int ClassNum;
+
+	char SName[_ID_SIZE_];
+	char SSex;
+	char STel[_ID_SIZE_];
+	int C;
+	int CPP;
+	int CSharp;
+	int Network;
+	int Unity;
+	int Total;
+	double Ave;
+	char UDate[_DATE_SIZE_];
+};
+
+
 //학생정보 가져오기. AA -- 승욱 형님. GU 성적 수정.
+struct _WorkDataEx
+{
+	_Header header;
+	//조회 조건.
+	char ClassId[_ID_SIZE_];
+	int ClassNum;
+	char SName[_ID_SIZE_];
+	short len;
+};
+//_WordPaket 동적 할당.
+//학생정보 가져오기.  -- 승욱 형님. GU 성적 수정.
 struct _WorkData
 {
 	_Header header;
@@ -230,15 +264,14 @@ struct _WorkData
 	int Unity;
 	int Total;
 	double Ave;
-	int UDate;
-
+	char UDate[_ID_SIZE_];
 	_WorkData(){};
 	int cont;
 
-	_WorkData(char cmd1,char cmd2,int  pakID,char* id,char* skey,
+	_WorkData(char cmd1,char cmd2,int  pakID,char* id,char skey,
 		char* mClassId, int mClassNum, char* mSName, char mSSex, char* mSTel,
 		int mC, int mCPP,	int mCSharp, int mNetwork, int mUnity,
-		int mTotal, double mAve, int mUDate)
+		int mTotal, double mAve, char* mUDate)
 	{
 		header.cmd1		= cmd1;
 		header.cmd2		= cmd2;
@@ -259,8 +292,7 @@ struct _WorkData
 		Unity=mUnity;
 		Total=mTotal;
 		Ave=mAve;
-		UDate=mUDate;
-
+		strcpy(UDate,mUDate);
 		cont = 0;
 	}
 
@@ -280,7 +312,7 @@ struct _WorkData
 		sprintf(buff,"%c%c pakID[%d] , id[%s], key[%d], 순서[%d] \n \
 					ClassId[%s] ClassNum[%d] SName[%s] SSex[%c] STel[%s] \n \
 					C[%d] CPP[%d] CSharp[%d] Network[%d] Unity[%d] \n \
-					Total[%d] Ave[%.2l] UDate[%s] \n ",
+					Total[%d] Ave[%.2lf] UDate[%s] \n ",
 					header.cmd1,header.cmd2,header.pakID,header.id,header.SecretKey, cont, \
 					ClassId, ClassNum, SName, SSex, STel, \
 					C, CPP, CSharp, Network, Unity, Total, Ave, UDate);

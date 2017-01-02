@@ -29,7 +29,7 @@ int GateWayService::IsSecretKey(char* pData)
 	_SecretKeyChedk	secrKey;
 	memcpy(&secrKey.header, pData, sizeof(_Header)); //Packet 에 Head 정보를 복사 한다.
 	secrKey.header.cmd1 = 'E';
-	secrKey.header.cmd1 = 'C';
+	secrKey.header.cmd2 = 'C';
 	m_pDBConnectSock->Send((char*)&secrKey, sizeof(_SecretKeyChedk));
 	m_pDBConnectSock->Receive((char*)&secrKey, sizeof(_SecretKeyChedk));
 	return secrKey.header.SecretKey;
@@ -77,6 +77,11 @@ int GateWayService::ReceiveEvent(SockBase* pSockBase, char* pData, int len)
 				pSockBase->Send((char*)&userInof, sizeof(_DemandUserInfo));
 				return 0;
 			}
+			//DB Server 로 데이터를 전송 한다.
+			m_pDBConnectSock->Send((char*)&userInof,sizeof(_DemandUserInfo));
+			m_pDBConnectSock->Receive((char*)&userInof,sizeof(_DemandUserInfo));
+			pSockBase->Send((char*)&userInof,sizeof(_DemandUserInfo));
+
 		}
 		else if (WIUtility::IsCommand(pData, "AL")) //Admin Login CMD 이면
 		{

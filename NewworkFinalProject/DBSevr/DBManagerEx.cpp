@@ -93,7 +93,7 @@ bool DBManagerEx::IsSecretKeyEx(string id, char key)
 //보안키를 추가한다.
 bool DBManagerEx::InsertSecretKey(string id, char key)
 {
-	if(InsertSecretKey(id,key))
+	if(IsSecretKeyEx(id,key))
 	{
 		_UpdateSecretKey(id,key);
 	}
@@ -171,6 +171,65 @@ int DBManagerEx::SelectStudenClassNum(string classid)
 	}
 	rs.Close();
 	return atoi(nextClassNum); 
+}
+
+vector<_Tb_Class*> DBManagerEx::SelectClassInfo(string userId)
+{
+	if(!m_podb->IsOpen() || m_podb == NULL)
+	{
+		throw exceptionDB("CDatabase 객체를 초기화 하세요.");
+	}
+	vector<_Tb_Class*> vecClass;
+
+	CString strQuery = "";
+	strQuery.Append("SELECT ");
+	strQuery.Append(	" TB_CLASS.Seq as seq ");
+	strQuery.Append(	",ClassId ");
+	strQuery.Append(	",ClassName ");
+	strQuery.Append(	",UserID ");
+	strQuery.Append(	",TB_CLASS.UDate as UDate ");
+	strQuery.Append(	",TB_CLASS.Flag	 as FlagEX ");
+	strQuery.Append(	",Pass ");
+	strQuery.Append(	",UName ");
+	strQuery.Append(	",Tell ");
+	strQuery.Append("FROM  ");
+	strQuery.Append("TB_USER  ");
+	strQuery.Append("LEFT JOIN TB_CLASS  ");
+	strQuery.Append("ON TB_USER.Id = TB_CLASS.UserID  ");
+	strQuery.AppendFormat("WHERE TB_USER.ID = '%s' ",userId.c_str());
+
+
+	CRecordset rs(m_podb);
+	if (!rs.Open(CRecordset::dynaset, strQuery, 0))
+	{
+		throw new exceptionDB("CRecordset Open 실패");
+		return vecClass;
+	}	
+
+	CString seq,ClassId,ClassName,UserID,UDate;
+	CString Flag,Pass,UName,Tell;
+	_Tb_Class* pData = NULL;
+	while (!rs.IsEOF()) //데이터의 끝까지 읽어라.
+	{
+
+		rs.GetFieldValue("seq"		,seq);
+		rs.GetFieldValue("ClassId"	,ClassId);
+		rs.GetFieldValue("ClassName",ClassName);
+		rs.GetFieldValue("UserID"	,UserID);
+		rs.GetFieldValue("UDate"	,UDate);
+		//rs.GetFieldValue("FlagEX	"	,Flag	);문제 발생 원인 분석중 중요하지 않아서 패스.
+		rs.GetFieldValue("Pass"		,Pass);
+		rs.GetFieldValue("UName"	,UName);
+		rs.GetFieldValue("Tell"		,Tell);
+
+		rs.MoveNext();
+		pData = new _Tb_Class(seq.GetBuffer(),ClassId.GetBuffer(),ClassName.GetBuffer()
+							,UserID.GetBuffer(),UDate.GetBuffer(),Flag.GetBuffer()
+							,Pass.GetBuffer(),UName.GetBuffer(),Tell.GetBuffer());
+		vecClass.push_back(pData);
+	}
+	return vecClass;
+
 }
 //학생 정보를 추가 한다. 반 번호는 내부에서 생성 한다.
 bool DBManagerEx::InsertStudentEx(string classID,string sName, string sex,string tel)
@@ -297,7 +356,6 @@ bool DBManagerEx::UpdateStudentGrade( int nSeq	,string classId	,int classNum
 	}
 	return true;
 }
-
 
 //학생 정보를 검색 한다.
 vector<_Student*> DBManagerEx::SelectStudent(string classID,int classNum,string sNameLike)

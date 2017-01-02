@@ -261,6 +261,14 @@ string WIUtility::GetLastErrorMessage()
 	return strMsg;
 }
 
+
+string WIUtility::GetCurrentDir()
+{
+	char buff[1024] = {0};
+	GetCurrentDirectory(1024,buff);
+	return string(buff);
+}
+
 //string WIUtility::FormatString(char* format,...)
 //{
 //	char* buff[1024] = {0};

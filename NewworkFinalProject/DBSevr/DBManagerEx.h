@@ -55,6 +55,9 @@ public:
 	int SelectStudenClassNum(string classid);
 	//보안키를 추가한다.
 	
+	vector<_Tb_Class*> SelectClassInfo(string userId);
+	 
+
 	bool InsertSecretKey(string id, char key);
 	bool _UpdateSecretKey(string id, char key);
 	bool _InsertSecretKey(string id, char key);
@@ -62,7 +65,7 @@ public:
 	bool IsSecretKeyEx(string id, char key);
 
 
-	
+
 	//학생 정보를 추가 한다. 반 번호는 내부에서 생성 한다.
 	bool InsertStudentEx(string classID,string sName, string sex,string tel);
 	

@@ -4,20 +4,18 @@
 #include "..\Public\WIUtility.h"
 #include "..\Public\PublicDefine.h"
 
-
-#include "DBManager.h"
+#include "DBManagerEx.h"
 
 DBService::DBService(void)
 {
-	m_pDbManager = new DBManager();
-	m_pDbManager->Open();
+	m_pDbManagerEx = new DBManagerEx();
+	m_pDbManagerEx->Open();
 }
 
 
 DBService::~DBService(void)
 {
 }
-
 
 int DBService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 {
@@ -30,9 +28,9 @@ int DBService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 			memcpy(&logData,pData,sizeof(_Login));
 			cout << "DB Server 수신 " << logData.ToString() << endl;
 
-			if(m_pDbManager->IsUserPassword(logData.id,logData.pass))
+			if(m_pDbManagerEx->IsUserPasswordEx(logData.id,logData.pass))
 			{
-				m_pDbManager->InsertSecretKey(logData.id, logData.header.SecretKey);
+				m_pDbManagerEx->InsertSecretKey(logData.id, logData.header.SecretKey);
 				logData.header.pakID = 111;
 			}
 			else
@@ -47,7 +45,7 @@ int DBService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 			_SecretKeyChedk sechtKey;
 			memcpy(&sechtKey, pData, sizeof(_SecretKeyChedk));
 			cout << "DB Server 수신 " << sechtKey.ToString() << endl;
-			if(m_pDbManager->IsSecretKey(sechtKey.header.id, sechtKey.header.SecretKey))
+			if(m_pDbManagerEx->IsSecretKeyEx(sechtKey.header.id, sechtKey.header.SecretKey))
 			{
 				sechtKey.header.pakID = 201; //인증 성공
 			}
@@ -58,13 +56,57 @@ int DBService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 
 			int error = pSockBase->Send((char*)&sechtKey, sizeof(_SecretKeyChedk));
 		}
+		else if(WIUtility::IsCommand(pData,"US")) //USER 정보 요청
+		{
+			_DemandUserInfo userInof;
+			memcpy(&userInof,pData,sizeof(_DemandUserInfo));
+			vector<_Tb_Class*> vec = m_pDbManagerEx->SelectClassInfo(userInof.header.id);
+			if(vec.size() > 0)
+			{
+				strcpy(userInof.ClassId		,vec[0]->ClassId.c_str());
+				strcpy(userInof.ClassName	,vec[0]->ClassName.c_str());
+				strcpy(userInof.UName		,vec[0]->UName.c_str());
+				userInof.header.pakID = 901;
+			}
+			else
+			{
+				userInof.header.pakID = 900;
+			}
+			int error = pSockBase->Send((char*)&userInof, sizeof(_DemandUserInfo));
+
+		}
 		else if(WIUtility::IsCommand(pData,"AA")) //테스트 CMD 이면
 		{
-			_Login logData;
-			memcpy(&logData,pData,sizeof(_Login));
-			cout << "Work Server 수신 " << logData.ToString() << endl;
-			logData.cont++;
-			pSockBase->Send((char*)&logData,sizeof(_Login));
+			_WorkDataEx workDataEx;
+			memcpy(&workDataEx,pData,sizeof(_WorkDataEx));
+			vector<_Student*> vec = m_pDbManagerEx->SelectStudent(workDataEx.ClassId,workDataEx.ClassNum,workDataEx.SName);			
+			_WordPaket* pData = new _WordPaket[vec.size()];
+			workDataEx.len = vec.size();
+			for(int i = 0 ; i < vec.size() ; i++)
+			{
+				pData[i].ClassNum		= atoi(vec[i]->ClassNum.c_str());
+				strcpy(pData[i].ClassId	,vec[i]->ClassId.c_str());
+				strcpy(pData[i].SName	,vec[i]->SName.c_str());
+				pData[i].SSex			= vec[i]->SSex[0];
+				strcpy(pData[i].STel	,vec[i]->STelNo.c_str());
+				pData[i].C				= atoi(vec[i]->C.c_str());
+				pData[i].CPP			= atoi(vec[i]->CPP.c_str());
+				pData[i].CSharp			= atoi(vec[i]->CSharp.c_str());
+				pData[i].Network		= atoi(vec[i]->Network.c_str());
+				pData[i].Unity			= atoi(vec[i]->Unity.c_str());
+				pData[i].Total			= atoi(vec[i]->Total.c_str());
+				pData[i].Ave			= atof(vec[i]->Avg.c_str());
+				strcpy(pData[i].UDate	,vec[i]->UDate.c_str());
+			}
+			int len = sizeof(_WorkDataEx) + sizeof(_WordPaket) * workDataEx.len;
+			char* buff = new char[len];
+
+			len = 0;
+			memcpy(buff + len,&workDataEx,sizeof(_WorkDataEx));
+			len = sizeof(_WorkDataEx);
+			memcpy(buff + len,pData,sizeof(_WordPaket) * workDataEx.len);
+			len += sizeof(_WordPaket) * workDataEx.len;
+			pSockBase->Send(buff,len);
 		}
 		else if(WIUtility::IsCommand(pData,"TL")) //테스트 CMD 이면
 		{
