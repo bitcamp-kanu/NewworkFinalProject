@@ -23,7 +23,8 @@ void main()
 	WritePrivateProfileString("TEST","KEYNAME","1004","AAA.ini");
 	int port = 9000;
 	srand((unsigned int)time(NULL));
-	int num = rand()%3 ; 
+	int num = rand()%3 ;
+	num = 1;
 
 	_Login pkLogin('T','L','A',"로그인서버","비밀번호입니다");
 	switch(num)
@@ -48,42 +49,38 @@ void main()
 	//port = 9000; //로그인 서버.
 
 	//string str = WIUtility::GetFormatString("%s %d 등", "로그인 서버",1);
-	ClientSocket oSockLogin("127.0.0.1",port);		//로그인 서버.
-	try
-	{
-		//ClientSocket oSockLogin("127.0.0.1",9000);		//로그인 서버.
-		oSockLogin.InitWinsock();
-		oSockLogin.InitSock();
-		oSockLogin.Connect();
-	}
-	catch (exceptionCS e)
-	{
-		cout << e.what() << endl;
-		
-	}
-	
-	
+	//ClientSocket oSockLogin("127.0.0.1",port);		//로그인 서버.
+	//try
+	//{
+	//	//ClientSocket oSockLogin("127.0.0.1",9000);		//로그인 서버.
+	//	oSockLogin.InitWinsock();
+	//	oSockLogin.InitSock();
+	//	oSockLogin.Connect();
+	//}
+	//catch (exceptionCS e)
+	//{
+	//	cout << e.what() << endl;
+	//	
+	//}	
 
-	//ClientSocket oSockGate("127.0.0.1",9001);		//GateWay 서버.
-	//oSockGate.InitWinsock();
-	//oSockGate.InitSock();
-	//oSockGate.Connect();
+	ClientSocket oSockGate("127.0.0.1",9001);		//GateWay 서버.
+	oSockGate.InitWinsock();
+	oSockGate.InitSock();
+	oSockGate.Connect();
+
+	//char cmd1, char cmd2, int pakID, char* id, char SecretKey, char* ClassId, int ClassNum, char* SName, char SSex, char* STelNo, int C, int CPP, int CSharp, int Network, int Unity, int Total, float Avg
+	_SearchStudent _SearchStudent('S', 'G', 0, "", '1', "class001", 1, "학생1", '1', "", 0, 0, 0, 0, 0, 0, 0.0);
 
 	//TL 로그인 서버
 	//TG GateServer 서서
 	//TW WorkServer
-	
-	//if(port == 9001)
-	//{
-	//	pkLogin.header.cmd2 = '2';
-	//}
+
 	while(true)
 	{
-		if(0 <  oSockLogin.Send((char*)&pkLogin,sizeof(pkLogin)))
+		if(0 <  oSockGate.Send((char*)&_SearchStudent,sizeof(_SearchStudent)))
 		{
 			cout << 
-			oSockLogin.Receive((char*)&pkLogin,sizeof(pkLogin));
-			cout << pkLogin.ToString() << endl;
+				oSockGate.Receive((char*)&_SearchStudent,sizeof(_SearchStudent));
 		}
 		Sleep(500);	
 	}

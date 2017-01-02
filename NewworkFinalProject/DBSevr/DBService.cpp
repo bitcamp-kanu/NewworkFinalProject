@@ -77,11 +77,36 @@ int DBService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 		}
 		else if(WIUtility::IsCommand(pData,"AA")) //테스트 CMD 이면
 		{
-			_Login logData;
-			memcpy(&logData,pData,sizeof(_Login));
-			cout << "Work Server 수신 " << logData.ToString() << endl;
-			logData.cont++;
-			pSockBase->Send((char*)&logData,sizeof(_Login));
+			_WorkDataEx workDataEx;
+			memcpy(&workDataEx,pData,sizeof(_WorkDataEx));
+			vector<_Student*> vec = m_pDbManagerEx->SelectStudent(workDataEx.ClassId,workDataEx.ClassNum,workDataEx.SName);			
+			_WordPaket* pData = new _WordPaket[vec.size()];
+			workDataEx.len = vec.size();
+			for(int i = 0 ; i < vec.size() ; i++)
+			{
+				pData[i].ClassNum		= atoi(vec[i]->ClassNum.c_str());
+				strcpy(pData[i].ClassId	,vec[i]->ClassId.c_str());
+				strcpy(pData[i].SName	,vec[i]->SName.c_str());
+				pData[i].SSex			= vec[i]->SSex[0];
+				strcpy(pData[i].STel	,vec[i]->STelNo.c_str());
+				pData[i].C				= atoi(vec[i]->C.c_str());
+				pData[i].CPP			= atoi(vec[i]->CPP.c_str());
+				pData[i].CSharp			= atoi(vec[i]->CSharp.c_str());
+				pData[i].Network		= atoi(vec[i]->Network.c_str());
+				pData[i].Unity			= atoi(vec[i]->Unity.c_str());
+				pData[i].Total			= atoi(vec[i]->Total.c_str());
+				pData[i].Ave			= atof(vec[i]->Avg.c_str());
+				strcpy(pData[i].UDate	,vec[i]->UDate.c_str());
+			}
+			int len = sizeof(_WorkDataEx) + sizeof(_WordPaket) * workDataEx.len;
+			char* buff = new char[len];
+
+			len = 0;
+			memcpy(buff + len,&workDataEx,sizeof(_WorkDataEx));
+			len = sizeof(_WorkDataEx);
+			memcpy(buff + len,pData,sizeof(_WordPaket) * workDataEx.len);
+			len += sizeof(_WordPaket) * workDataEx.len;
+			pSockBase->Send(buff,len);
 		}
 		else if(WIUtility::IsCommand(pData,"TL")) //테스트 CMD 이면
 		{

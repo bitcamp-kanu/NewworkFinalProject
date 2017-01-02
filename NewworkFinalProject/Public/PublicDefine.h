@@ -12,6 +12,7 @@ using namespace std;
 #define _PASS_SIZE_ 20
 #define _CLASSID_SIZE_ 20
 #define _DATE_SIZE_ 15
+#define _TEL_SIZE_ 13
 //사용할 패킷을 정의 한다.
 
 //pakID
@@ -149,7 +150,52 @@ struct _DemandUserInfo
 struct _SearchStudent
 {
 	_Header header;
+	char ClassId[_CLASSID_SIZE_];
+	int  ClassNum;
+	char SName[_ID_SIZE_];
+	char SSex;
+	char STelNo[_TEL_SIZE_];
+	int  C;
+	int  CPP;
+	int  CSharp;
+	int  Network;
+	int  Unity;
+	int  Total;
+	float  Avg;
+	_SearchStudent() {};
+	int cont;
+	//인증키 정보 UserID, KEy;
+	//
+	_SearchStudent(char cmd1, char cmd2, int pakID, char* id, char SecretKey, char* ClassId, int ClassNum, char* SName, char SSex, char* STelNo, int C, int CPP, int CSharp, int Network, int Unity, int Total, float Avg)
+	{
+		header.cmd1 = cmd1;
+		header.cmd2 = cmd2;
+		header.pakID = pakID;
+		strcpy(header.id, id);
+		header.SecretKey = SecretKey;
+		strcpy(this->ClassId, ClassId);
+		this->ClassNum = ClassNum;
+		strcpy(this->SName, SName);
+		this->SSex = SSex;
+		strcpy(this->STelNo, STelNo);
+		this->C = C;
+		this->CPP = CPP;
+		this->CSharp = CSharp;
+		this->Network = Network;
+		this->Unity = Unity;
+		this->Total = Total;
+		this->Avg = Avg;
+	}
+	void InitData()
+	{
+		memset(this, 0x00, sizeof(this));
+	}
 
+	//buff 의 내용을 구조체에 채운다.
+	void SetCopyBuff(char* data)
+	{
+		memcpy(this, data, sizeof(this));
+	}
 };
 
 //학생 등록. SC 초롱씨.
