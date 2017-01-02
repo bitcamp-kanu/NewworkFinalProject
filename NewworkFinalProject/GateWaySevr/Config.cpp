@@ -36,6 +36,8 @@ bool Config::LoadConfig()
 	m_dbServerIP = "127.0.0.1";
 	m_nDbServerPort = 9003;
 
+	//m_workServerIP = "127.0.0.1";
+	//m_workServerIP = "192.168.0.59";
 	m_workServerIP = "127.0.0.1";
 	m_nWorkServerPort = 9002;
 

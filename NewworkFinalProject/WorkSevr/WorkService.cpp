@@ -37,6 +37,10 @@ int WorkService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 			pSockBase->Send((char*)&WorkData,sizeof(_WorkData));
 			cout << "Client Server - All Average Data 전송 " << WorkData.ToString() << endl;
 		}
+		else if(WIUtility::IsCommand(pData,"SC"))
+		{
+
+		}
 		else if(WIUtility::IsCommand(pData,"SG")) //학생 점수 수정 이면
 		{
 			WorkSudentGrade(pSockBase,pData, len);

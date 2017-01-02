@@ -273,11 +273,11 @@ struct _WorkData
 		int mC, int mCPP,	int mCSharp, int mNetwork, int mUnity,
 		int mTotal, double mAve, char* mUDate)
 	{
-		header.cmd1		= cmd1;
-		header.cmd2		= cmd2;
-		header.pakID	= pakID;
+		header.cmd1			= cmd1;
+		header.cmd2			= cmd2;
+		header.pakID		= pakID;
 		strcpy(header.id,id);
-		header.SecretKey,skey;
+		header.SecretKey = skey;
 		//---------------------
 		strcpy(ClassId,mClassId);
 		ClassNum=mClassNum;
