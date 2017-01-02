@@ -133,6 +133,8 @@ public:
 	//마지막 발생한 ErrorCode  를 반환 한다.
 	static string GetLastErrorMessage();
 
+	static string GetCurrentDir();
+
 
 };
 
