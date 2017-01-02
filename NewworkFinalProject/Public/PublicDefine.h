@@ -244,6 +244,10 @@ struct _WorkDataEx
 	int ClassNum;
 	char SName[_ID_SIZE_];
 	short len;
+	_WorkDataEx()
+	{
+
+	}
 	_WorkDataEx(char cmd1, char cmd2, int  pakID, char* id, char skey, char* mClassId, int mClassNum, char* mSName)
 	{
 		header.cmd1 = cmd1;

@@ -80,8 +80,8 @@ int DBService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 			_WorkDataEx workDataEx;
 			memcpy(&workDataEx,pData,sizeof(_WorkDataEx));
 			vector<_Student*> vec = m_pDbManagerEx->SelectStudent(workDataEx.ClassId,workDataEx.ClassNum,workDataEx.SName);			
-			_WordPaket* pData = new _WordPaket[vec.size()];
-			memset(pData,0x00,sizeof(_WordPaket) * vec.size());
+			_WorkPacket* pData = new _WorkPacket[vec.size()];
+			memset(pData,0x00,sizeof(_WorkPacket) * vec.size());
 			workDataEx.len = vec.size();
 			for(int i = 0 ; i < vec.size() ; i++)
 			{
@@ -99,14 +99,14 @@ int DBService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 				pData[i].Ave			= atof(vec[i]->Avg.c_str());
 				strcpy(pData[i].UDate	,vec[i]->UDate.c_str());
 			}
-			int len = sizeof(_WorkDataEx) + sizeof(_WordPaket) * workDataEx.len;
+			int len = sizeof(_WorkDataEx) + sizeof(_WorkDataEx) * workDataEx.len;
 			char* buff = new char[len];
 
 			len = 0;
 			memcpy(buff + len,&workDataEx,sizeof(_WorkDataEx));
 			len = sizeof(_WorkDataEx);
-			memcpy(buff + len,pData,sizeof(_WordPaket) * workDataEx.len);
-			len += sizeof(_WordPaket) * workDataEx.len;
+			memcpy(buff + len,pData,sizeof(_WorkDataEx) * workDataEx.len);
+			len += sizeof(_WorkDataEx) * workDataEx.len;
 			pSockBase->Send(buff,len);
 
 
