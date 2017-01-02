@@ -115,11 +115,11 @@ int DBService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 		{
 			_WorkData workData;
 			try
-			{
-				string sex = WIUtility::GetFormatString("%c",workData.SSex);
+			{				
+				//string sex = WIUtility::GetFormatString("%c",workData.SSex);
 
 				memcpy(&workData,pData,sizeof(_WorkData));
-				if(m_pDbManagerEx->InsertStudentEx(workData.ClassId,workData.SName,sex,workData.STel))
+				if(m_pDbManagerEx->InsertStudentEx(workData.ClassId,workData.SName,workData.SSex,workData.STel))
 				{					
 					workData.header.pakID = 901;
 				}
