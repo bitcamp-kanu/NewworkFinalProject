@@ -197,22 +197,21 @@ int GateWayService::ReceiveEvent(SockBase* pSockBase, char* pData, int len)
 		}
 		else if (WIUtility::IsCommand(pData, "AA")) //학생검색 ALL
 		{
-			_Login logData;
-			_SearchStudent studentInof;
-			memcpy(&studentInof, pData, sizeof(_SearchStudent));
+			_WorkDataEx workPacket;
+			memcpy(&workPacket, pData, sizeof(_WorkDataEx));
 			int secCode = IsSecretKey(pData);
 			if (secCode = !201) //인증 실패.
 			{
 				//인증에 실패 하면 실패 코드를 입력 하고 들어온 패킷을 반환 한다.
-				logData.header.pakID = secCode;
-				pSockBase->Send((char*)&logData, sizeof(_Login));
+				workPacket.header.pakID = secCode;
+				pSockBase->Send((char*)&workPacket, sizeof(_WorkDataEx));
 				return 0;
 			}
-			//인증에 실패 하면 실패 코드를 입력 하고 들어온 패킷을 반환 한다.
-			studentInof.header.pakID = secCode;
-			m_pDBConnectSock->Send((char*)&studentInof, sizeof(_SearchStudent));
-			m_pDBConnectSock->Receive((char*)&studentInof, sizeof(_SearchStudent));
-			pSockBase->Send((char*)&studentInof, sizeof(_SearchStudent));
+			//인증 성공.
+			m_pWSConnectSock->Send((char*)&workPacket, sizeof(_SearchStudent));
+			char buff[_RECV_BUFFER_SIZE] = {0};
+			int recv = m_pWSConnectSock->Receive(buff, _RECV_BUFFER_SIZE);
+			pSockBase->Send(buff, sizeof(_SearchStudent));
 			return 0;
 		}
 		else if (WIUtility::IsCommand(pData, "TG")) //Admin Login CMD 이면
