@@ -126,9 +126,9 @@ struct _DemandUserInfo
 		header.pakID = pakID;
 		strcpy(header.id, id);
 		header.SecretKey = SecretKey;
-		strcpy(ClassId, ClassId);
-		strcpy(ClassName, ClassName);
-		strcpy(UName, UName);
+		strcpy(this->ClassId, ClassId);
+		strcpy(this->ClassName, ClassName);
+		strcpy(this->UName, UName);
 	}
 	void InitData()
 	{
