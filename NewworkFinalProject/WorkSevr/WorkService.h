@@ -12,7 +12,7 @@ public:
 	virtual int ReceiveEvent(SockBase* pSockBase,char* pData, int len);	
 public:
 	int WorkTeset(SockBase* pSockBase,char* pData, int len);
-	int WorkSudentGrade(SockBase* pSockBase,char* pData, int len);
+	int WorkStudentGrade(SockBase* pSockBase,char* pData, int len);
 	//DB 서버와 연결할 소켓 정보를 설정 한다.
 	void SetDBSvrConcSocket(ClientSocket* pClinetSock);
 	WorkService(void);
