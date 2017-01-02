@@ -187,15 +187,15 @@ struct _WorkData
 	int Unity;
 	int Total;
 	double Ave;
-	int UDate;
+	char UDate[_DATE_SIZE_];
 
 	_WorkData(){};
 	int cont;
 
-	_WorkData(char cmd1,char cmd2,int  pakID,char* id,char* skey,
+	_WorkData(char cmd1,char cmd2,int  pakID,char* id,char skey,
 		char* mClassId, int mClassNum, char* mSName, char mSSex, char* mSTel,
 		int mC, int mCPP,	int mCSharp, int mNetwork, int mUnity,
-		int mTotal, double mAve, int mUDate)
+		int mTotal, double mAve, char* mUDate)
 	{
 		header.cmd1		= cmd1;
 		header.cmd2		= cmd2;
@@ -216,8 +216,7 @@ struct _WorkData
 		Unity=mUnity;
 		Total=mTotal;
 		Ave=mAve;
-		UDate=mUDate;
-
+		strcpy(UDate, mUDate);
 		cont = 0;
 	}
 
