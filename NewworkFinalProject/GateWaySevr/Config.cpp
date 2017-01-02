@@ -1,4 +1,5 @@
 #include "Config.h"
+#include "..\Public\WIUtility.h"
 
 Config* Config::m_pConfig = NULL;
 Config::Config(void)
@@ -29,17 +30,27 @@ bool Config::SaveConfig()
 bool Config::LoadConfig()
 {
 	m_strLogFileName = "gateWaySevr.log";
-	m_nServerPort = 9001;
-	m_nListenCnt = 5;
 
-	//연결할 DB 서버 정보. 
-	m_dbServerIP = "127.0.0.1";
-	m_nDbServerPort = 9003;
+	char buff[1024] = {0};
+	char temp[1024] = {0};
+	GetCurrentDirectory(1024,buff);
+	strcat(buff, "\\");
+	strcat(buff, m_strConfigFileName.c_str());
 
-	//m_workServerIP = "127.0.0.1";
-	//m_workServerIP = "192.168.0.59";
-	m_workServerIP = "127.0.0.1";
-	m_nWorkServerPort = 9002;
+	::GetPrivateProfileStringA("MY_Server","PORT","",temp,255,buff);
+	m_nServerPort = atoi(temp);
+	::GetPrivateProfileStringA("MY_Server","LIST_cnt","",temp,255,buff);
+	m_nListenCnt = atoi(temp);
 
+	::GetPrivateProfileStringA("DB_Server","IP","",temp,255,buff);
+	m_dbServerIP = temp;
+	::GetPrivateProfileStringA("DB_Server","PORT","",temp,255,buff);
+	m_nDbServerPort = atoi(temp);
+
+	::GetPrivateProfileStringA("WK_Server","IP","",temp,255,buff);
+	m_workServerIP = temp;
+	::GetPrivateProfileStringA("WK_Server","PORT","",temp,255,buff);
+	m_nWorkServerPort = atoi(temp);
+	
 	return true;
 }

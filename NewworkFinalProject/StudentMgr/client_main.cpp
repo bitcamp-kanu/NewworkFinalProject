@@ -9,6 +9,7 @@
 #include <iostream>
 #include <process.h>
 #include <iostream>
+#include "Config.h"
 #include "..\Public\ClientSocket.h"
 #include "..\Public\PublicDefine.h"
 #include "..\public\ServerSocket.h"
@@ -16,6 +17,7 @@
 #include "..\Public\WIDisplay.h"
 #include "..\Public\WIUtility.h"
 #include "layout.h"
+
 
 using namespace std;
 void main()
@@ -30,7 +32,7 @@ void main()
 	int key; //키보드 입력
 	//LoginServer와 연결
 		//소켓
-	ClientSocket oSock("192.168.0.31", 9000);
+	ClientSocket oSock(Config::Instance()->m_loginServerIP, Config::Instance()->m_nLoginServerPort);
 	//ClientSocket oSock("127.0.0.1", 9000);
 	try
 	{
@@ -113,7 +115,7 @@ void main()
 		//GATEWAY SERVER와 연결
 				//소켓
 		//ClientSocket oSock("127.0.0.1", 9001);
-		ClientSocket oSock("192.168.0.31", 9001);
+		ClientSocket oSock(Config::Instance()->m_gateServerIP, Config::Instance()->m_nGateServerPort);
 		try
 		{
 			oSock.InitWinsock();

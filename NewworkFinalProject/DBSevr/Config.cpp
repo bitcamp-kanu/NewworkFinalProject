@@ -1,5 +1,6 @@
 #include "Config.h"
 #include "..\Public\WIFile.h"
+#include "..\Public\WIUtility.h"
 
 Config* Config::m_pConfig = NULL;
 Config::Config(void)
@@ -25,8 +26,18 @@ bool Config::LoadConfig()
 {
 	//C:\github\bitcamp_Network_Project\NewworkFinalProject\ClientTest
 	m_strConnsetStr = "DSN=Database;Uid=<username>;Pwd=<password>";
-	m_nServerPort = 9003;
-	m_nListenCnt = 5;
+
+	char buff[1024] = {0};
+	char temp[1024] = {0};
+	GetCurrentDirectory(1024,buff);
+	strcat(buff, "\\");
+	strcat(buff, m_strConfigFileName.c_str());
+
+	::GetPrivateProfileStringA("MY_Server","PORT","",temp,255,buff);
+	m_nServerPort = atoi(temp);
+	::GetPrivateProfileStringA("MY_Server","LIST_cnt","",temp,255,buff);
+	m_nListenCnt = atoi(temp);
+
 	m_strLogFileName = "DbServer.log";
 	WIFile file;
 	//file.Open(m_strConfigFileName);	

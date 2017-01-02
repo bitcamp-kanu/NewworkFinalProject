@@ -5,9 +5,20 @@ using namespace std;
 //환경 설정 내용을 관리할 클래스.
 class Config
 {
-private:
+public:
 	static Config* m_pConfig;
 	string m_strConfigFileName;
+
+	int		m_nServerPort;
+	int		m_nListenCnt;
+
+	//연결한 타켓 서버
+	string	m_gateServerIP;
+	int		m_nGateServerPort;
+
+	string	m_loginServerIP;
+	int		m_nLoginServerPort;
+
 	Config(void);
 public:
 	//시간상 Get Set 은 생략 한다. 절대 이렇게 코딩 하면 않됨.

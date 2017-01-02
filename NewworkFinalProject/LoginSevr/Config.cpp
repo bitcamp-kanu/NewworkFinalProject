@@ -1,9 +1,10 @@
 #include "Config.h"
+#include "..\Public\WIUtility.h"
 
 Config* Config::m_pConfig = NULL;
 Config::Config(void)
 {
-	m_strConfigFileName = "DBSevr.cfg";
+	m_strConfigFileName = "LoginSevr.cfg";
 }
 
 
@@ -15,23 +16,25 @@ Config::~Config(void)
 
 bool Config::SaveConfig()
 {
-	m_dbServerIP = "127.0.0.1";
-	m_nDbServerPort = 9003;
 	return true;
-
-	//WIFile m_pKnFile;
-	//m_pKnFile.Open(m_strFileName,"a+");
-	//m_pKnFile.WriteLine(string(buff));
 }
 bool Config::LoadConfig()
 {
-	m_nServerPort = 9000;
-	m_nListenCnt = 5;
+	char buff[1024] = {0};
+	char temp[1024] = {0};
+	GetCurrentDirectory(1024,buff);
+	strcat(buff, "\\");
+	strcat(buff, m_strConfigFileName.c_str());
 
-	//연결할 DB 서버 정보.
-	//m_dbServerIP = "192.168.0.220";
-	m_dbServerIP = "127.0.0.1";
-	m_nDbServerPort = 9003;
+	::GetPrivateProfileStringA("MY_Server","PORT","",temp,255,buff);
+	m_nServerPort = atoi(temp);
+	::GetPrivateProfileStringA("MY_Server","LIST_cnt","",temp,255,buff);
+	m_nListenCnt = atoi(temp);
+
+	::GetPrivateProfileStringA("DB_Server","IP","",temp,255,buff);
+	m_dbServerIP = temp;
+	::GetPrivateProfileStringA("DB_Server","PORT","",temp,255,buff);
+	m_nDbServerPort = atoi(temp);
 
 	return true;
 }
