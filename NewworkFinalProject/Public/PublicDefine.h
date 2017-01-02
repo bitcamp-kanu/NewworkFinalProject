@@ -269,7 +269,7 @@ struct _WorkData
 	int ClassNum;
 
 	char SName[_ID_SIZE_];
-	char SSex;
+	unsigned char SSex;
 	char STel[_ID_SIZE_];
 	int C;
 	int CPP;
