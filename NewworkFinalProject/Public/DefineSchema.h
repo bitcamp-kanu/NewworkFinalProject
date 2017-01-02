@@ -83,3 +83,53 @@ struct _Student
 		this->Flag		= string(Flag);
 	}
 };
+
+//char ClassId[_CLASSID_SIZE_];
+//char ClassName[_ID_SIZE_];
+//char UName[_ID_SIZE_];
+struct _Tb_Class
+{
+	string Seq;
+	string ClassId;
+	string ClassName;
+	string UserID;
+	string UDate;
+	string Flag	;
+	string Pass;
+	string UName;
+	string Tell;
+
+	_Tb_Class(char* Seq		,char* ClassId		,char* ClassName
+		,char* UserID	,char* UDate		,char* Flag	
+		,char* pass	,char* UName	,char* Tell)
+	{
+
+		this->Seq		= string(Seq);
+		this->ClassId	= string(ClassId);
+		this->ClassName	= string(ClassName);
+		this->UserID	= string(UserID);
+		this->UDate		= string(UDate);
+		this->Flag		= string(Flag);
+		this->Pass		= string(Pass);
+		this->UName		= string(UName);
+		this->Tell		= string(Tell);
+	}
+
+	void SetData(char* Seq		,char* ClassId		,char* ClassName
+				,char* UserID	,char* UDate		,char* Flag	
+				,char* pass	,char* UName	,char* Tell)
+	{
+		
+		this->Seq		= string(Seq);
+		this->ClassId	= string(ClassId);
+		this->ClassName	= string(ClassName);
+		this->UserID	= string(UserID);
+		this->UDate		= string(UDate);
+		this->Flag		= string(Flag);
+		this->Pass		= string(Pass);
+		this->UName		= string(UName);
+		this->Tell		= string(Tell);
+	}
+
+
+};

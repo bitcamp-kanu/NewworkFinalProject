@@ -1,10 +1,10 @@
 ﻿#pragma once
 
 #include "..\Public\baseSocket.h"
-class DBManager;
+class DBManagerEx;
 class DBService : public IReceiveEvent
 {
-	DBManager* m_pDbManager;
+	DBManagerEx* m_pDbManagerEx;
 public:
 	virtual int ReceiveEvent(SockBase* pSockBase,char* pData, int len);	
 public:

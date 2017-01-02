@@ -4,20 +4,18 @@
 #include "..\Public\WIUtility.h"
 #include "..\Public\PublicDefine.h"
 
-
-#include "DBManager.h"
+#include "DBManagerEx.h"
 
 DBService::DBService(void)
 {
-	m_pDbManager = new DBManager();
-	m_pDbManager->Open();
+	m_pDbManagerEx = new DBManagerEx();
+	m_pDbManagerEx->Open();
 }
 
 
 DBService::~DBService(void)
 {
 }
-
 
 int DBService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 {
@@ -30,9 +28,9 @@ int DBService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 			memcpy(&logData,pData,sizeof(_Login));
 			cout << "DB Server 수신 " << logData.ToString() << endl;
 
-			if(m_pDbManager->IsUserPassword(logData.id,logData.pass))
+			if(m_pDbManagerEx->IsUserPasswordEx(logData.id,logData.pass))
 			{
-				m_pDbManager->InsertSecretKey(logData.id, logData.header.SecretKey);
+				m_pDbManagerEx->InsertSecretKey(logData.id, logData.header.SecretKey);
 				logData.header.pakID = 111;
 			}
 			else
@@ -47,7 +45,7 @@ int DBService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 			_SecretKeyChedk sechtKey;
 			memcpy(&sechtKey, pData, sizeof(_SecretKeyChedk));
 			cout << "DB Server 수신 " << sechtKey.ToString() << endl;
-			if(m_pDbManager->IsSecretKey(sechtKey.header.id, sechtKey.header.SecretKey))
+			if(m_pDbManagerEx->IsSecretKeyEx(sechtKey.header.id, sechtKey.header.SecretKey))
 			{
 				sechtKey.header.pakID = 201; //인증 성공
 			}
@@ -57,6 +55,24 @@ int DBService::ReceiveEvent(SockBase* pSockBase,char* pData, int len)
 			}
 
 			int error = pSockBase->Send((char*)&sechtKey, sizeof(_SecretKeyChedk));
+		}
+		else if(WIUtility::IsCommand(pData,"US")) //USER 정보 요청
+		{
+			_DemandUserInfo userInof;
+			memcpy(&userInof,pData,sizeof(_DemandUserInfo));
+			vector<_Tb_Class*> vec = m_pDbManagerEx->SelectClassInfo(userInof.header.id);
+			if(vec.size() > 0)
+			{
+				strcpy(userInof.ClassId		,vec[0]->ClassId.c_str());
+				strcpy(userInof.ClassName	,vec[0]->ClassName.c_str());
+				strcpy(userInof.UName		,vec[0]->UName.c_str());
+			}
+			else
+			{
+				userInof.header.pakID = 900;
+			}
+			int error = pSockBase->Send((char*)&userInof, sizeof(_DemandUserInfo));
+
 		}
 		else if(WIUtility::IsCommand(pData,"AA")) //테스트 CMD 이면
 		{

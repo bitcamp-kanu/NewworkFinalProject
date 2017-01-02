@@ -15,6 +15,9 @@ using namespace std;
 //사용할 패킷을 정의 한다.
 
 //pakID
+//000 공통
+// 901 성공.
+// 900 실패. 데이터 없음.
 //100 로그인
 //	110 로그인 실패.
 //	111 로성공
@@ -185,7 +188,6 @@ struct _WorkData
 	int Total;
 	double Ave;
 	char UDate[_ID_SIZE_];
-
 	_WorkData(){};
 	int cont;
 
@@ -214,7 +216,6 @@ struct _WorkData
 		Total=mTotal;
 		Ave=mAve;
 		strcpy(UDate,mUDate);
-		
 		cont = 0;
 	}
 
