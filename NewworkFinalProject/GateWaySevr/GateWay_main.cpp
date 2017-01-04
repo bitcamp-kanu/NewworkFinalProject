@@ -12,9 +12,7 @@
 #include "..\Public\PublicDefine.h"
 #include "..\public\ServerSocket.h"
 #include "..\public\Log.h"
-
 #include "GateWayService.h" //GateWay ¼­ºñ½º... 
-
 
 
 void main()

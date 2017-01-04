@@ -1,30 +1,34 @@
-ï»¿#pragma once
-// TCP_Echo_Server.cpp : ì½˜ì†” ì‘ìš© í”„ë¡œê·¸ë¨ì— ëŒ€í•œ ì§„ì…ì ì„ ì •ì˜í•©ë‹ˆë‹¤.
-#pragma comment(lib,"Ws2_32.lib") //winsock 2.2 ë¼ì´ë¸ŒëŸ¬ë¦¬
+#pragma once
+// TCP_Echo_Server.cpp : ÄÜ¼Ö ÀÀ¿ë ÇÁ·Î±×·¥¿¡ ´ëÇÑ ÁøÀÔÁ¡À» Á¤ÀÇÇÕ´Ï´Ù.
+#pragma comment(lib,"Ws2_32.lib") //winsock 2.2 ¶óÀÌºê·¯¸®
 #define WINVER 0x0501
 #define _WIN32_WINNT 0x0501
 
-#include <WinSock2.h> //Winsock 2 ë²„ì „ Header
-//#include <windows.h>
+#include <WinSock2.h> //Winsock 2 ¹öÀü Header
+#include <windows.h>
 #include <stdio.h>
-
-
 #include <string>
 #include <vector>
 #include <vector>
 #include <iostream>
-#include "..\Public\baseSocket.h"
-#include "ReceiveSocket.h"
-
+#include "..\header\baseSocket.h"
 
 using namespace std;
+
 
 class ServerSocket
 {
 private:
 	enum eMode{eTCP,eUDP};
 	eMode m_eMode;
+
 	SockInfo m_oSockInfo;
+	//SOCKADDR_IN m_serverAddress; // ÁÖ¼Ò¸¦ ´ã´Â ±¸Á¦Ã¼.
+	//SOCKET		m_serverSocket;	//´ë±â¼ÒÄÏ
+	
+	//SOCKADDR_IN m_clinetAddress; //UDP Åë½Å ÀÛ¾÷½Ã »ç¿ë
+	
+	
 	
 	WSADATA		m_wsadata;
 	int			m_iPort;
@@ -33,12 +37,14 @@ public:
 	ServerSocket(int port = 9000 , ServerSocket::eMode mode = eTCP);
 	virtual ~ServerSocket(void);
 
+
 	void SetPort(int port);
 	bool InitWinsock();
 	bool InitSock();
 	bool Bind();
 	int  Listen(int cnt = 5);
-	ReceiveSocket*  Accept();
+	SockInfo&  Accept();
+
 	void ReleaseSocket();
-	string GetInof();
 };
+
